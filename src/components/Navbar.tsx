@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBagIcon, UserIcon, MenuIcon, XIcon } from 'lucide-react';
+import { useCart } from '../context/CartContext'; // ← IMPORTAR
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const { getCartCount } = useCart(); // ← USAR CONTEXT
+
+  const cartCount = getCartCount(); // ← CONTADOR DINÁMICO
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -107,17 +111,19 @@ const Navbar = () => {
             </Link>
           </nav>
 
-          {/* Desktop Actions - NEGRO SÓLIDO */}
+          {/* Desktop Actions - CONTADOR DINÁMICO */}
           <div className="hidden md:flex items-center space-x-4">
             <Link 
               to="/carrito" 
               className="relative p-2 text-gray-900 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-lg transition-all duration-300 group"
             >
               <ShoppingBagIcon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
-              {/* Badge opcional para contador de carrito */}
-              <span className="absolute -top-1 -right-1 h-4 w-4 bg-[#D4AF37] text-[#2C3E50] text-xs font-bold rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                3
-              </span>
+              {/* Badge dinámico */}
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 h-5 w-5 bg-[#D4AF37] text-[#2C3E50] text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
+                  {cartCount > 99 ? '99+' : cartCount}
+                </span>
+              )}
             </Link>
             <Link 
               to="/login" 
@@ -176,15 +182,20 @@ const Navbar = () => {
               Contacto
             </Link>
             
-            {/* Actions móviles con estilo premium - MÁS COMPACTOS */}
+            {/* Mobile Actions - TAMBIÉN CON CONTADOR */}
             <div className="flex space-x-3 pt-4 border-t border-[#D4AF37]/20">
               <Link 
                 to="/carrito" 
-                className="flex-1 flex items-center justify-center bg-[#2C3E50] hover:bg-[#D4AF37] text-[#D4AF37] hover:text-[#2C3E50] py-2 px-3 rounded-lg font-medium text-sm transition-all duration-300"
+                className="flex-1 flex items-center justify-center bg-[#2C3E50] hover:bg-[#D4AF37] text-[#D4AF37] hover:text-[#2C3E50] py-2 px-3 rounded-lg font-medium text-sm transition-all duration-300 relative"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <ShoppingBagIcon className="h-4 w-4 mr-2" />
                 Carrito
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 h-4 w-4 bg-[#D4AF37] text-[#2C3E50] text-xs font-bold rounded-full flex items-center justify-center">
+                    {cartCount > 9 ? '9+' : cartCount}
+                  </span>
+                )}
               </Link>
               <Link 
                 to="/login" 
