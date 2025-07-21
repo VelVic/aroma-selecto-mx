@@ -1,14 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ShoppingBagIcon, HeartIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, StarIcon } from 'lucide-react';
+import { ShoppingBagIcon, HeartIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, StarIcon, CheckIcon } from 'lucide-react'; // ← AGREGAR CheckIcon
 import TestimonialCard from '../components/TestimonialCard';
 import ProductCard from '../components/ProductCard';
+import { useCart } from '../context/CartContext'; // ← AGREGAR useCart
 // ✅ IMPORTAR FUNCIONES CENTRALIZADAS
 import { getProductById, getSimilarProducts } from '../data/products';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  
+  // ← AGREGAR FUNCIONALIDAD DEL CARRITO
+  const { addToCart } = useCart();
+  const [isAdding, setIsAdding] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
   
   // ✅ USAR FUNCIÓN IMPORTADA EN LUGAR DE FUNCIÓN LOCAL
   const product = getProductById(id || '1');
@@ -32,6 +38,9 @@ const ProductDetailPage = () => {
       setShowDetails(false);
       setShowOccasion(false);
       setShowShipping(false);
+      // ← RESET ESTADOS DEL CARRITO
+      setIsAdding(false);
+      setJustAdded(false);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [id, product]);
@@ -73,6 +82,41 @@ const ProductDetailPage = () => {
   const selectImage = (image: string, index: number) => {
     setMainImage(image);
     setCurrentImageIndex(index);
+  };
+
+  // ← AGREGAR FUNCIÓN PARA CARRITO
+  const handleAddToCart = () => {
+    if (!product || (product.stock || 0) === 0) return;
+    
+    setIsAdding(true);
+    
+    const selectedPrice = selectedSize && product.sizesPrices && product.sizesPrices[selectedSize] 
+      ? product.sizesPrices[selectedSize] 
+      : product.price;
+    
+    // Agregar múltiples cantidades si es necesario
+    for (let i = 0; i < quantity; i++) {
+      const productToAdd = {
+        id: product.id,
+        name: product.name,
+        brand: product.brand,
+        image: product.image,
+        size: selectedSize,
+        price: selectedPrice,
+        stock: product.stock || 0
+      };
+      
+      addToCart(productToAdd);
+    }
+    
+    // Feedback visual
+    setTimeout(() => {
+      setIsAdding(false);
+      setJustAdded(true);
+      
+      // Reset después de 3 segundos
+      setTimeout(() => setJustAdded(false), 3000);
+    }, 500);
   };
 
   // Manejo de producto no encontrado
@@ -321,15 +365,35 @@ const ProductDetailPage = () => {
                 </div>
               </div>
 
-              {/* BOTONES */}
+              {/* BOTONES - ← AGREGAR FUNCIONALIDAD */}
               <div className="flex flex-col sm:flex-row gap-3">
                 <button 
                   type="button" 
+                  onClick={handleAddToCart}
                   disabled={(product.stock || 0) === 0}
-                  className="flex-1 bg-[#2C3E50] hover:bg-[#D4AF37] hover:text-[#2C3E50] text-[#D4AF37] py-3 px-5 rounded-lg font-medium text-base flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className={`flex-1 py-3 px-5 rounded-lg font-medium text-base flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
+                    justAdded
+                      ? 'bg-green-600 text-white'
+                      : 'bg-[#2C3E50] hover:bg-[#D4AF37] hover:text-[#2C3E50] text-[#D4AF37]'
+                  }`}
                 >
-                  <ShoppingBagIcon className="h-5 w-5 mr-2" />
-                  Agregar al carrito
+                  {/* ← ICONOS CON FEEDBACK VISUAL */}
+                  {isAdding ? (
+                    <>
+                      <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      Agregando...
+                    </>
+                  ) : justAdded ? (
+                    <>
+                      <CheckIcon className="h-5 w-5 mr-2" />
+                      ¡Agregado al carrito!
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBagIcon className="h-5 w-5 mr-2" />
+                      Agregar al carrito
+                    </>
+                  )}
                 </button>
                 <button 
                   type="button" 
@@ -339,6 +403,18 @@ const ProductDetailPage = () => {
                   Favoritos
                 </button>
               </div>
+
+              {/* ← MENSAJE DE CONFIRMACIÓN */}
+              {justAdded && (
+                <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="flex items-center">
+                    <CheckIcon className="h-5 w-5 text-green-600 mr-2" />
+                    <span className="text-green-800 text-sm font-medium">
+                      {quantity > 1 ? `${quantity} productos agregados` : 'Producto agregado'} al carrito ({selectedSize})
+                    </span>
+                  </div>
+                </div>
+              )}
 
               {/* DETALLES DEL PRODUCTO - ACORDEÓN */}
               {product.details && product.details.length > 0 && (

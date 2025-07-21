@@ -1,5 +1,7 @@
+import { useState } from 'react'; // ← AGREGAR useState
 import { useNavigate } from 'react-router-dom';
-import { StarIcon, HeartIcon, ShoppingBagIcon, SparklesIcon, BellIcon, FlameIcon } from 'lucide-react';
+import { StarIcon, HeartIcon, ShoppingBagIcon, SparklesIcon, BellIcon, FlameIcon, CheckIcon } from 'lucide-react'; // ← AGREGAR CheckIcon
+import { useCart } from '../context/CartContext'; // ← AGREGAR useCart
 
 // ✅ INTERFACE COMPLETA Y CORREGIDA
 interface ProductCardProps {
@@ -36,13 +38,53 @@ const ProductCard = ({
   isSale = false,
   isComingSoon = false,
   sizes = [],
+  sizesPrices = {}, // ← AGREGAR default
 }: ProductCardProps) => {
   
   const navigate = useNavigate();
+  
+  // ← AGREGAR FUNCIONALIDAD DEL CARRITO
+  const { addToCart } = useCart();
+  const [isAdding, setIsAdding] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
 
   const handleProductClick = () => {
     navigate(`/product/${id}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // ← AGREGAR FUNCIÓN PARA CARRITO
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    if (isComingSoon || stock === 0) return;
+    
+    setIsAdding(true);
+    
+    // Usar primer tamaño disponible como predeterminado
+    const defaultSize = sizes[0] || '3ml';
+    const defaultPrice = sizesPrices[defaultSize] || price;
+    
+    const product = {
+      id,
+      name,
+      brand,
+      image,
+      size: defaultSize,
+      price: defaultPrice,
+      stock
+    };
+    
+    addToCart(product);
+    
+    // Feedback visual
+    setTimeout(() => {
+      setIsAdding(false);
+      setJustAdded(true);
+      
+      // Reset después de 2 segundos
+      setTimeout(() => setJustAdded(false), 2000);
+    }, 500);
   };
 
   return (
@@ -204,39 +246,47 @@ const ProductCard = ({
             ) : (
               <div className="flex items-baseline">
                 <span className="text-lg font-bold text-gray-900">$</span>
-                <span className="text-lg font-bold text-gray-900 mx-1">{price.toFixed(0)}</span>
+                <span className="text-lg font-bold text-gray-900 mx-1">
+                  {/* ← MOSTRAR PRECIO DEL PRIMER TAMAÑO */}
+                  {sizes.length > 0 && sizesPrices[sizes[0]] ? sizesPrices[sizes[0]].toFixed(0) : price.toFixed(0)}
+                </span>
                 <span className="text-sm font-medium text-[#BDC3C7]">MXN</span>
               </div>
             )}
           </div>
           
-          {/* Botón */}
+          {/* ← BOTÓN CON FUNCIONALIDAD PERO MISMO ESTILO */}
           <button 
-            onClick={(e) => {
+            onClick={isComingSoon ? (e) => {
               e.stopPropagation();
-              if (isComingSoon) {
-                console.log('Notificar cuando esté disponible:', name);
-              } else {
-                console.log('Agregado al carrito:', name);
-              }
-            }}
+              console.log('Notificar cuando esté disponible:', name);
+            } : handleAddToCart}
             disabled={stock === 0 && !isComingSoon}
             className={`p-2.5 rounded-lg transition-all duration-300 shadow-sm hover:shadow-lg hover:scale-105 group/btn disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 ${
-              isComingSoon 
-                ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:from-purple-600 hover:to-indigo-700' 
-                : stock === 0
-                  ? 'bg-gray-300 text-gray-500'
-                  : 'bg-[#2C3E50] hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] text-[#D4AF37] hover:text-white'
+              justAdded
+                ? 'bg-green-600 text-white'
+                : isComingSoon 
+                  ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:from-purple-600 hover:to-indigo-700' 
+                  : stock === 0
+                    ? 'bg-gray-300 text-gray-500'
+                    : 'bg-[#2C3E50] hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] text-[#D4AF37] hover:text-white'
             }`}
             aria-label={
-              isComingSoon 
-                ? 'Notificarme cuando esté disponible' 
-                : stock === 0 
-                  ? 'Producto agotado'
-                  : 'Agregar al carrito'
+              justAdded
+                ? 'Producto agregado'
+                : isComingSoon 
+                  ? 'Notificarme cuando esté disponible' 
+                  : stock === 0 
+                    ? 'Producto agotado'
+                    : 'Agregar al carrito'
             }
           >
-            {isComingSoon ? (
+            {/* ← ICONOS CON FEEDBACK VISUAL */}
+            {isAdding ? (
+              <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : justAdded ? (
+              <CheckIcon className="h-4 w-4" />
+            ) : isComingSoon ? (
               <BellIcon className="h-4 w-4 group-hover/btn:scale-110 transition-transform duration-200" />
             ) : (
               <ShoppingBagIcon className="h-4 w-4 group-hover/btn:scale-110 transition-transform duration-200" />
