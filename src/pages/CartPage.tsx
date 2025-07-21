@@ -10,8 +10,6 @@ const CartPage = () => {
     removeFromCart, 
     getCartSubtotal,
     getShippingCost,
-    includesFreeDecant,
-    includesFreeShipping
   } = useCart();
 
   const [shippingInfo, setShippingInfo] = useState({
