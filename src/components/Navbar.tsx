@@ -92,14 +92,14 @@ const Navbar = () => {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
             <Link 
-              to="/about" 
+              to="/acerca" 
               className="text-gray-900 hover:text-[#D4AF37] font-medium transition-all duration-300 relative group"
             >
               Nosotros
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
             <Link 
-              to="/contact" 
+              to="/contacto" 
               className="text-gray-900 hover:text-[#D4AF37] font-medium transition-all duration-300 relative group"
             >
               Contacto
@@ -110,7 +110,7 @@ const Navbar = () => {
           {/* Desktop Actions - NEGRO SÓLIDO */}
           <div className="hidden md:flex items-center space-x-4">
             <Link 
-              to="/cart" 
+              to="/carrito" 
               className="relative p-2 text-gray-900 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-lg transition-all duration-300 group"
             >
               <ShoppingBagIcon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
@@ -162,14 +162,14 @@ const Navbar = () => {
               Perfumes
             </Link>
             <Link 
-              to="/about" 
+              to="/acerca" 
               className="block text-[#2C3E50] hover:text-[#D4AF37] font-medium py-2 px-3 rounded-lg hover:bg-[#D4AF37]/10 transition-all duration-300"
               onClick={() => setIsMenuOpen(false)}
             >
               Nosotros
             </Link>
             <Link 
-              to="/contact" 
+              to="/contacto" 
               className="block text-[#2C3E50] hover:text-[#D4AF37] font-medium py-2 px-3 rounded-lg hover:bg-[#D4AF37]/10 transition-all duration-300"
               onClick={() => setIsMenuOpen(false)}
             >
@@ -179,7 +179,7 @@ const Navbar = () => {
             {/* Actions móviles con estilo premium - MÁS COMPACTOS */}
             <div className="flex space-x-3 pt-4 border-t border-[#D4AF37]/20">
               <Link 
-                to="/cart" 
+                to="/carrito" 
                 className="flex-1 flex items-center justify-center bg-[#2C3E50] hover:bg-[#D4AF37] text-[#D4AF37] hover:text-[#2C3E50] py-2 px-3 rounded-lg font-medium text-sm transition-all duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >

@@ -159,15 +159,14 @@ const Footer = () => {
             </button>
             
             <ul className={`space-y-3 text-sm transition-all duration-300 overflow-hidden ${
-              openSections.informacion ? 'max-h-48 md:max-h-none' : 'max-h-0 md:max-h-none'
-            }`}>
+              openSections.informacion ? 'max-h-48 md:max-h-none' : 'max-h-0 md:max-h-none'}`}>
               <li>
-                <Link to="#" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                <Link to="/nosotros" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
                   Sobre Nosotros
                 </Link>
               </li>
               <li>
-                <Link to="#" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                <Link to="/envios" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
                   Envíos y Devoluciones
                 </Link>
               </li>
