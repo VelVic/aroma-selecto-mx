@@ -1,0 +1,205 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { ShoppingBagIcon, UserIcon, MenuIcon, XIcon } from 'lucide-react';
+
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  // Control del scroll para mostrar/ocultar navbar
+  useEffect(() => {
+    const controlNavbar = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Solo ejecutar si hay cambio significativo en el scroll
+      if (Math.abs(currentScrollY - lastScrollY) < 10) {
+        return;
+      }
+
+      if (currentScrollY > lastScrollY && currentScrollY > 150) {
+        // Scrolling hacia abajo y ya pasó 150px - ocultar navbar
+        setIsVisible(false);
+      } else {
+        // Scrolling hacia arriba o en la parte superior - mostrar navbar
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    // Throttle para mejor performance
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          controlNavbar();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // Agregar el listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
+
+  return (
+    <header 
+      className={`navbar fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out ${
+        isVisible ? 'translate-y-0' : '-translate-y-full'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <Link to="/" className="flex items-center group transition-all duration-300">
+              <img 
+                src="/images/logo.png" 
+                alt="Aroma Selecto Logo" 
+                className="h-10 w-auto mr-3 group-hover:scale-110 transition-transform duration-300"
+              />
+              <span className="text-xl font-logo font-semibold text-[#2C3E50] group-hover:text-[#D4AF37] transition-colors tracking-widest">
+                Aroma Selecto
+              </span>
+            </Link>
+          </div>
+
+          {/* Desktop Navigation - NEGRO SÓLIDO */}
+          <nav className="hidden md:flex space-x-8">
+            <Link 
+              to="/" 
+              className="text-gray-900 hover:text-[#D4AF37] font-medium transition-all duration-300 relative group"
+            >
+              Inicio
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link 
+              to="/productos" 
+              className="text-gray-900 hover:text-[#D4AF37] font-medium transition-all duration-300 relative group"
+            >
+              Perfumes
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link 
+              to="/about" 
+              className="text-gray-900 hover:text-[#D4AF37] font-medium transition-all duration-300 relative group"
+            >
+              Nosotros
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link 
+              to="/contact" 
+              className="text-gray-900 hover:text-[#D4AF37] font-medium transition-all duration-300 relative group"
+            >
+              Contacto
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+          </nav>
+
+          {/* Desktop Actions - NEGRO SÓLIDO */}
+          <div className="hidden md:flex items-center space-x-4">
+            <Link 
+              to="/cart" 
+              className="relative p-2 text-gray-900 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-lg transition-all duration-300 group"
+            >
+              <ShoppingBagIcon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
+              {/* Badge opcional para contador de carrito */}
+              <span className="absolute -top-1 -right-1 h-4 w-4 bg-[#D4AF37] text-[#2C3E50] text-xs font-bold rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                3
+              </span>
+            </Link>
+            <Link 
+              to="/login" 
+              className="p-2 text-gray-900 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-lg transition-all duration-300 group"
+            >
+              <UserIcon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
+            </Link>
+          </div>
+
+          {/* Mobile menu button - NEGRO SÓLIDO */}
+          <div className="md:hidden">
+            <button
+              onClick={toggleMenu}
+              className="p-2 text-gray-900 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-lg transition-all duration-300"
+            >
+              {isMenuOpen ? (
+                <XIcon className="h-6 w-6" />
+              ) : (
+                <MenuIcon className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile menu - CON GRADIENTE SUTIL */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-gradient-to-b from-white via-white to-[#F9F9F9] border-t border-[#D4AF37]/20 shadow-lg backdrop-blur-sm">
+          <div className="px-4 py-6 space-y-4">
+            <Link 
+              to="/" 
+              className="block text-[#2C3E50] hover:text-[#D4AF37] font-medium py-2 px-3 rounded-lg hover:bg-[#D4AF37]/10 transition-all duration-300"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Inicio
+            </Link>
+            <Link 
+              to="/productos" 
+              className="block text-[#2C3E50] hover:text-[#D4AF37] font-medium py-2 px-3 rounded-lg hover:bg-[#D4AF37]/10 transition-all duration-300"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Perfumes
+            </Link>
+            <Link 
+              to="/about" 
+              className="block text-[#2C3E50] hover:text-[#D4AF37] font-medium py-2 px-3 rounded-lg hover:bg-[#D4AF37]/10 transition-all duration-300"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Nosotros
+            </Link>
+            <Link 
+              to="/contact" 
+              className="block text-[#2C3E50] hover:text-[#D4AF37] font-medium py-2 px-3 rounded-lg hover:bg-[#D4AF37]/10 transition-all duration-300"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Contacto
+            </Link>
+            
+            {/* Actions móviles con estilo premium - MÁS COMPACTOS */}
+            <div className="flex space-x-3 pt-4 border-t border-[#D4AF37]/20">
+              <Link 
+                to="/cart" 
+                className="flex-1 flex items-center justify-center bg-[#2C3E50] hover:bg-[#D4AF37] text-[#D4AF37] hover:text-[#2C3E50] py-2 px-3 rounded-lg font-medium text-sm transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <ShoppingBagIcon className="h-4 w-4 mr-2" />
+                Carrito
+              </Link>
+              <Link 
+                to="/login" 
+                className="flex-1 flex items-center justify-center border-2 border-[#D4AF37] hover:bg-[#D4AF37] text-[#D4AF37] hover:text-[#2C3E50] py-2 px-3 rounded-lg font-medium text-sm transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <UserIcon className="h-4 w-4 mr-2" />
+                Cuenta
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default Navbar;
