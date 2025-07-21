@@ -5,6 +5,10 @@ import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import LoginPage from './pages/LoginPage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+import ShippingPage from './pages/ShippingPage';
+import CartPage from './pages/CartPage';
 
 export function App() {
   return (
@@ -22,6 +26,10 @@ export function App() {
             <Route path="/productos" element={<ProductsPage />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/acerca" element={<AboutPage />} />
+            <Route path="/contacto" element={<ContactPage />} />
+            <Route path='/envios' element={<ShippingPage />} />
+            <Route path='/carrito' element={<CartPage />} />
           </Routes>
         </main>
         <Footer />
