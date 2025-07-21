@@ -1,42 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBagIcon, TrashIcon, PlusIcon, MinusIcon, MapPinIcon, CalculatorIcon, GiftIcon, TicketIcon, InstagramIcon, MessageCircleIcon, MailIcon, AlertCircleIcon, CheckCircleIcon, TruckIcon, CreditCardIcon, BuildingIcon, HandIcon } from 'lucide-react';
-
-// Simulando productos en el carrito (después conectarás con tu context/estado global)
-interface CartItem {
-  id: string;
-  name: string;
-  brand: string;
-  image: string;
-  size: string;
-  price: number;
-  quantity: number;
-  stock: number;
-}
+import { ShoppingBagIcon, TrashIcon, PlusIcon, MinusIcon, MapPinIcon, GiftIcon, TicketIcon, InstagramIcon, MessageCircleIcon, MailIcon, TruckIcon, CreditCardIcon, BuildingIcon, HandIcon, CheckCircleIcon } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 const CartPage = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: '1',
-      name: 'Sauvage Elixir',
-      brand: 'Dior',
-      image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
-      size: '10ml',
-      price: 250,
-      quantity: 2,
-      stock: 15
-    },
-    {
-      id: '2',
-      name: 'Black Opium',
-      brand: 'Yves Saint Laurent',
-      image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
-      size: '5ml',
-      price: 180,
-      quantity: 1,
-      stock: 8
-    }
-  ]);
+  const { 
+    items: cartItems, 
+    updateQuantity, 
+    removeFromCart, 
+    getCartSubtotal,
+    getShippingCost,
+    includesFreeDecant,
+    includesFreeShipping
+  } = useCart();
 
   const [shippingInfo, setShippingInfo] = useState({
     fullName: '',
@@ -46,35 +22,58 @@ const CartPage = () => {
     state: '',
     city: '',
     address: '',
-    deliveryType: 'standard' // 'personal', 'standard', 'express'
+    deliveryType: 'standard'
   });
 
-  const [shippingCost, setShippingCost] = useState(140);
-  const [paymentMethod, setPaymentMethod] = useState('transfer'); // 'transfer', 'oxxo', 'cash'
+  const [paymentMethod, setPaymentMethod] = useState('transfer');
   const [showTicket, setShowTicket] = useState(false);
 
-  // Cálculos
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const includesFreeDecant = subtotal >= 600;
-  const includesFreeShipping = subtotal >= 888;
-  const finalShippingCost = includesFreeShipping || shippingInfo.deliveryType === 'personal' ? 0 : shippingCost;
-  const total = subtotal + finalShippingCost;
+  // ← CONFIGURACIÓN ACTUALIZADA
+  const FREE_SHIPPING_MINIMUM = 888; // $888 MXN para envío gratis
+  const FREE_DECANT_MINIMUM = 600; // $600 MXN para decant gratis
 
-  // Funciones del carrito
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity === 0) {
-      removeItem(id);
-      return;
+  // Cálculos dinámicos mejorados
+  const subtotal = getCartSubtotal();
+  const baseShippingCost = getShippingCost(shippingInfo.deliveryType, subtotal);
+  
+  // ← LÓGICA DE DESCUENTOS EN ENVÍO CORREGIDA
+  const calculateFinalShippingCost = () => {
+  if (shippingInfo.deliveryType === 'personal') {
+    return 0; // Entrega personal siempre gratis
+  }
+  
+  if (subtotal >= FREE_SHIPPING_MINIMUM) {
+    if (shippingInfo.deliveryType === 'standard') {
+      return 0; // Envío estándar gratis al alcanzar el mínimo
+    } else if (shippingInfo.deliveryType === 'express') {
+      return 95; // ← PRECIO FIJO: 50% de descuento ($189/2 = $95)
     }
-    setCartItems(items => 
-      items.map(item => 
-        item.id === id ? { ...item, quantity: Math.min(newQuantity, item.stock) } : item
-      )
-    );
+  }
+  
+  return baseShippingCost;
+};
+
+  const finalShippingCost = calculateFinalShippingCost();
+  const total = subtotal + finalShippingCost;
+  const freeDecant = subtotal >= FREE_DECANT_MINIMUM;
+  const hasShippingDiscount = subtotal >= FREE_SHIPPING_MINIMUM && shippingInfo.deliveryType !== 'personal';
+
+  // ← EFECTO PARA RESETEAR MÉTODO DE PAGO CUANDO CAMBIA TIPO DE ENTREGA
+  useEffect(() => {
+    // Si cambia a envío (no personal) y tenía "cash", cambiar a transfer
+    if (shippingInfo.deliveryType !== 'personal' && paymentMethod === 'cash') {
+      setPaymentMethod('transfer');
+    }
+  }, [shippingInfo.deliveryType, paymentMethod]);
+
+  // Función para manejar cantidad
+  const handleUpdateQuantity = (id: string, size: string, newQuantity: number) => {
+    updateQuantity(id, size, newQuantity);
   };
 
-  const removeItem = (id: string) => {
-    setCartItems(items => items.filter(item => item.id !== id));
+  // Función para eliminar item
+  const handleRemoveItem = (id: string, size: string) => {
+    removeFromCart(id, size);
   };
 
   const generateTicket = () => {
@@ -85,30 +84,170 @@ const CartPage = () => {
       items: cartItems,
       subtotal,
       shipping: finalShippingCost,
+      shippingDiscount: hasShippingDiscount ? baseShippingCost - finalShippingCost : 0,
       total,
-      includesFreeDecant,
+      includesFreeDecant: freeDecant,
       paymentMethod,
       date: new Date().toLocaleDateString('es-MX')
     };
     
     console.log('Ticket generado:', ticketData);
     setShowTicket(true);
-    // Aquí integrarías con tu API para generar el ticket real
   };
 
-  useEffect(() => {
-    // Calcular envío basado en código postal (simulación)
-    if (shippingInfo.postalCode.length >= 5) {
-      const firstTwoDigits = parseInt(shippingInfo.postalCode.substring(0, 2));
-      if (firstTwoDigits >= 90 && firstTwoDigits <= 96) { // Veracruz aprox
-        setShippingCost(100); // Más barato si es local
-      } else if (firstTwoDigits >= 1 && firstTwoDigits <= 16) { // CDMX/EdoMex
-        setShippingCost(189); // Express disponible
-      } else {
-        setShippingCost(140); // Estándar
-      }
+  // ← VALIDACIÓN DINÁMICA DE CAMPOS REQUERIDOS
+  const getRequiredFieldsForDeliveryType = () => {
+    if (shippingInfo.deliveryType === 'personal') {
+      return ['fullName', 'phone', 'email'];
+    } else {
+      return ['fullName', 'phone', 'email', 'postalCode', 'state', 'city', 'address'];
     }
-  }, [shippingInfo.postalCode]);
+  };
+
+  const isFormValid = () => {
+    const requiredFields = getRequiredFieldsForDeliveryType();
+    return requiredFields.every(field => {
+      const value = shippingInfo[field as keyof typeof shippingInfo];
+      return value && value.trim() !== '';
+    });
+  };
+
+  // ← FUNCIÓN PARA RENDERIZAR CAMPOS SEGÚN TIPO DE ENTREGA
+  const renderShippingFields = () => {
+    if (shippingInfo.deliveryType === 'personal') {
+      return (
+        <div className="grid gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nombre completo *</label>
+            <input
+              type="text"
+              value={shippingInfo.fullName}
+              onChange={(e) => setShippingInfo(prev => ({...prev, fullName: e.target.value}))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
+              placeholder="Tu nombre completo"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono *</label>
+            <input
+              type="tel"
+              value={shippingInfo.phone}
+              onChange={(e) => setShippingInfo(prev => ({...prev, phone: e.target.value}))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
+              placeholder="10 dígitos"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+            <input
+              type="email"
+              value={shippingInfo.email}
+              onChange={(e) => setShippingInfo(prev => ({...prev, email: e.target.value}))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
+              placeholder="tu@email.com"
+            />
+          </div>
+
+          {/* ← INFORMACIÓN PARA ENTREGA PERSONAL */}
+          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-start">
+              <HandIcon className="h-5 w-5 text-blue-600 mt-0.5 mr-3 flex-shrink-0" />
+              <div>
+                <h4 className="text-sm font-medium text-blue-900 mb-1">Entrega Personal</h4>
+                <p className="text-sm text-blue-700">
+                  Te contactaremos para coordinar el lugar y horario de entrega en Gutiérrez Zamora y zonas cercanas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nombre completo *</label>
+            <input
+              type="text"
+              value={shippingInfo.fullName}
+              onChange={(e) => setShippingInfo(prev => ({...prev, fullName: e.target.value}))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
+              placeholder="Tu nombre completo"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono *</label>
+            <input
+              type="tel"
+              value={shippingInfo.phone}
+              onChange={(e) => setShippingInfo(prev => ({...prev, phone: e.target.value}))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
+              placeholder="10 dígitos"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+            <input
+              type="email"
+              value={shippingInfo.email}
+              onChange={(e) => setShippingInfo(prev => ({...prev, email: e.target.value}))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
+              placeholder="tu@email.com"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Código Postal *</label>
+            <input
+              type="text"
+              value={shippingInfo.postalCode}
+              onChange={(e) => setShippingInfo(prev => ({...prev, postalCode: e.target.value}))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
+              placeholder="12345"
+              maxLength={5}
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Estado *</label>
+            <input
+              type="text"
+              value={shippingInfo.state}
+              onChange={(e) => setShippingInfo(prev => ({...prev, state: e.target.value}))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
+              placeholder="Tu estado"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Ciudad *</label>
+            <input
+              type="text"
+              value={shippingInfo.city}
+              onChange={(e) => setShippingInfo(prev => ({...prev, city: e.target.value}))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
+              placeholder="Tu ciudad"
+            />
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Dirección completa *</label>
+            <textarea
+              value={shippingInfo.address}
+              onChange={(e) => setShippingInfo(prev => ({...prev, address: e.target.value}))}
+              rows={3}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
+              placeholder="Calle, número, colonia, referencias..."
+            />
+          </div>
+        </div>
+      );
+    }
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -151,7 +290,7 @@ const CartPage = () => {
               
               <div className="space-y-6">
                 {cartItems.map((item) => (
-                  <div key={item.id} className="flex items-center space-x-4 p-4 border border-gray-100 rounded-lg hover:border-[#D4AF37]/30 transition-colors">
+                  <div key={`${item.id}-${item.size}`} className="flex items-center space-x-4 p-4 border border-gray-100 rounded-lg hover:border-[#D4AF37]/30 transition-colors">
                     <img 
                       src={item.image} 
                       alt={item.name}
@@ -161,19 +300,19 @@ const CartPage = () => {
                     <div className="flex-1">
                       <h3 className="font-medium text-gray-900">{item.name}</h3>
                       <p className="text-[#BDC3C7] text-sm">{item.brand} • {item.size}</p>
-                      <p className="text-[#D4AF37] font-semibold">${item.price} MXN</p>
+                      <p className="text-[#D4AF37] font-semibold">$ {item.price} MXN</p>
                     </div>
                     
                     <div className="flex items-center space-x-3">
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        onClick={() => handleUpdateQuantity(item.id, item.size, item.quantity - 1)}
                         className="p-1 rounded-full bg-gray-100 hover:bg-[#D4AF37] hover:text-white transition-colors"
                       >
                         <MinusIcon className="h-4 w-4" />
                       </button>
                       <span className="w-8 text-center font-medium">{item.quantity}</span>
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        onClick={() => handleUpdateQuantity(item.id, item.size, item.quantity + 1)}
                         disabled={item.quantity >= item.stock}
                         className="p-1 rounded-full bg-gray-100 hover:bg-[#D4AF37] hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
@@ -182,9 +321,9 @@ const CartPage = () => {
                     </div>
                     
                     <div className="text-right">
-                      <p className="font-semibold text-gray-900">${(item.price * item.quantity).toFixed(0)} MXN</p>
+                      <p className="font-semibold text-gray-900">$ {(item.price * item.quantity).toFixed(0)} MXN</p>
                       <button
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => handleRemoveItem(item.id, item.size)}
                         className="text-red-500 hover:text-red-700 transition-colors mt-1"
                       >
                         <TrashIcon className="h-4 w-4" />
@@ -195,95 +334,149 @@ const CartPage = () => {
               </div>
             </div>
 
+{/* ← ALERTAS DINÁMICAS MEJORADAS SEGÚN TIPO DE ENTREGA */}
+            <div className="space-y-4 mt-6">
+              
+              {/* ← ENTREGA PERSONAL: Solo decant gratis */}
+              {shippingInfo.deliveryType === 'personal' && subtotal < FREE_DECANT_MINIMUM && (
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-center">
+                    <GiftIcon className="h-5 w-5 text-green-600 mr-3" />
+                    <div>
+                      <p className="text-green-900 font-medium text-sm">
+                        ¡Falta poco para tu decant gratis!
+                      </p>
+                      <p className="text-green-700 text-sm">
+                        Agrega <strong>${(FREE_DECANT_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y obtén un decant 5ml gratis
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ← ENVÍO ESTÁNDAR: Decant gratis Y envío gratis */}
+              {shippingInfo.deliveryType === 'standard' && (
+                <>
+                  {/* Alert para Decant Gratis */}
+                  {subtotal < FREE_DECANT_MINIMUM && (
+                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
+                      <div className="flex items-center">
+                        <GiftIcon className="h-5 w-5 text-green-600 mr-3" />
+                        <div>
+                          <p className="text-green-900 font-medium text-sm">
+                            ¡Falta poco para tu decant gratis!
+                          </p>
+                          <p className="text-green-700 text-sm">
+                            Agrega <strong>${(FREE_DECANT_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y obtén un decant 5ml gratis
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Alert para Envío Gratis */}
+                  {subtotal < FREE_SHIPPING_MINIMUM && (
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
+                      <div className="flex items-center">
+                        <TruckIcon className="h-5 w-5 text-blue-600 mr-3" />
+                        <div>
+                          <p className="text-blue-900 font-medium text-sm">
+                            ¡Falta poco para el envío gratis!
+                          </p>
+                          <p className="text-blue-700 text-sm">
+                            Agrega <strong>${(FREE_SHIPPING_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y obtén envío estándar gratis
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Alert cuando se desbloquean ambos beneficios */}
+                  {subtotal >= FREE_SHIPPING_MINIMUM && subtotal >= FREE_DECANT_MINIMUM && (
+                    <div className="bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg p-4">
+                      <div className="flex items-center">
+                        <CheckCircleIcon className="h-5 w-5 text-yellow-600 mr-3" />
+                        <div>
+                          <p className="text-yellow-900 font-medium text-sm">
+                            ¡Felicidades! Desbloqueaste todos los beneficios
+                          </p>
+                          <p className="text-yellow-700 text-sm">
+                            🚚 Envío gratis + 🎁 Decant 5ml gratis incluidos
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {/* ← ENVÍO EXPRESS: Decant gratis Y 50% descuento en envío */}
+              {shippingInfo.deliveryType === 'express' && (
+                <>
+                  {/* Alert para Decant Gratis */}
+                  {subtotal < FREE_DECANT_MINIMUM && (
+                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
+                      <div className="flex items-center">
+                        <GiftIcon className="h-5 w-5 text-green-600 mr-3" />
+                        <div>
+                          <p className="text-green-900 font-medium text-sm">
+                            ¡Falta poco para tu decant gratis!
+                          </p>
+                          <p className="text-green-700 text-sm">
+                            Agrega <strong>${(FREE_DECANT_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y obtén un decant 5ml gratis
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Alert para 50% Descuento en Express */}
+                  {subtotal < FREE_SHIPPING_MINIMUM && (
+                    <div className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-lg p-4">
+                      <div className="flex items-center">
+                        <TruckIcon className="h-5 w-5 text-orange-600 mr-3" />
+                        <div>
+                          <p className="text-orange-900 font-medium text-sm">
+                            ¡Falta poco para 50% descuento en envío express!
+                          </p>
+                          <p className="text-orange-700 text-sm">
+                            Agrega <strong>${(FREE_SHIPPING_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y paga solo $95 MXN (en lugar de $189)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Alert cuando se desbloquean ambos beneficios para Express */}
+                  {subtotal >= FREE_SHIPPING_MINIMUM && subtotal >= FREE_DECANT_MINIMUM && (
+                    <div className="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-lg p-4">
+                      <div className="flex items-center">
+                        <CheckCircleIcon className="h-5 w-5 text-orange-600 mr-3" />
+                        <div>
+                          <p className="text-orange-900 font-medium text-sm">
+                            ¡Felicidades! Desbloqueaste todos los beneficios
+                          </p>
+                          <p className="text-orange-700 text-sm">
+                            🚚 50% descuento en envío express ($95 MXN) + 🎁 Decant 5ml gratis
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+            </div>
+
             {/* Información de Envío */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 mt-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
                 <MapPinIcon className="h-5 w-5 text-[#D4AF37] mr-2" />
                 Información de Envío
               </h2>
-              
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nombre completo *</label>
-                  <input
-                    type="text"
-                    value={shippingInfo.fullName}
-                    onChange={(e) => setShippingInfo(prev => ({...prev, fullName: e.target.value}))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
-                    placeholder="Tu nombre completo"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono *</label>
-                  <input
-                    type="tel"
-                    value={shippingInfo.phone}
-                    onChange={(e) => setShippingInfo(prev => ({...prev, phone: e.target.value}))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
-                    placeholder="10 dígitos"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                  <input
-                    type="email"
-                    value={shippingInfo.email}
-                    onChange={(e) => setShippingInfo(prev => ({...prev, email: e.target.value}))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
-                    placeholder="tu@email.com"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Código Postal *</label>
-                  <input
-                    type="text"
-                    value={shippingInfo.postalCode}
-                    onChange={(e) => setShippingInfo(prev => ({...prev, postalCode: e.target.value}))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
-                    placeholder="12345"
-                    maxLength={5}
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Estado *</label>
-                  <input
-                    type="text"
-                    value={shippingInfo.state}
-                    onChange={(e) => setShippingInfo(prev => ({...prev, state: e.target.value}))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
-                    placeholder="Tu estado"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Ciudad *</label>
-                  <input
-                    type="text"
-                    value={shippingInfo.city}
-                    onChange={(e) => setShippingInfo(prev => ({...prev, city: e.target.value}))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
-                    placeholder="Tu ciudad"
-                  />
-                </div>
-              </div>
-              
-              <div className="mt-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Dirección completa *</label>
-                <textarea
-                  value={shippingInfo.address}
-                  onChange={(e) => setShippingInfo(prev => ({...prev, address: e.target.value}))}
-                  rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
-                  placeholder="Calle, número, colonia, referencias..."
-                />
-              </div>
 
               {/* Tipo de Entrega */}
-              <div className="mt-6">
+              <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-3">Tipo de Entrega</label>
                 <div className="grid md:grid-cols-3 gap-3">
                   <label className="relative">
@@ -324,7 +517,13 @@ const CartPage = () => {
                       <TruckIcon className="h-6 w-6 text-[#2C3E50] mb-2" />
                       <h4 className="font-medium text-sm">Envío Estándar</h4>
                       <p className="text-xs text-[#BDC3C7]">3-5 días hábiles</p>
-                      <p className="text-xs font-medium">${shippingCost} MXN</p>
+                      <p className="text-xs font-medium">
+                        {subtotal >= FREE_SHIPPING_MINIMUM ? (
+                          <span className="text-green-600">GRATIS</span>
+                        ) : (
+                          '$140 MXN'
+                        )}
+                      </p>
                     </div>
                   </label>
                   
@@ -345,11 +544,20 @@ const CartPage = () => {
                       <TruckIcon className="h-6 w-6 text-[#D4AF37] mb-2" />
                       <h4 className="font-medium text-sm">Envío Express</h4>
                       <p className="text-xs text-[#BDC3C7]">1-2 días hábiles</p>
-                      <p className="text-xs font-medium">$189 MXN</p>
+                      <p className="text-xs font-medium">
+                        {subtotal >= FREE_SHIPPING_MINIMUM ? (
+                          <span className="text-orange-600">$95 MXN</span>
+                        ) : (
+                          '$189 MXN'
+                        )}
+                      </p>
                     </div>
                   </label>
                 </div>
               </div>
+
+              {/* ← CAMPOS DINÁMICOS SEGÚN TIPO DE ENTREGA */}
+              {renderShippingFields()}
             </div>
           </div>
 
@@ -370,8 +578,35 @@ const CartPage = () => {
                     {finalShippingCost === 0 ? 'GRATIS' : `$${finalShippingCost} MXN`}
                   </span>
                 </div>
+
+                {/* ← MOSTRAR DESCUENTO EN ENVÍO CORREGIDO EN RESUMEN */}
+                {hasShippingDiscount && finalShippingCost > 0 && shippingInfo.deliveryType === 'express' && (
+                  <div className="flex justify-between text-orange-600">
+                    <span className="text-sm">Descuento envío (50%)</span>
+                    <span className="text-sm font-medium">-$94 MXN</span>
+                  </div>
+                )}
+
+                {hasShippingDiscount && finalShippingCost === 0 && shippingInfo.deliveryType === 'standard' && (
+                  <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center">
+                      <CheckCircleIcon className="h-4 w-4 text-green-600 mr-2" />
+                      <span className="text-green-800 text-sm">¡Envío gratis desbloqueado!</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* ← NUEVA ALERTA PARA EXPRESS CON DESCUENTO EN RESUMEN */}
+                {hasShippingDiscount && finalShippingCost > 0 && shippingInfo.deliveryType === 'express' && (
+                  <div className="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                    <div className="flex items-center">
+                      <CheckCircleIcon className="h-4 w-4 text-orange-600 mr-2" />
+                      <span className="text-orange-800 text-sm">¡50% descuento aplicado!</span>
+                    </div>
+                  </div>
+                )}
                 
-                {includesFreeDecant && (
+                {freeDecant && (
                   <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
                     <div className="flex items-center">
                       <GiftIcon className="h-4 w-4 text-green-600 mr-2" />
@@ -419,6 +654,7 @@ const CartPage = () => {
                     <span className="text-sm">Pago en OXXO</span>
                   </label>
                   
+                  {/* ← SOLO MOSTRAR EFECTIVO CONTRA ENTREGA SI ES ENTREGA PERSONAL */}
                   {shippingInfo.deliveryType === 'personal' && (
                     <label className="flex items-center">
                       <input
@@ -439,7 +675,7 @@ const CartPage = () => {
               {/* Botón Generar Ticket */}
               <button
                 onClick={generateTicket}
-                disabled={!shippingInfo.fullName || !shippingInfo.phone || !shippingInfo.email}
+                disabled={!isFormValid()}
                 className="w-full mt-6 bg-[#2C3E50] text-[#D4AF37] py-3 rounded-lg font-medium hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] hover:text-[#2C3E50] transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
                 <TicketIcon className="h-5 w-5 mr-2" />
@@ -454,57 +690,137 @@ const CartPage = () => {
         </div>
       </div>
 
-      {/* Modal del Ticket */}
+{/* Modal del Ticket - ← OPTIMIZADO PARA CAPTURAS */}
       {showTicket && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-logo font-bold text-gray-900">Ticket Generado</h2>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-2 z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[95vh] overflow-y-auto">
+            <div className="p-4">
+              {/* ← HEADER MÁS COMPACTO */}
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-logo font-bold text-gray-900">Ticket de Compra</h2>
                 <button
                   onClick={() => setShowTicket(false)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-gray-400 hover:text-gray-600 p-1"
                 >
                   ✕
                 </button>
               </div>
               
-              {/* Contenido del Ticket */}
-              <div className="bg-[#F9F9F9] p-6 rounded-lg mb-6">
-                <div className="text-center mb-6">
-                  <h3 className="text-xl font-logo font-bold text-[#D4AF37]">AROMA SELECTO</h3>
-                  <p className="text-sm text-[#BDC3C7]">Ticket de Compra</p>
-                  <p className="text-lg font-bold text-[#2C3E50]">#{`AS${Date.now().toString().slice(-6)}`}</p>
+              {/* Contenido del Ticket - ← MÁS COMPACTO */}
+              <div className="bg-[#F9F9F9] p-4 rounded-lg mb-4">
+                {/* ← HEADER DEL TICKET SIMPLIFICADO */}
+                <div className="text-center mb-4">
+                  <h3 className="text-lg font-logo font-bold text-[#D4AF37]">AROMA SELECTO MX</h3>
+                  <p className="text-sm font-bold text-[#2C3E50]">#{`AS${Date.now().toString().slice(-6)}`}</p>
+                  <p className="text-xs text-[#BDC3C7]">{new Date().toLocaleDateString('es-MX', { 
+                    day: '2-digit',
+                    month: '2-digit', 
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}</p>
                 </div>
                 
-                <div className="space-y-4">
+                {/* ← CONTENIDO MÁS COMPACTO */}
+                <div className="space-y-3">
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-2">Cliente:</h4>
-                    <p className="text-sm text-[#BDC3C7]">{shippingInfo.fullName}</p>
-                    <p className="text-sm text-[#BDC3C7]">{shippingInfo.phone}</p>
-                    <p className="text-sm text-[#BDC3C7]">{shippingInfo.email}</p>
+                    <h4 className="font-medium text-gray-900 mb-1 text-sm">Cliente:</h4>
+                    <div className="text-xs text-[#BDC3C7] space-y-0.5">
+                      <p>{shippingInfo.fullName}</p>
+                      <p>{shippingInfo.phone} • {shippingInfo.email}</p>
+                      
+                      {/* ← DIRECCIÓN EN UNA LÍNEA SI NO ES ENTREGA PERSONAL */}
+                      {shippingInfo.deliveryType !== 'personal' && (
+                        <p>{shippingInfo.address}, {shippingInfo.city}, {shippingInfo.state} {shippingInfo.postalCode}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <h4 className="font-medium text-gray-900 mb-1 text-sm">Entrega:</h4>
+                      <p className="text-xs text-[#BDC3C7]">
+                        {shippingInfo.deliveryType === 'personal' ? 'Personal (GZ)' :
+                         shippingInfo.deliveryType === 'standard' ? 'Estándar (3-5d)' :
+                         'Express (1-2d)'}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-medium text-gray-900 mb-1 text-sm">Pago:</h4>
+                      <p className="text-xs text-[#BDC3C7]">
+                        {paymentMethod === 'transfer' ? 'Transferencia' :
+                         paymentMethod === 'oxxo' ? 'OXXO' :
+                         paymentMethod === 'cash' ? 'Efectivo' :
+                         'Transferencia'}
+                      </p>
+                    </div>
                   </div>
                   
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-2">Productos:</h4>
-                    {cartItems.map((item) => (
-                      <div key={item.id} className="flex justify-between text-sm">
-                        <span>{item.quantity}x {item.name} ({item.size})</span>
-                        <span>${(item.price * item.quantity).toFixed(0)}</span>
+                    <h4 className="font-medium text-gray-900 mb-2 text-sm">Productos:</h4>
+                    <div className="space-y-1">
+                      {cartItems.map((item) => (
+                        <div key={`${item.id}-${item.size}`} className="flex justify-between text-xs">
+                          <span className="flex-1">{item.quantity}x {item.name} ({item.size})</span>
+                          <span className="font-medium ml-2">${(item.price * item.quantity).toFixed(0)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* ← DECANT GRATIS MÁS COMPACTO */}
+                  {freeDecant && (
+                    <div className="bg-green-50 border border-green-200 rounded p-2">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <GiftIcon className="h-3 w-3 text-green-600 mr-1" />
+                          <span className="text-green-800 text-xs font-medium">Decant gratis (5ml)</span>
+                        </div>
+                        <span className="text-green-600 text-xs">$0</span>
                       </div>
-                    ))}
-                  </div>
+                      <p className="text-green-700 text-xs mt-1 ml-4">
+                        *Fragancia seleccionada por nosotros
+                      </p>
+                    </div>
+                  )}
                   
-                  <div className="border-t pt-4">
-                    <div className="flex justify-between text-sm">
-                      <span>Subtotal:</span>
-                      <span>${subtotal.toFixed(0)} MXN</span>
+                  {/* ← TOTALES MÁS COMPACTOS */}
+                  <div className="border-t pt-3">
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-xs">
+                        <span>Subtotal:</span>
+                        <span>${subtotal.toFixed(0)} MXN</span>
+                      </div>
+                      <div className="flex justify-between text-xs">
+                        <span>Envío:</span>
+                        <span>{finalShippingCost === 0 ? 'GRATIS' : `$${finalShippingCost} MXN`}</span>
+                      </div>
+                      
+                      {/* ← DESCUENTOS MÁS COMPACTOS */}
+                      {hasShippingDiscount && finalShippingCost > 0 && shippingInfo.deliveryType === 'express' && (
+                        <div className="flex justify-between text-xs text-orange-600">
+                          <span>Desc. envío (50%):</span>
+                          <span>-$94 MXN</span>
+                        </div>
+                      )}
+                      
+                      {hasShippingDiscount && finalShippingCost === 0 && shippingInfo.deliveryType === 'standard' && (
+                        <div className="flex justify-between text-xs text-green-600">
+                          <span>Envío gratis:</span>
+                          <span>-$140 MXN</span>
+                        </div>
+                      )}
+                      
+                      {freeDecant && (
+                        <div className="flex justify-between text-xs text-green-600">
+                          <span>Decant gratis:</span>
+                          <span>$0 MXN</span>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span>Envío:</span>
-                      <span>{finalShippingCost === 0 ? 'GRATIS' : `$${finalShippingCost} MXN`}</span>
-                    </div>
-                    <div className="flex justify-between font-bold">
+                    
+                    <div className="flex justify-between font-bold text-sm border-t pt-2 mt-2">
                       <span>Total:</span>
                       <span className="text-[#D4AF37]">${total.toFixed(0)} MXN</span>
                     </div>
@@ -512,20 +828,20 @@ const CartPage = () => {
                 </div>
               </div>
               
-              {/* Botones de Contacto */}
-              <div className="space-y-3">
-                <p className="text-center text-sm text-[#BDC3C7] mb-4">
-                  Envía este ticket por tu método preferido para confirmar tu pedido:
+              {/* ← BOTONES DE CONTACTO MÁS COMPACTOS */}
+              <div className="space-y-2">
+                <p className="text-center text-xs text-[#BDC3C7] mb-3">
+                  Envía captura por tu método preferido:
                 </p>
                 
-                <div className="grid md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-2">
                   <a
-                    href={`https://wa.me/527823185711?text=¡Hola! Aquí está mi ticket de compra: AS${Date.now().toString().slice(-6)}`}
+                    href={`https://wa.me/527823185711?text=¡Hola! Aquí está mi ticket: AS${Date.now().toString().slice(-6)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors"
+                    className="flex items-center justify-center bg-green-600 text-white py-2 rounded text-xs hover:bg-green-700 transition-colors"
                   >
-                    <MessageCircleIcon className="h-4 w-4 mr-2" />
+                    <MessageCircleIcon className="h-3 w-3 mr-1" />
                     WhatsApp
                   </a>
                   
@@ -533,17 +849,17 @@ const CartPage = () => {
                     href="https://www.instagram.com/aromaselecto.mx/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors"
+                    className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 rounded text-xs hover:from-purple-600 hover:to-pink-600 transition-colors"
                   >
-                    <InstagramIcon className="h-4 w-4 mr-2" />
+                    <InstagramIcon className="h-3 w-3 mr-1" />
                     Instagram
                   </a>
                   
                   <a
-                    href={`mailto:aromaselecto.mx@gmail.com?subject=Ticket de Compra AS${Date.now().toString().slice(-6)}&body=Adjunto mi ticket de compra.`}
-                    className="flex items-center justify-center bg-[#D4AF37] text-white py-3 rounded-lg hover:bg-[#B8860B] transition-colors"
+                    href={`mailto:aromaselecto.mx@gmail.com?subject=Ticket AS${Date.now().toString().slice(-6)}`}
+                    className="flex items-center justify-center bg-[#D4AF37] text-white py-2 rounded text-xs hover:bg-[#B8860B] transition-colors"
                   >
-                    <MailIcon className="h-4 w-4 mr-2" />
+                    <MailIcon className="h-3 w-3 mr-1" />
                     Email
                   </a>
                 </div>
