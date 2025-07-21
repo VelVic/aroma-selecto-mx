@@ -9,10 +9,9 @@ Este proyecto fue construido con [Vite](https://vitejs.dev/), React y TailwindCS
 
 ## 🧩 Características
 
-- Página de inicio elegante y responsive
-- Información sobre perfumes destacados
+- Página de inicio
+- Información sobre perfumes
 - Sección educativa y recomendaciones
-- Integración con formulario de Google
 - Diseño adaptado a la identidad de la marca
 
 ## 🔧 Instalación
@@ -43,9 +42,7 @@ Este proyecto fue construido con [Vite](https://vitejs.dev/), React y TailwindCS
 └── package.json
 ```
 
-## 📷 Capturas (opcional)
-
-Puedes añadir imágenes de tu sitio aquí si lo deseas, por ejemplo una vista del home o del logo.
+## 📷 Capturas
 
 ## 📌 Notas
 
