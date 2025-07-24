@@ -1,12 +1,11 @@
 /* PATRÓN CON TU IMAGEN PERSONALIZADA - SIN BLEND */
 body {
   background-image: url('/images/patterns/pattern-bg.png');
-  background-size: 300px 200px;
   background-repeat: repeat;
   background-attachment: fixed;
-  background-color: #F9F9F9;
-  /* background-blend-mode: soft-light; ← QUITAR ESTA LÍNEA */
-}
+  background-color: #f9f9f9c7;
+/*   background-blend-mode: soft-light;
+ */}
 
 /* COMENTAR EL GRADIENTE ANTERIOR */
 /*
@@ -19,15 +18,25 @@ body {
 
 /* NAVBAR CON TRANSPARENCIA ELEGANTE */
 .navbar {
-  background: rgba(255, 255, 255, 0.95);
+  background-color: #f9f9f9c7;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-}
+/*   background-image: url('/images/patterns/pattern-bg.png');
+ */}
 
 /* SECCIONES CON DIFERENTES NIVELES DE TRANSPARENCIA */
 .section-transparent {
   background: rgba(255, 255, 255, 0.75); /* Más transparente para ver patrón */
+}
+
+.section-card {
+  background-image: url('/images/patterns/pattern-bg.png');
+  color: #222; /* Color de texto oscuro para contraste */
+  backdrop-filter: blur(5px);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9c7;
 }
 
 .section-white {
