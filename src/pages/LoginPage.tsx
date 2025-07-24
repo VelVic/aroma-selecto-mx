@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import { EyeIcon, EyeOffIcon, FacebookIcon } from 'lucide-react';
+import Button from '../components/Button';
+import ComingSoonOverlay from '../components/ComingSoonOverlay';
 
 const LoginPage = () => {
   const [searchParams] = useSearchParams();
@@ -12,14 +14,10 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleForm = () => {
-    const newType = isLogin ? 'register' : 'login';
-    navigate(`/login?type=${newType}`);
-    setIsLogin(!isLogin);
-    // Scroll suave al cambiar de formulario
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 100);
-  };
+  const newType = isLogin ? 'register' : 'login';
+  navigate(`/iniciar-sesion?type=${newType}`);
+  setIsLogin(!isLogin);
+};
 
   // Actualizar estado cuando cambie la URL
   useEffect(() => {
@@ -32,9 +30,10 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="section-white pt-8">
-      <div className="min-h-screen flex items-center justify-center bg-[#F9F9F9] py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-sm border border-gray-100">
+    <div className="pt-8 bg-white">
+      <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="section-card max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-sm border border-gray-100">
+          <ComingSoonOverlay message="Próximamente" subtext="El inicio de sesión estará disponible muy pronto." />
           <div>
             {/* ✅ TÍTULO CON PALETA AROMA SELECTO */}
             <h2 className="mt-6 text-center text-3xl font-logo font-bold text-[#2C3E50]">
@@ -181,23 +180,23 @@ const LoginPage = () => {
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-3">
-              <button 
-                type="button" 
-                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-[#2C3E50] hover:bg-[#F9F9F9] hover:border-[#D4AF37] transition-all duration-300"
+              <Button
+                type="button"
+                className="w-full flex justify-center items-center"
+                variant="outline" // Si tu Button soporta variantes
               >
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z" />
-                </svg>
-              </button>
+                <FacebookIcon className="solid" />
+              </Button>
 
-              <button 
-                type="button" 
-                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-[#2C3E50] hover:bg-[#F9F9F9] hover:border-[#D4AF37] transition-all duration-300"
+              <Button
+                type="button"
+                className="w-full flex justify-center items-center"
+                variant='outline' // Si tu Button soporta variantes
               >
                 <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z" />
                 </svg>
-              </button>
+              </Button>
             </div>
           </div>
         </div>

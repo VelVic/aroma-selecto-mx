@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
 import { TruckIcon, ShieldCheckIcon, ClockIcon, AlertCircleIcon, CheckCircleIcon, XCircleIcon, MailIcon, PhoneIcon, InstagramIcon, GiftIcon, MapPinIcon } from 'lucide-react';
+import Button from '../components/Button';
+import SectionTitle from '../components/SectionTitle';
 
 const ShippingPage = () => {
   return (
@@ -20,8 +21,7 @@ const ShippingPage = () => {
             Envíos y <span className="text-[#D4AF37]">Devoluciones</span>
           </h1>
           <p className="text-xl text-[#BDC3C7] max-w-3xl mx-auto">
-            Tu fragancia favorita llega segura a tu puerta. Conoce nuestras políticas 
-            de envío, tiempos de entrega y garantías de satisfacción.
+            Tu fragancia favorita llega segura a tu puerta. Aquí puedes consultar las políticas de envío, tiempos de entrega y garantías de satisfacción.
           </p>
         </div>
       </section>
@@ -29,28 +29,25 @@ const ShippingPage = () => {
       {/* Tipos de Envío */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-logo font-bold text-center text-gray-900 mb-12">
-            Opciones de Envío
-          </h2>
-          
+          <SectionTitle>Opciones de Envío</SectionTitle>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Entrega Personal */}
-            <div className="bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow p-6 border border-[#D4AF37]/20">
+            <div className="text-center section-card p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow border border-[#D4AF37]/20">
               <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-4">
                 <MapPinIcon className="h-8 w-8 text-white" />
               </div>
               <h3 className="text-xl font-medium text-gray-900 mb-3 text-center">Entrega Personal</h3>
               <div className="space-y-2 text-[#BDC3C7] text-sm">
                 <p><strong>Ubicación:</strong> Gutiérrez Zamora, Veracruz</p>
-                <p><strong>Zonas cercanas:</strong> 2:00 PM - 8:00 PM</p>
-                <p><strong>Zonas lejanas:</strong> Desde 4:00 PM</p>
+                <p><strong>Zonas cercanas:</strong> 10:00 AM - 8:00 PM</p>
+                <p><strong>Zonas lejanas:</strong> Antes de las 6:00 PM</p>
                 <p><strong>Tiempo:</strong> Al día siguiente</p>
                 <p className="text-[#D4AF37] font-medium">GRATIS</p>
               </div>
             </div>
 
             {/* Envío Estándar */}
-            <div className="bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow p-6">
+            <div className="text-center section-card p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow border border-[#D4AF37]/20">
               <div className="w-16 h-16 bg-[#2C3E50] rounded-full flex items-center justify-center mx-auto mb-4">
                 <TruckIcon className="h-8 w-8 text-[#D4AF37]" />
               </div>
@@ -58,14 +55,14 @@ const ShippingPage = () => {
               <div className="space-y-2 text-[#BDC3C7] text-sm">
                 <p><strong>Cobertura:</strong> Todo México</p>
                 <p><strong>Tiempo:</strong> 3-5 días hábiles + preparación</p>
-                <p><strong>Costo:</strong> $140 MXN aprox.</p>
+                <p><strong>Costo:</strong> $149 MXN aprox.</p>
                 <p><strong>Paquetería:</strong> Estafeta, DHL u otros</p>
-                <p className="text-green-600 font-medium">Gratis en compras +$888</p>
+                <p className="text-green-600 font-medium">Gratis en compras +$899</p>
               </div>
             </div>
 
             {/* Envío Express */}
-            <div className="bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow p-6 border border-[#D4AF37]/20">
+            <div className="text-center section-card p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow border border-[#D4AF37]/20">
               <div className="w-16 h-16 bg-gradient-to-r from-[#D4AF37] to-[#B8860B] rounded-full flex items-center justify-center mx-auto mb-4">
                 <TruckIcon className="h-8 w-8 text-white" />
               </div>
@@ -75,7 +72,7 @@ const ShippingPage = () => {
                 <p><strong>Tiempo:</strong> 1-2 días hábiles + preparación</p>
                 <p><strong>Costo:</strong> $189 MXN aprox.</p>
                 <p><strong>Paquetería:</strong> Servicio premium</p>
-                <p className="text-green-600 font-medium">Gratis en compras +$888</p>
+                <p className="text-green-600 font-medium">50% de descuento en compras +$899</p>
               </div>
             </div>
           </div>
@@ -85,10 +82,8 @@ const ShippingPage = () => {
       {/* Beneficios por Compra */}
       <section className="py-16 bg-[#F9F9F9]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-logo font-bold text-center text-gray-900 mb-12">
-            Beneficios Especiales
-          </h2>
-          
+          <SectionTitle>Beneficios por Compra</SectionTitle>
+          {/* Tarjetas de Beneficios */}
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-white p-8 rounded-lg shadow-sm border-l-4 border-green-500">
               <div className="flex items-center mb-4">
@@ -97,7 +92,7 @@ const ShippingPage = () => {
               </div>
               <p className="text-[#BDC3C7] mb-3">En compras desde <strong className="text-gray-900">$600 MXN</strong></p>
               <p className="text-sm text-gray-600">
-                Recibe un decant aleatorio de 5ml como regalo. ¡Una oportunidad perfecta 
+                Recibe un decant aleatorio de 5ml con valor de más de <strong className="text-gray-900">$150 MXN</strong> como regalo. ¡Una oportunidad perfecta 
                 para descubrir nuevas fragancias!
               </p>
             </div>
@@ -105,9 +100,9 @@ const ShippingPage = () => {
             <div className="bg-white p-8 rounded-lg shadow-sm border-l-4 border-[#D4AF37]">
               <div className="flex items-center mb-4">
                 <TruckIcon className="h-8 w-8 text-[#D4AF37] mr-4" />
-                <h3 className="text-2xl font-semibold text-gray-900">Envío Gratis</h3>
+                <h3 className="text-2xl font-semibold text-gray-900">Envío Gratis Estándar</h3>
               </div>
-              <p className="text-[#BDC3C7] mb-3">En compras desde <strong className="text-gray-900">$888 MXN</strong></p>
+              <p className="text-[#BDC3C7] mb-3">En compras desde <strong className="text-gray-900">$899 MXN</strong></p>
               <p className="text-sm text-gray-600">
                 Tu pedido llega sin costo adicional a cualquier parte de México. 
                 Ahorra y disfruta más fragancias.
@@ -120,10 +115,7 @@ const ShippingPage = () => {
       {/* Proceso de Envío */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-logo font-bold text-center text-gray-900 mb-12">
-            Proceso de tu Pedido
-          </h2>
-          
+          <SectionTitle>Proceso de Envío</SectionTitle>
           <div className="grid md:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
@@ -171,10 +163,7 @@ const ShippingPage = () => {
       {/* Política de Devoluciones */}
       <section className="py-16 bg-[#F9F9F9]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-logo font-bold text-center text-gray-900 mb-12">
-            Política de Devoluciones
-          </h2>
-          
+          <SectionTitle>Política de Devoluciones</SectionTitle>
           {/* Plazo y Condiciones */}
           <div className="grid lg:grid-cols-2 gap-8 mb-12">
             <div className="bg-white p-6 rounded-lg shadow-sm">
@@ -235,7 +224,6 @@ const ShippingPage = () => {
             </h3>
             <ul className="space-y-2 text-red-700 text-sm">
               <li>• Decants en promoción, liquidación o remate</li>
-              <li>• Tarjetas de regalo</li>
               <li>• Artículos con descuento por temporalidad (Hot Sale, Buen Fin, etc.)</li>
               <li>• Productos abiertos, usados o con señales de manipulación</li>
               <li>• Devoluciones por preferencias personales (no gustó el aroma)</li>
@@ -301,67 +289,75 @@ const ShippingPage = () => {
       </section>
 
       {/* Contacto para Devoluciones - DISEÑO MEJORADO */}
-<section className="py-16 bg-white">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h2 className="text-3xl font-logo font-bold text-center text-gray-900 mb-12">
-      Contacto para Devoluciones
-    </h2>
-    
-    <div className="grid md:grid-cols-3 gap-8">
-      {/* Email */}
-      <div className="text-center p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow">
-        <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-4">
-          <MailIcon className="h-8 w-8 text-white" />
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionTitle>Contacto para Devoluciones</SectionTitle>
         </div>
-        <h3 className="text-xl font-medium text-gray-900 mb-3">Email</h3>
-        <p className="text-[#BDC3C7] mb-4">Consultas formales</p>
-        <a 
-          href="mailto:aromaselecto.mx@gmail.com"
-          className="bg-[#2C3E50] text-[#D4AF37] px-6 py-2 rounded-lg font-medium hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] hover:text-[#2C3E50] transition-all duration-300 inline-block text-sm"
-        >
-          aromaselecto.mx@gmail.com
-        </a>
-        <p className="text-sm text-[#BDC3C7] mt-3">Respuesta en 24 horas</p>
-      </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-3 gap-8">
+            
+            {/* Instagram - Principal */}
+            <div className="text-center section-card p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow border border-[#D4AF37]/20">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <InstagramIcon className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-medium text-gray-900 mb-3">Instagram</h3>
+              <p className="text-[#BDC3C7] mb-4">¡Nuestro canal principal!</p>
+              <Button
+                as="a"
+                href="https://www.instagram.com/aromaselecto.mx/"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="primary"
+                className="px-6 py-2 font-medium inline-block"
+              >
+                @aromaselecto.mx
+              </Button>
+              <p className="text-sm text-[#BDC3C7] mt-3">Respuesta en minutos</p>
+            </div>
+
+            {/* Email */}
+            <div className="text-center p-6 section-card bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow">
+              <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-4">
+                <MailIcon className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-medium text-gray-900 mb-3">Email</h3>
+              <p className="text-[#BDC3C7] mb-4">Consultas formales</p>
+              <Button
+                as="a"
+                href="mailto:aromaselecto.mx@gmail.com"
+                variant="primary"
+                className="px-6 py-2 font-medium inline-block text-sm"
+              >
+                aromaselecto.mx@gmail.com
+              </Button>
+              <p className="text-sm text-[#BDC3C7] mt-3">Respuesta en 24 horas</p>
+            </div>
+
+            {/* WhatsApp */}
+            <div className="text-center section-card p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <PhoneIcon className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-medium text-gray-900 mb-3">WhatsApp</h3>
+              <p className="text-[#BDC3C7] mb-4">Contacto directo</p>
+              <Button
+                as="a"
+                href="https://wa.me/527823185711"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="primary"
+                className="px-6 py-2 font-medium inline-block"
+              >
+                782 318 5711
+              </Button>
+              <p className="text-sm text-[#BDC3C7] mt-3">Solo consultas urgentes</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
       
-      {/* WhatsApp */}
-      <div className="text-center p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow">
-        <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-          <PhoneIcon className="h-8 w-8 text-white" />
-        </div>
-        <h3 className="text-xl font-medium text-gray-900 mb-3">WhatsApp</h3>
-        <p className="text-[#BDC3C7] mb-4">Contacto directo</p>
-        <a 
-          href="https://wa.me/527823185711"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-[#2C3E50] text-[#D4AF37] px-6 py-2 rounded-lg font-medium hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] hover:text-[#2C3E50] transition-all duration-300 inline-block"
-        >
-          782 318 5711
-        </a>
-        <p className="text-sm text-[#BDC3C7] mt-3">Respuesta rápida</p>
-      </div>
-      
-      {/* Instagram */}
-      <div className="text-center p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow border border-[#D4AF37]/20">
-        <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-          <InstagramIcon className="h-8 w-8 text-white" />
-        </div>
-        <h3 className="text-xl font-medium text-gray-900 mb-3">Instagram</h3>
-        <p className="text-[#BDC3C7] mb-4">¡Nuestro canal principal!</p>
-        <a 
-          href="https://www.instagram.com/aromaselecto.mx/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-[#2C3E50] text-[#D4AF37] px-6 py-2 rounded-lg font-medium hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] hover:text-[#2C3E50] transition-all duration-300 inline-block"
-        >
-          @aromaselecto.mx
-        </a>
-        <p className="text-sm text-[#BDC3C7] mt-3">Respuesta rápida</p>
-      </div>
-    </div>
-  </div>
-</section>
 
       {/* Nota Importante */}
       <section className="py-8 bg-[#F9F9F9] border-t border-[#D4AF37] border-opacity-30">
@@ -383,27 +379,27 @@ const ShippingPage = () => {
       {/* CTA Section */}
       <section className="py-16 bg-[#F9F9F9] border-t border-[#D4AF37] border-opacity-30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-logo font-bold mb-6 text-[#2C3E50]">
-            ¿Tienes dudas sobre envíos?
-          </h2>
+          <SectionTitle>¿Tienes Dudas Sobre Envíos?</SectionTitle>
           <p className="text-xl text-[#BDC3C7] mb-8">
-            Contáctanos directamente y resolveremos todas tus preguntas sobre envíos y entregas.
+            Contáctame directamente y resolveremos todas tus preguntas sobre envíos y entregas.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              to="/contacto" 
-              className="bg-[#2C3E50] text-[#D4AF37] px-8 py-3 rounded-lg font-medium hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] hover:text-[#2C3E50] transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            >
-              Contactar Soporte
-            </Link>
-            <Link 
-              to="/productos" 
-              className="border-2 border-[#2C3E50] text-[#2C3E50] px-8 py-3 rounded-lg font-medium hover:bg-[#2C3E50] hover:text-[#D4AF37] transition-all duration-300 hover:scale-105"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            >
-              Ver Productos
-            </Link>
+              <Button
+                as="link"
+                to="/contacto"
+                variant="primary"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                Contactar Soporte
+              </Button>
+              <Button
+                as="link"
+                to="/fragancias"
+                variant="outline"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              >
+                Ver Productos
+              </Button>
           </div>
         </div>
       </section>

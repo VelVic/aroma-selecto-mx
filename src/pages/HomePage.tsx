@@ -4,15 +4,22 @@ import ProductCard from '../components/ProductCard';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 // ✅ IMPORTAR DATOS CENTRALIZADOS
 import { getAvailableProducts } from '../data/products';
+import Button from '../components/Button';
+import SectionTitle from '../components/SectionTitle';
+import { reviews as allReviews } from '../data/reviews';
+
+const reviews = allReviews.map(r => ({
+  ...r,
+  avatar: r.avatar ?? '/images/testimonials/default_avatar.jpg',
+}));
+const featuredProducts = getAvailableProducts().slice(0, 3); // Los primeros 3 disponibles
 
 const HomePage = () => {
-  // ✅ USAR PRODUCTOS REALES CON TODOS LOS DATOS
-  const featuredProducts = getAvailableProducts().slice(0, 3); // Los primeros 3 disponibles
-
+  // ...
   return (
     <div className="w-full bg-[#F9F9F9]">
       {/* Hero Section - COLORES ACTUALIZADOS */}
-      <section className="relative bg-[#2C3E50] text-white h-screen flex items-center pt-16">
+      <section className="relative bg-[#2C3E50] text-white min-h-[calc(100vh-4rem)] flex items-center mt-16">
         <div className="absolute inset-0 overflow-hidden">
           <img 
             src="https://images.unsplash.com/photo-1615634260167-c8cdede054de?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGVyZnVtZXN8ZW58MHx8MHx8fDA%3D" 
@@ -25,8 +32,7 @@ const HomePage = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 w-full">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-logo font-bold mb-8 leading-tight">
-              Aromas que 
-              <span className="block text-[#D4AF37]">hablan de ti</span>
+              Aromas que <span className="block text-[#D4AF37]">hablan de ti</span>
             </h1>
             <p className="text-xl md:text-2xl mb-12 text-[#BDC3C7] max-w-3xl mx-auto leading-relaxed">
               Perfumes 100% originales en presentación decant. Descubre esencias exclusivas en formatos accesibles.
@@ -38,25 +44,29 @@ const HomePage = () => {
                 ¡SORTEO ESPECIAL ACTIVO!
               </p>
               <p className="text-white text-base">
-                Participa y gana <strong>decants gratis</strong> de nuestros bestsellers valorados en más de $360 MXN
+                Participa y gana <strong>3 decants gratis</strong> de nuestros bestsellers valorados en más de $360 MXN
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <Link 
-                to="/productos" 
-                className="bg-[#D4AF37] text-[#2C3E50] px-10 py-4 rounded-xl font-bold text-lg hover:bg-[#B8860B] transition-all duration-300 hover:scale-105 shadow-xl"
+              <Button
+                as="link"
+                to="/fragancias"
+                variant="primary"
+                className="px-10 py-4 font-bold text-lg shadow-xl"
               >
                 Explorar Catálogo
-              </Link>
-              <a 
-                href="https://www.instagram.com/aromaselecto.mx/" 
+              </Button>
+              <Button
+                as="a"
+                href="https://www.instagram.com/aromaselecto.mx/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-transparent border-2 border-[#D4AF37] text-[#D4AF37] px-10 py-4 rounded-xl font-semibold text-lg hover:bg-[#D4AF37] hover:text-[#2C3E50] transition-all duration-300 shadow-xl"
+                variant="outline"
+                className="px-10 py-4 font-semibold text-lg shadow-xl"
               >
-                Síguenos en Instagram
-              </a>
+                Sígueme en Instagram
+              </Button>
             </div>
           </div>
         </div>
@@ -77,9 +87,7 @@ const HomePage = () => {
       {/* Categories Section - COLORES ACTUALIZADOS */}
       <section className="py-16 bg-[#F9F9F9]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl md:text-3xl font-logo font-bold text-center mb-12 text-gray-900">
-            Encuentra tu fragancia perfecta
-          </h2>
+          <SectionTitle>Encuentra tu fragancia perfecta</SectionTitle>
           {/* Categories Section - LINKS CON SCROLL AUTOMÁTICO */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="relative rounded-lg overflow-hidden group h-80">
@@ -94,7 +102,7 @@ const HomePage = () => {
                 </h3>
                 <p className="text-[#BDC3C7] text-sm mb-3">Fragancias femeninas dulces y elegantes</p>
                 <Link 
-                  to="/productos?category=mujer" 
+                  to="/fragancias?category=mujer" 
                   className="text-[#D4AF37] text-sm flex items-center hover:text-white transition-colors"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
@@ -115,7 +123,7 @@ const HomePage = () => {
                 </h3>
                 <p className="text-[#BDC3C7] text-sm mb-3">Fragancias masculinas frescas y potentes</p>
                 <Link 
-                  to="/productos?category=hombre" 
+                  to="/fragancias?category=hombre" 
                   className="text-[#D4AF37] text-sm flex items-center hover:text-white transition-colors"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
@@ -134,9 +142,9 @@ const HomePage = () => {
                 <h3 className="text-white text-xl font-logo font-medium mb-2">
                   Fragancias Premium
                 </h3>
-                <p className="text-[#BDC3C7] text-sm mb-3">Fragancias exclusivas en formato decant</p>
+                <p className="text-[#BDC3C7] text-sm mb-3">Fragancias más exclusivas y sofisticadas</p>
                 <Link 
-                  to="/productos?category=premium" 
+                  to="/fragancias?category=premium" 
                   className="text-[#D4AF37] text-sm flex items-center hover:text-white transition-colors"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
@@ -151,19 +159,21 @@ const HomePage = () => {
       {/* Featured Products Section - COLORES ACTUALIZADOS */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-logo font-bold text-gray-900">
-              Nuestros Bestsellers
-            </h2>
-            <Link to="/productos" className="text-gray-900 hover:text-[#D4AF37] flex items-center text-sm font-medium transition-colors">
-              Ver todos <ArrowRightIcon className="ml-1 h-4 w-4" />
-            </Link>
+          <div className="mb-8 text-center">
+            <SectionTitle>Más Vendidos</SectionTitle>
           </div>
-          {/* ✅ PRODUCTOS CON DATOS COMPLETOS */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {featuredProducts.map(product => (
               <ProductCard key={product.id} {...product} />
             ))}
+          </div>
+          <div className="mt-8 flex justify-center">
+            <Link
+              to="/fragancias"
+              className="text-gray-900 hover:text-[#D4AF37] inline-flex items-center text-sm font-medium transition-colors"
+            >
+              Ver todos <ArrowRightIcon className="ml-1 h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>
@@ -171,7 +181,7 @@ const HomePage = () => {
       {/* Testimonials Section - CARRUSEL CON GRADIENTES */}
       <section className="py-16 bg-[#F9F9F9]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <TestimonialCarousel />
+          <TestimonialCarousel testimonials={reviews} />
         </div>
       </section>
     </div>

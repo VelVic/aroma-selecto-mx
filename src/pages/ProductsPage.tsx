@@ -203,11 +203,17 @@ const ProductsPage = () => {
   // ✅ PRODUCTOS FINALES: FILTRADOS Y ORDENADOS
   const finalProducts = getSortedProducts(filteredProducts);
 
+  // Justo antes del return, calcula el producto más barato:
+  const cheapestProduct = finalProducts.reduce(
+    (min, p) => (p.price < min.price ? p : min),
+    finalProducts[0] || { price: 50 }
+  );
+
   // ✅ USAR FUNCIÓN IMPORTADA PARA MARCAS
   const availableBrands = getAvailableBrands();
 
   return (
-    <div className="section-white pt-20">
+    <div className="bg-[#F9F9F9] pt-20">
       <div>
         {/* Mobile filter dialog */}
         <div className={`fixed inset-0 flex z-40 lg:hidden ${filtersOpen ? 'visible' : 'invisible'}`}>
@@ -307,16 +313,16 @@ const ProductsPage = () => {
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* ✅ HEADER CON ORDENAMIENTO */}
-          <div className="bg-white border border-gray-200 rounded-lg px-4 sm:px-6 py-4 sm:py-5 mb-6 shadow-sm">
+          <div className="bg-white rounded-lg px-4 sm:px-6 py-4 sm:py-5 mb-6">
             
             {/* MÓVIL: Layout vertical */}
             <div className="block lg:hidden">
               <div className="text-center mb-3">
-                <h1 className="text-xl sm:text-2xl font-logo font-bold tracking-tight text-[#2C3E50] mb-2">
-                  Catálogo de Perfumes
+                <h1 className="text-3xl font-logo font-bold tracking-tight text-[#2C3E50] mb-0">
+                  Catálogo de fragancias
                 </h1>
                 <p className="text-sm text-gray-600 mb-1">
-                  Decants desde $ 50 MXN
+                  Decants de 3ml, 5ml y 10ml desde $ {finalProducts.length > 0 ? cheapestProduct.price : '50'} MXN
                 </p>
               </div>
               
@@ -340,11 +346,11 @@ const ProductsPage = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="text-3xl font-logo font-bold tracking-tight text-[#2C3E50] mb-1">
-                    Catálogo de Perfumes
+                    Catálogo de fragancias
                   </h1>
                   <div className="flex items-center space-x-4 text-sm">
                     <p className="text-gray-600">
-                      Decants de 3ml, 5ml y 10ml desde $ 50 MXN
+                      Decants de 3ml, 5ml y 10ml desde $ {finalProducts.length > 0 ? cheapestProduct.price : '50'} MXN
                     </p>
                     <span className="text-gray-300">•</span>
                     <p className="text-gray-500">

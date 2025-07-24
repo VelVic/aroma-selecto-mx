@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ShoppingBagIcon, TrashIcon, PlusIcon, MinusIcon, MapPinIcon, GiftIcon, TicketIcon, InstagramIcon, MessageCircleIcon, MailIcon, TruckIcon, CreditCardIcon, BuildingIcon, HandIcon, CheckCircleIcon } from 'lucide-react';
+import { ShoppingBagIcon, TrashIcon, PlusIcon, MinusIcon, MapPinIcon, GiftIcon, TicketIcon, InstagramIcon, MessageCircleIcon, TruckIcon, CreditCardIcon, BuildingIcon, HandIcon, CheckCircleIcon } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import Button from '../components/Button';
 
 const CartPage = () => {
   const { 
@@ -27,7 +27,7 @@ const CartPage = () => {
   const [showTicket, setShowTicket] = useState(false);
 
   // ← CONFIGURACIÓN ACTUALIZADA
-  const FREE_SHIPPING_MINIMUM = 888; // $888 MXN para envío gratis
+  const FREE_SHIPPING_MINIMUM = 999; // $999 MXN para envío gratis
   const FREE_DECANT_MINIMUM = 600; // $600 MXN para decant gratis
 
   // Cálculos dinámicos mejorados
@@ -95,12 +95,12 @@ const CartPage = () => {
 
   // ← VALIDACIÓN DINÁMICA DE CAMPOS REQUERIDOS
   const getRequiredFieldsForDeliveryType = () => {
-    if (shippingInfo.deliveryType === 'personal') {
-      return ['fullName', 'phone', 'email'];
-    } else {
-      return ['fullName', 'phone', 'email', 'postalCode', 'state', 'city', 'address'];
-    }
-  };
+  if (shippingInfo.deliveryType === 'personal') {
+    return ['fullName', 'phone']; // Solo nombre y teléfono
+  } else {
+    return ['fullName', 'phone', 'email', 'postalCode', 'state', 'city', 'address'];
+  }
+};
 
   const isFormValid = () => {
     const requiredFields = getRequiredFieldsForDeliveryType();
@@ -136,17 +136,6 @@ const CartPage = () => {
               placeholder="10 dígitos"
             />
           </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-            <input
-              type="email"
-              value={shippingInfo.email}
-              onChange={(e) => setShippingInfo(prev => ({...prev, email: e.target.value}))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
-              placeholder="tu@email.com"
-            />
-          </div>
 
           {/* ← INFORMACIÓN PARA ENTREGA PERSONAL */}
           <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
@@ -155,7 +144,7 @@ const CartPage = () => {
               <div>
                 <h4 className="text-sm font-medium text-blue-900 mb-1">Entrega Personal</h4>
                 <p className="text-sm text-blue-700">
-                  Te contactaremos para coordinar el lugar y horario de entrega en Gutiérrez Zamora y zonas cercanas.
+                  Te contactaremos para coordinar el lugar y horario de entrega en Gutiérrez Zamora o zonas cercanas.
                 </p>
               </div>
             </div>
@@ -253,13 +242,15 @@ const CartPage = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
           <ShoppingBagIcon className="h-24 w-24 text-[#BDC3C7] mx-auto mb-6" />
           <h1 className="text-3xl font-logo font-bold text-gray-900 mb-4">Tu carrito está vacío</h1>
-          <p className="text-[#BDC3C7] mb-8">¡Descubre nuestras fragancias únicas y encuentra tu aroma perfecto!</p>
-          <Link 
-            to="/productos"
-            className="bg-[#2C3E50] text-[#D4AF37] px-8 py-3 rounded-lg font-medium hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] hover:text-[#2C3E50] transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
+          <p className="text-[#BDC3C7] mb-8">¡Descubre nuestras fragancias y encuentra tu aroma perfecto!</p>
+          <Button
+          as='link'
+            to="/fragancias"
+            variant="primary"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             Explorar Productos
-          </Link>
+          </Button>
         </div>
       </div>
     );
@@ -332,7 +323,7 @@ const CartPage = () => {
               </div>
             </div>
 
-{/* ← ALERTAS DINÁMICAS MEJORADAS SEGÚN TIPO DE ENTREGA */}
+            {/* ← ALERTAS DINÁMICAS MEJORADAS SEGÚN TIPO DE ENTREGA */}
             <div className="space-y-4 mt-6">
               
               {/* ← ENTREGA PERSONAL: Solo decant gratis */}
@@ -688,7 +679,7 @@ const CartPage = () => {
         </div>
       </div>
 
-{/* Modal del Ticket - ← OPTIMIZADO PARA CAPTURAS */}
+      {/* Modal del Ticket - ← OPTIMIZADO PARA CAPTURAS */}
       {showTicket && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-2 z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[95vh] overflow-y-auto">
@@ -705,7 +696,7 @@ const CartPage = () => {
               </div>
               
               {/* Contenido del Ticket - ← MÁS COMPACTO */}
-              <div className="bg-[#F9F9F9] p-4 rounded-lg mb-4">
+              <div className="p-4 section-card rounded-lg mb-4 ">
                 {/* ← HEADER DEL TICKET SIMPLIFICADO */}
                 <div className="text-center mb-4">
                   <h3 className="text-lg font-logo font-bold text-[#D4AF37]">AROMA SELECTO MX</h3>
@@ -832,7 +823,7 @@ const CartPage = () => {
                   Envía captura por tu método preferido:
                 </p>
                 
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   <a
                     href={`https://wa.me/527823185711?text=¡Hola! Aquí está mi ticket: AS${Date.now().toString().slice(-6)}`}
                     target="_blank"
@@ -851,14 +842,6 @@ const CartPage = () => {
                   >
                     <InstagramIcon className="h-3 w-3 mr-1" />
                     Instagram
-                  </a>
-                  
-                  <a
-                    href={`mailto:aromaselecto.mx@gmail.com?subject=Ticket AS${Date.now().toString().slice(-6)}`}
-                    className="flex items-center justify-center bg-[#D4AF37] text-white py-2 rounded text-xs hover:bg-[#B8860B] transition-colors"
-                  >
-                    <MailIcon className="h-3 w-3 mr-1" />
-                    Email
                   </a>
                 </div>
               </div>
