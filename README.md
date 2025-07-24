@@ -34,9 +34,9 @@ Este proyecto fue construido con [Vite](https://vitejs.dev/), React y TailwindCS
 ```plaintext
 .
 ├── public/
+│   ├── assets/
 ├── src/
 │   ├── components/
-│   ├── assets/
 │   └── App.tsx
 ├── index.html
 └── package.json
