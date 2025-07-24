@@ -1,6 +1,6 @@
 /* PATRÓN CON TU IMAGEN PERSONALIZADA - SIN BLEND */
 body {
-  background-image: url('/images/patterns/pattern-bg.png');
+  background-image: url('../assets/images/patterns/pattern-bg.png');
   background-repeat: repeat;
   background-attachment: fixed;
   background-color: #f9f9f9c7;
@@ -22,8 +22,8 @@ body {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-/*   background-image: url('/images/patterns/pattern-bg.png');
- */}
+  /* background-image: url('../assets/images/patterns/pattern-bg.png'); */
+ }
 
 /* SECCIONES CON DIFERENTES NIVELES DE TRANSPARENCIA */
 .section-transparent {
@@ -31,7 +31,7 @@ body {
 }
 
 .section-card {
-  background-image: url('/images/patterns/pattern-bg.png');
+  background-image: url('../assets/images/patterns/pattern-bg.png');
   color: #222; /* Color de texto oscuro para contraste */
   backdrop-filter: blur(5px);
   border-radius: 12px;

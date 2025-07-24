@@ -1,13 +1,55 @@
-/* PLEASE NOTE: THESE TAILWIND IMPORTS SHOULD NEVER BE DELETED */
+/* TAILWIND IMPORTS */
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-/* DO NOT DELETE THESE TAILWIND IMPORTS, OTHERWISE THE STYLING WILL NOT RENDER AT ALL */
 
-/* Import Google Fonts - Tipografías premium */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Lato:wght@300;400;500;700&display=swap');
+/* Fuentes locales Cinzel */
+@font-face {
+  font-family: 'Cinzel';
+  src: url('./assets/fonts/cinzel-v25-latin-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cinzel';
+  src: url('./assets/fonts/cinzel-v25-latin-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cinzel';
+  src: url('./assets/fonts/cinzel-v25-latin-800-woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
 
-/* Apply custom styles */
+/* Fuentes locales Lato */
+@font-face {
+  font-family: 'Lato';
+  src: url('./assets/fonts/lato-v25-latin-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lato';
+  src: url('./assets/fonts/lato-v25-latin-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lato';
+  src: url('./assets/fonts/latol-v25-latin-700italic-woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Estilos personalizados */
 body {
   background-color: #F9F9F9;
   font-family: 'Lato', sans-serif;

@@ -73,19 +73,19 @@ const Navbar = () => {
               <div className="relative h-14 w-14 mr-3 flex-shrink-0">
                 {/* Logo por defecto */}
                 <img 
-                  src="/images/isologo_dark.png"
+                  src="/assets/images/logos/isologo_dark.png"
                   alt="Aroma Selecto Logo"
                   className="absolute inset-0 h-14 w-14 transition-all duration-500 ease-in-out
                     opacity-100 group-hover:opacity-0
-                    rotate-0 group-hover:rotate-180"
+                    rotate-0 group-hover:rotate-90"
                 />
                 {/* Logo en hover */}
                 <img 
-                  src="/images/isologo_light.png"
+                  src="/assets/images/logos/isologo_light.png"
                   alt="Aroma Selecto Logo Hover"
                   className="absolute inset-0 h-14 w-14 transition-all duration-500 ease-in-out
                     opacity-0 group-hover:opacity-100
-                    rotate-[-180deg] group-hover:rotate-0"
+                    rotate-[-90deg] group-hover:rotate-0"
                 />
               </div>
               <span className="text-xl font-logo font-semibold text-[#2C3E50] group-hover:text-[#D4AF37] transition-colors tracking-widest">
@@ -130,10 +130,12 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-4">
             <Link 
               to="/carrito" 
-              className="relative p-2 text-gray-900 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-lg transition-all duration-300 group"
+              className="relative p-2 text-gray-900 hover:text-[#D4AF37] rounded-lg transition-all duration-300 group"
             >
-              <ShoppingBagIcon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
-              {/* Badge dinámico */}
+              <div className="relative flex flex-col items-center">
+                <ShoppingBagIcon className="h-6 w-6 group-hover:text-[#D4AF37] transition-colors duration-300" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
+              </div>
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 h-5 w-5 bg-[#D4AF37] text-[#2C3E50] text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
                   {cartCount > 99 ? '99+' : cartCount}
@@ -142,9 +144,12 @@ const Navbar = () => {
             </Link>
             <Link 
               to="/iniciar-sesion" 
-              className="p-2 text-gray-900 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-lg transition-all duration-300 group"
+              className="relative p-2 text-gray-900 hover:text-[#D4AF37] rounded-lg transition-all duration-300 group"
             >
-              <UserIcon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
+              <div className="relative flex flex-col items-center">
+                <UserIcon className="h-6 w-6 group-hover:text-[#D4AF37] transition-colors duration-300" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
+              </div>
             </Link>
           </div>
 
@@ -155,13 +160,16 @@ const Navbar = () => {
               className="relative p-2 text-gray-900 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-lg transition-all duration-300 group"
               onClick={() => setIsMenuOpen(false)}
             >
-              <ShoppingBagIcon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
+              <div className="relative flex flex-col items-center">
+                <ShoppingBagIcon className="h-6 w-6 group-hover:text-[#D4AF37] transition-colors duration-300" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
+              </div>
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 h-5 w-5 bg-[#D4AF37] text-[#2C3E50] text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
                   {cartCount > 99 ? '99+' : cartCount}
                 </span>
-                )}
-              </Link>
+              )}
+            </Link>
               <button
                 onClick={toggleMenu}
                 className="p-2 text-gray-900 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-lg transition-all duration-300"

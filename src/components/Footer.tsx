@@ -96,234 +96,242 @@ const Footer = () => {
     </div>
   </div>
 
-  {/* Redes Sociales - Acordeón en móvil */}
-  <div className="mb-10">
-    <div className="md:hidden">
-      <button
-        onClick={() => toggleSection('redes')}
-        className="w-full flex justify-between items-center bg-gradient-to-r from-[#2D3748] to-[#1A202C] rounded-lg border border-[#D4AF37] border-opacity-40 text-[#D4AF37] px-4 py-3 font-semibold"
-      >
-        <span>¡Sígueme en Redes Sociales!</span>
-        {openSections.redes ? (
-          <ChevronUpIcon className="h-5 w-5 text-[#D4AF37]" />
-        ) : (
-          <ChevronDownIcon className="h-5 w-5 text-[#D4AF37]" />
-        )}
-      </button>
-     <div className={`transition-all duration-300 overflow-hidden ${openSections.redes ? 'max-h-96 py-4' : 'max-h-0 py-0'}`}>
-        <div className="p-4 bg-gradient-to-r from-[#2D3748] to-[#1A202C] rounded-lg border border-[#D4AF37] border-opacity-40 text-center border-b border-[#D4AF37]">
-          <div className="flex flex-col items-center space-y-4 mb-3">
-            <a href="https://www.instagram.com/aromaselecto.mx/" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#BDC3C7] hover:text-[#D4AF37] transition-all duration-300 group px-3 py-2 rounded-lg hover:bg-[#1A202C]">
-              <InstagramIcon className="h-6 w-6 mr-2 group-hover:scale-110 transition-transform" />
-              <div className="text-left">
-                <span className="block text-xs font-medium">Instagram</span>
-                <span className="block text-xs text-[#D4AF37]">@aromaselecto.mx</span>
+    {/* Redes Sociales - Acordeón en móvil */}
+    <div className="mb-10">
+      <div className="md:hidden">
+        <button
+          aria-label="Mostrar redes sociales"
+          onClick={() => toggleSection('redes')}
+          className="w-full flex justify-between items-center bg-gradient-to-r from-[#2D3748] to-[#1A202C] rounded-lg border border-[#D4AF37] border-opacity-40 text-[#D4AF37] px-4 py-3 font-semibold"
+        >
+          <span>¡Sígueme en Redes Sociales!</span>
+          {openSections.redes ? (
+            <ChevronUpIcon className="h-5 w-5 text-[#D4AF37]" />
+          ) : (
+            <ChevronDownIcon className="h-5 w-5 text-[#D4AF37]" />
+          )}
+        </button>
+        <div className={`transition-all duration-300 overflow-hidden ${openSections.redes ? 'max-h-96 py-4' : 'max-h-0 py-0'}`}>
+          <div className="p-4 bg-gradient-to-r from-[#2D3748] to-[#1A202C] rounded-lg border border-[#D4AF37] border-opacity-40 text-center border-b-2">
+            <nav aria-label="Redes sociales">
+              <div className="flex flex-col items-center space-y-4 mb-3">
+                <a href="https://www.instagram.com/aromaselecto.mx/" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#BDC3C7] hover:text-[#D4AF37] transition-all duration-300 group px-4 py-2 rounded-lg hover:bg-[#1A202C]">
+                  <InstagramIcon className="h-6 w-6 mr-3 group-hover:scale-110 transition-transform" />
+                  <div className="text-center flex flex-col items-center">
+                    <span className="block text-sm font-bold">Instagram</span>
+                    <span className="block text-xs text-[#D4AF37]">@aromaselecto.mx</span>
+                  </div>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61578601077711" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#BDC3C7] hover:text-[#D4AF37] transition-all duration-300 group px-4 py-2 rounded-lg hover:bg-[#1A202C]">
+                  <FacebookIcon className="h-6 w-6 mr-3 group-hover:scale-110 transition-transform" />
+                  <div className="text-center flex flex-col items-center">
+                    <span className="block text-sm font-bold">Facebook</span>
+                    <span className="block text-xs text-[#D4AF37]">Aroma Selecto MX</span>
+                  </div>
+                </a>
+                <a href="https://www.tiktok.com/@aromaselectomx" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#BDC3C7] hover:text-[#D4AF37] transition-all duration-300 group px-4 py-2 rounded-lg hover:bg-[#1A202C]">
+                  <div className="text-center flex flex-col items-center">
+                    <span className="block text-sm font-bold">TikTok</span>
+                    <span className="block text-xs text-[#D4AF37]">@aromaselectomx</span>
+                  </div>
+                </a>
               </div>
-            </a>
-            <a href="https://www.facebook.com/profile.php?id=61578601077711" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#BDC3C7] hover:text-[#D4AF37] transition-all duration-300 group px-3 py-2 rounded-lg hover:bg-[#1A202C]">
-              <FacebookIcon className="h-6 w-6 mr-2 group-hover:scale-110 transition-transform" />
-              <div className="text-left">
-                <span className="block text-xs font-medium">Facebook</span>
-                <span className="block text-xs text-[#D4AF37]">Aroma Selecto</span>
-              </div>
-            </a>
+            </nav>
+            <p className="text-xs text-[#D4AF37] font-medium">Haz tu pedido por DM - ¡Te respondo rápido!</p>
           </div>
-          <p className="text-xs text-[#D4AF37] font-medium">Haz tu pedido por DM - ¡Te respondo rápido!</p>
+        </div>
+      </div>
+      <div className="hidden md:block">
+        <div className="p-6 bg-gradient-to-r from-[#2D3748] to-[#1A202C] rounded-lg border border-[#D4AF37] border-opacity-40 text-center">
+          <h3 className="font-semibold text-[#D4AF37] mb-2 text-lg">¡Sígueme en Redes Sociales!</h3>
+          <nav aria-label="Redes sociales">
+            <div className="flex justify-center space-x-6 mb-3">
+              <a href="https://www.instagram.com/aromaselecto.mx/" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#BDC3C7] hover:text-[#D4AF37] transition-all duration-300 group px-4 py-2 rounded-lg hover:bg-[#1A202C]">
+                  <InstagramIcon className="h-6 w-6 mr-3 group-hover:scale-110 transition-transform" />
+                  <div className="text-center flex flex-col items-center">
+                    <span className="block text-sm font-bold">Instagram</span>
+                    <span className="block text-xs text-[#D4AF37]">@aromaselecto.mx</span>
+                  </div>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61578601077711" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#BDC3C7] hover:text-[#D4AF37] transition-all duration-300 group px-4 py-2 rounded-lg hover:bg-[#1A202C]">
+                  <FacebookIcon className="h-6 w-6 mr-3 group-hover:scale-110 transition-transform" />
+                  <div className="text-center flex flex-col items-center">
+                    <span className="block text-sm font-bold">Facebook</span>
+                    <span className="block text-xs text-[#D4AF37]">Aroma Selecto MX</span>
+                  </div>
+                </a>
+                <a href="https://www.tiktok.com/@aromaselectomx" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#BDC3C7] hover:text-[#D4AF37] transition-all duration-300 group px-4 py-2 rounded-lg hover:bg-[#1A202C]">
+                  <div className="text-center flex flex-col items-center">
+                    <span className="block text-sm font-bold">TikTok</span>
+                    <span className="block text-xs text-[#D4AF37]">@aromaselectomx</span>
+                  </div>
+                </a>
+            </div>
+          </nav>
+          <p className="text-sm text-[#D4AF37] font-medium">Haz tu pedido por DM - ¡Te respondo rápido!</p>
         </div>
       </div>
     </div>
-    <div className="hidden md:block">
-      <div className="p-6 bg-gradient-to-r from-[#2D3748] to-[#1A202C] rounded-lg border border-[#D4AF37] border-opacity-40 text-center">
-        <h3 className="font-semibold text-[#D4AF37] mb-2 text-lg">¡Sígueme en Redes Sociales!</h3>
-        <div className="flex justify-center space-x-6 mb-3">
-          <a href="https://www.instagram.com/aromaselecto.mx/" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#BDC3C7] hover:text-[#D4AF37] transition-all duration-300 group px-4 py-2 rounded-lg hover:bg-[#1A202C]">
-            <InstagramIcon className="h-6 w-6 mr-3 group-hover:scale-110 transition-transform" />
-            <div className="text-left">
-              <span className="block text-sm font-medium">Instagram</span>
-              <span className="block text-xs text-[#D4AF37]">@aromaselecto.mx</span>
-            </div>
-          </a>
-          <a href="https://www.facebook.com/profile.php?id=61578601077711" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#BDC3C7] hover:text-[#D4AF37] transition-all duration-300 group px-4 py-2 rounded-lg hover:bg-[#1A202C]">
-            <FacebookIcon className="h-6 w-6 mr-3 group-hover:scale-110 transition-transform" />
-            <div className="text-left">
-              <span className="block text-sm font-medium">Facebook</span>
-              <span className="block text-xs text-[#D4AF37]">Aroma Selecto</span>
-            </div>
-          </a>
-        </div>
-        <p className="text-sm text-[#D4AF37] font-medium">Haz tu pedido por DM - ¡Te respondo rápido!</p>
-      </div>
-    </div>
-  </div>
 
-  {/* Footer Grid - PERFECTO COMO ESTÁ */}
-  <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
-    {/* Brand Column - Siempre visible */}
-    <div className="relative pb-6 md:pb-0 border-b md:border-b-0 border-[#D4AF37]">
-      <div className="flex items-center mb-4 justify-center">
-        <img 
-          src="/images/isologo_light.png" 
-          alt="Aroma Selecto Logo" 
-          className="h-20 w-auto mr-3 transition-transform duration-700 hover:rotate-180"
-        />
-        <h3 className="text-xl font-logo font-semibold text-[#D4AF37] tracking-widest">
-          Aroma Selecto MX
-        </h3>
-      </div>
-      <div className="space-y-3">
-        <p className="text-[#BDC3C7] text-sm leading-relaxed">
-          Aromas que hablan de ti y despiertan emociones únicas. Descubre fragancias exclusivas en formatos accesibles.
-        </p>
-        <p className="text-[#D4AF37] text-sm font-medium">
-          Perfumes 100% originales en presentación decant.
-        </p>
-      </div>
-      <div className="hidden md:block absolute top-0 right-0 h-full w-px bg-[#D4AF37] opacity-30"></div>
-    </div>
-    
-    {/* Products Column - Desplegable en móvil */}
-    <div className="relative pb-6 md:pb-0 border-b md:border-b-0 border-[#D4AF37]">
-      <button 
-        onClick={() => toggleSection('productos')}
-        className="w-full flex justify-between items-center md:cursor-default"
-      >
-        <h3 className="font-semibold text-[#D4AF37] mb-4 md:mb-4 text-sm uppercase tracking-wider">
-          Mis Productos
-        </h3>
-        <div className="md:hidden">
-          {openSections.productos ? 
-            <ChevronUpIcon className="h-4 w-4 text-[#D4AF37]" /> : 
-            <ChevronDownIcon className="h-4 w-4 text-[#D4AF37]" />
-          }
+      {/* Footer Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+        {/* Brand Column */}
+        <div className="relative pb-6 md:pb-0 border-b md:border-b-0 border-[#D4AF37]">
+          <div className="flex items-center mb-4 justify-center">
+            <img 
+              src="/assets/images/logos/isologo_light.png" 
+              alt="Aroma Selecto Logo" 
+              className="h-20 w-auto mr-3 transition-transform duration-700 hover:rotate-90"
+            />
+            <h3 className="text-xl font-logo font-semibold text-[#D4AF37] tracking-widest">
+              Aroma Selecto MX
+            </h3>
+          </div>
+          <div className="space-y-3">
+            <p className="text-[#BDC3C7] text-sm leading-relaxed">
+              Aromas que hablan de ti y despiertan emociones únicas. Descubre fragancias exclusivas en formatos accesibles.
+            </p>
+            <p className="text-[#D4AF37] text-sm font-medium">
+              Perfumes 100% originales en presentación decant.
+            </p>
+          </div>
+          <div className="hidden md:block absolute top-0 right-0 h-full w-px bg-[#D4AF37] opacity-30"></div>
         </div>
-      </button>
-      
-      <ul className={`space-y-3 text-sm transition-all duration-300 overflow-hidden ${
-        openSections.productos ? 'max-h-48 md:max-h-none' : 'max-h-0 md:max-h-none'
-      }`}>
-        <li>
-          <Link to="/fragancias?category=mujer" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
-            Fragancias Femeninas
-          </Link>
-        </li>
-        <li>
-          <Link to="/fragancias?category=hombre" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
-            Fragancias Masculinas
-          </Link>
-        </li>
-        {/* <li>
-          <Link to="/fragancias" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
-            Ediciones Limitadas
-          </Link>
-        </li> */}
-        <li>
-          <Link to="/fragancias" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
-            Sets de Regalo
-          </Link>
-        </li>
-      </ul>
-      <div className="hidden md:block absolute top-0 right-0 h-full w-px bg-[#D4AF37] opacity-30"></div>
-    </div>
-    
-    {/* Information Column - Desplegable en móvil */}
-    <div className="relative pb-6 md:pb-0 border-b md:border-b-0 border-[#D4AF37]">
-      <button 
-        onClick={() => toggleSection('informacion')}
-        className="w-full flex justify-between items-center md:cursor-default"
-      >
-        <h3 className="font-semibold text-[#D4AF37] mb-4 md:mb-4 text-sm uppercase tracking-wider">
-          Información
-        </h3>
-        <div className="md:hidden">
-          {openSections.informacion ? 
-            <ChevronUpIcon className="h-4 w-4 text-[#D4AF37]" /> : 
-            <ChevronDownIcon className="h-4 w-4 text-[#D4AF37]" />
-          }
-        </div>
-      </button>
-      
-      <ul className={`space-y-3 text-sm transition-all duration-300 overflow-hidden ${
-        openSections.informacion ? 'max-h-48 md:max-h-none' : 'max-h-0 md:max-h-none'}`}>
-        <li>
-          <Link to="/nosotros" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
-            Sobre Mí
-          </Link>
-        </li>
-        <li>
-          <Link to="/envios-devoluciones" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
-            Envíos y Devoluciones
-          </Link>
-        </li>
-        <li>
-          <Link to="#" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
-            Términos y Condiciones
-          </Link>
-        </li>
-        <li>
-          <Link to="#" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
-            Política de Privacidad
-          </Link>
-        </li>
-      </ul>
-      <div className="hidden md:block absolute top-0 right-0 h-full w-px bg-[#D4AF37] opacity-30"></div>
-    </div>
-    
-    {/* Contact Column - Desplegable en móvil */}
-    <div className="relative">
-      <button 
-        onClick={() => toggleSection('contacto')}
-        className="w-full flex justify-between items-center md:cursor-default"
-      >
-        <h3 className="font-semibold text-[#D4AF37] mb-4 md:mb-4 text-sm uppercase tracking-wider">
-          Contacto
-        </h3>
-        <div className="md:hidden">
-          {openSections.contacto ? 
-            <ChevronUpIcon className="h-4 w-4 text-[#D4AF37]" /> : 
-            <ChevronDownIcon className="h-4 w-4 text-[#D4AF37]" />
-          }
-        </div>
-      </button>
-      
-      <ul className={`space-y-3 text-sm transition-all duration-300 overflow-hidden ${
-        openSections.contacto ? 'max-h-48 md:max-h-none' : 'max-h-0 md:max-h-none'
-      }`}>
-        <li className="flex items-center text-[#BDC3C7]">
-          <MapPinIcon className="h-4 w-4 mr-2 text-[#D4AF37]" />
-          Gtz. Zamora, Papantla, Poza Rica.
-        </li>
-        <li className="flex items-center text-[#BDC3C7]">
-          <MailIcon className="h-4 w-4 mr-2 text-[#D4AF37]" />
-          aromaselecto.mx@gmail.com
-        </li>
-        <li>
-          <a 
-            href="https://wa.me/527823185711?text=¡Hola! Me interesa conocer más sobre sus perfumes" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center text-[#BDC3C7] hover:text-[#D4AF37] transition-colors group"
+        
+        {/* Products Column */}
+        <div className="relative pb-6 md:pb-0 border-b md:border-b-0 border-[#D4AF37]">
+          <button 
+            aria-label="Mostrar productos"
+            onClick={() => toggleSection('productos')}
+            className="w-full flex justify-between items-center md:cursor-default"
           >
-            <PhoneIcon className="h-4 w-4 mr-2 text-[#D4AF37] group-hover:scale-110 transition-transform" />
-            +52 782 318 5711 (WhatsApp)
-          </a>
-        </li>
-        <li className="flex items-center text-[#BDC3C7] mt-1">
-          <ClockIcon className="h-4 w-4 mr-2 text-[#D4AF37]" />
-          Lun-Vier: 9:00 AM - 6:00 PM
-        </li>
-      </ul>
-    </div>
-  </div>
-  
-  <div className="border-t border-[#D4AF37] border-opacity-30 mt-10 pt-8 text-center text-[#BDC3C7] text-sm">
-    <p className="mb-2">
-      © {new Date().getFullYear()} Aroma Selecto. Todos los derechos reservados.
-    </p>
-    <p>
-      Desarrollado por mí, <a href="https://github.com/VelVic" className="text-[#D4AF37] hover:underline font-medium">Victor Velediaz</a>, con asistencia de IA.
-    </p>
-  </div>
-</div>
+            <h3 className="font-semibold text-[#D4AF37] mb-4 md:mb-4 text-sm uppercase tracking-wider">
+              Mis Productos
+            </h3>
+            <div className="md:hidden">
+              {openSections.productos ? 
+                <ChevronUpIcon className="h-4 w-4 text-[#D4AF37]" /> : 
+                <ChevronDownIcon className="h-4 w-4 text-[#D4AF37]" />
+              }
+            </div>
+          </button>
+          <nav aria-label="Productos">
+            <ul className={`space-y-3 text-sm transition-all duration-300 overflow-hidden ${
+              openSections.productos ? 'max-h-48 md:max-h-none' : 'max-h-0 md:max-h-none'
+            }`}>
+              <li>
+                <Link to="/fragancias?category=mujer" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                  Fragancias Femeninas
+                </Link>
+              </li>
+              <li>
+                <Link to="/fragancias?category=hombre" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                  Fragancias Masculinas
+                </Link>
+              </li>
+              <li>
+                <Link to="/fragancias" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                  Sets de Regalo
+                </Link>
+              </li>
+            </ul>
+          </nav>
+          <div className="hidden md:block absolute top-0 right-0 h-full w-px bg-[#D4AF37] opacity-30"></div>
+        </div>
+        
+        {/* Information Column */}
+        <div className="relative pb-6 md:pb-0 border-b md:border-b-0 border-[#D4AF37]">
+          <button 
+            aria-label="Mostrar información"
+            onClick={() => toggleSection('informacion')}
+            className="w-full flex justify-between items-center md:cursor-default"
+          >
+            <h3 className="font-semibold text-[#D4AF37] mb-4 md:mb-4 text-sm uppercase tracking-wider">
+              Información
+            </h3>
+            <div className="md:hidden">
+              {openSections.informacion ? 
+                <ChevronUpIcon className="h-4 w-4 text-[#D4AF37]" /> : 
+                <ChevronDownIcon className="h-4 w-4 text-[#D4AF37]" />
+              }
+            </div>
+          </button>
+          <nav aria-label="Información">
+            <ul className={`space-y-3 text-sm transition-all duration-300 overflow-hidden ${
+              openSections.informacion ? 'max-h-48 md:max-h-none' : 'max-h-0 md:max-h-none'}`}>
+              <li>
+                <Link to="/nosotros" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                  Sobre Mí
+                </Link>
+              </li>
+              <li>
+                <Link to="/envios-devoluciones" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                  Envíos y Devoluciones
+                </Link>
+              </li>
+            </ul>
+          </nav>
+          <div className="hidden md:block absolute top-0 right-0 h-full w-px bg-[#D4AF37] opacity-30"></div>
+        </div>
+        
+        {/* Contact Column */}
+        <div className="relative">
+          <button 
+            aria-label="Mostrar contacto"
+            onClick={() => toggleSection('contacto')}
+            className="w-full flex justify-between items-center md:cursor-default"
+          >
+            <h3 className="font-semibold text-[#D4AF37] mb-4 md:mb-4 text-sm uppercase tracking-wider">
+              Contacto
+            </h3>
+            <div className="md:hidden">
+              {openSections.contacto ? 
+                <ChevronUpIcon className="h-4 w-4 text-[#D4AF37]" /> : 
+                <ChevronDownIcon className="h-4 w-4 text-[#D4AF37]" />
+              }
+            </div>
+          </button>
+          <nav aria-label="Contacto">
+            <ul className={`space-y-3 text-sm transition-all duration-300 overflow-hidden ${
+              openSections.contacto ? 'max-h-48 md:max-h-none' : 'max-h-0 md:max-h-none'
+            }`}>
+              <li className="flex items-center text-[#BDC3C7]">
+                <MapPinIcon className="h-4 w-4 mr-2 text-[#D4AF37]" />
+                Gtz. Zamora, Papantla, Poza Rica.
+              </li>
+              <li className="flex items-center text-[#BDC3C7]">
+                <MailIcon className="h-4 w-4 mr-2 text-[#D4AF37]" />
+                aromaselecto.mx@gmail.com
+              </li>
+              <li>
+                <a 
+                  href="https://wa.me/527823185711?text=¡Hola! Me interesa conocer más sobre sus perfumes" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center text-[#BDC3C7] hover:text-[#D4AF37] transition-colors group"
+                >
+                  <PhoneIcon className="h-4 w-4 mr-2 text-[#D4AF37] group-hover:scale-110 transition-transform" />
+                  +52 782 318 5711 (WhatsApp)
+                </a>
+              </li>
+              <li className="flex items-center text-[#BDC3C7] mt-1">
+                <ClockIcon className="h-4 w-4 mr-2 text-[#D4AF37]" />
+                <time dateTime="09:00-18:00">Lun-Vier: 9:00 AM - 6:00 PM</time>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+        
+      <div className="border-t border-[#D4AF37] border-opacity-30 mt-4 pt-4 text-center text-[#BDC3C7] text-sm">
+        <p className="mb-2">
+          © {new Date().getFullYear()} Aroma Selecto. Todos los derechos reservados.
+        </p>
+        <p>
+          Desarrollado por mí, <a href="https://github.com/VelVic" className="text-[#D4AF37] hover:underline font-medium">Victor Velediaz</a>, con asistencia de IA.
+        </p>
+      </div>
+      </div>
     </footer>
   );
 };
