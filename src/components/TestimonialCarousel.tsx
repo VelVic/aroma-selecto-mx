@@ -75,7 +75,7 @@ const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) => {
             >
               {testimonials.map((testimonial, index) => (
                 <div key={index} className="w-full flex-shrink-0 px-2">
-                  <TestimonialCard {...testimonial} avatar={testimonial.avatar ?? '/images/testimonials/default_avatar.jpg'} />
+                  <TestimonialCard {...testimonial} avatar={testimonial.avatar ?? 'assets/images/avatars/default_avatar.jpg'} />
                 </div>
               ))}
             </div>

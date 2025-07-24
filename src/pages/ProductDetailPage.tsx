@@ -24,7 +24,7 @@ const productReviews = product
       .filter(r => r.productId === product.id)
       .map(r => ({
         ...r,
-        avatar: r.avatar ?? '/images/testimonials/default_avatar.jpg', // <-- aquí aseguras el string
+        avatar: r.avatar ?? 'assets/images/avatars/default_avatar.jpg', // <-- aquí aseguras el string
       }))
   : [];
   const [selectedSize, setSelectedSize] = useState('');
@@ -510,21 +510,21 @@ const productReviews = product
                   </div>
                 ) : (
                 <div className="mt-6 flex flex-col items-center justify-center bg-[#F9F9F9] border border-[#D4AF37]/30 rounded-xl p-8 shadow-sm">
-  <MessageCircleIcon className="h-12 w-12 mb-4 text-[#D4AF37]" />
-  <span className="text-xl font-semibold text-[#2C3E50] mb-2">Aún sin opiniones para este producto</span>
-  <span className="text-base text-[#BDC3C7] mb-4">¡Sé el primero en dejar tu experiencia!</span>
-  <a
-    href="https://forms.gle/8XvtGT317mgxgQ5T7"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-[#D4AF37] underline hover:text-[#2C3E50] transition-colors text-base font-medium mb-2"
-  >
-    Deja tu opinión aquí
-  </a>
-  <span className="text-xs text-[#BDC3C7]">
-    o envíanos mensaje a <a href="https://instagram.com/aromaselecto.mx" target="_blank" rel="noopener noreferrer" className="text-[#D4AF37] underline hover:text-[#2C3E50]">Instagram</a>
-  </span>
-</div>
+                  <MessageCircleIcon className="h-12 w-12 mb-4 text-[#D4AF37]" />
+                  <span className="text-xl font-semibold text-[#2C3E50] mb-2">Aún sin opiniones para este producto</span>
+                  <span className="text-base text-[#BDC3C7] mb-4">¡Sé el primero en dejar tu experiencia!</span>
+                  <a
+                    href="https://forms.gle/8XvtGT317mgxgQ5T7"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#D4AF37] underline hover:text-[#2C3E50] transition-colors text-base font-medium mb-2"
+                  >
+                    Deja tu opinión aquí
+                  </a>
+                  <span className="text-xs text-[#BDC3C7]">
+                    o envíanos mensaje a <a href="https://instagram.com/aromaselecto.mx" target="_blank" rel="noopener noreferrer" className="text-[#D4AF37] underline hover:text-[#2C3E50]">Instagram</a>
+                  </span>
+                </div>
                 )}
               </div>
             </div>
