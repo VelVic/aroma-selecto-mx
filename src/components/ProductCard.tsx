@@ -23,6 +23,16 @@ interface ProductCardProps {
   description?: string;
   details?: string[];
   images?: string[];
+  onAddToCart?: (product: { 
+    id: string;
+    name: string;
+    brand: string;
+    image: string;
+    size: string;
+    price: number;
+    stock: number;
+  }) => void; // Ajusta el tipo según tu modelo Product
+
 }
 
 const ProductCard = ({ 
@@ -49,9 +59,9 @@ const ProductCard = ({
   const [justAdded, setJustAdded] = useState(false);
 
   const handleProductClick = () => {
-    navigate(`/product/${id}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  navigate(`/fragancia/${id}`);
+  // window.scrollTo({ top: 0, behavior: 'smooth' }); // ← Ya no es necesario
+};
 
   // ← AGREGAR FUNCIÓN PARA CARRITO
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -88,7 +98,7 @@ const ProductCard = ({
   };
 
   return (
-    <div className="group relative border-2 border-transparent hover:border-[#D4AF37] transition-all duration-300 rounded-lg p-2 bg-white shadow-sm hover:shadow-lg hover:shadow-[#D4AF37]/10">
+    <div className="group relative border-2 border-transparent hover:border-[#D4AF37] transition-all duration-300 rounded-lg p-2 section-card shadow-sm hover:shadow-lg hover:shadow-[#D4AF37]/10">
       
       {/* Imagen del producto */}
       <div 
