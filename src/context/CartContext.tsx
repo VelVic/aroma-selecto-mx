@@ -13,7 +13,7 @@ export interface CartItem {
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: Omit<CartItem, 'quantity'>) => void;
+  addToCart: (product: Omit<CartItem, 'quantity'>, quantity?: number) => void; // Cambia aquí
   removeFromCart: (id: string, size: string) => void;
   updateQuantity: (id: string, size: string, quantity: number) => void;
   clearCart: () => void;
@@ -40,23 +40,23 @@ interface CartProviderProps {
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>([]);
 
-  const addToCart = (product: Omit<CartItem, 'quantity'>) => {
-    setItems(currentItems => {
-      const existingItemIndex = currentItems.findIndex(
-        item => item.id === product.id && item.size === product.size
-      );
+  const addToCart = (product: Omit<CartItem, 'quantity'>, quantity = 1) => {
+  setItems(currentItems => {
+    const existingItemIndex = currentItems.findIndex(
+      item => item.id === product.id && item.size === product.size
+    );
 
-      if (existingItemIndex !== -1) {
-        const updatedItems = [...currentItems];
-        const currentQuantity = updatedItems[existingItemIndex].quantity;
-        const newQuantity = Math.min(currentQuantity + 1, product.stock);
-        updatedItems[existingItemIndex].quantity = newQuantity;
-        return updatedItems;
-      } else {
-        return [...currentItems, { ...product, quantity: 1 }];
-      }
-    });
-  };
+    if (existingItemIndex !== -1) {
+      const updatedItems = [...currentItems];
+      const currentQuantity = updatedItems[existingItemIndex].quantity;
+      const newQuantity = Math.min(currentQuantity + quantity, product.stock);
+      updatedItems[existingItemIndex].quantity = newQuantity;
+      return updatedItems;
+    } else {
+      return [...currentItems, { ...product, quantity: Math.min(quantity, product.stock) }];
+    }
+  });
+};
 
   const removeFromCart = (id: string, size: string) => {
     setItems(currentItems => 
@@ -92,10 +92,10 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   };
 
   const getShippingCost = (deliveryType: string, subtotal: number) => {
-    if (deliveryType === 'personal' || subtotal >= 888) {
+    if (deliveryType === 'personal' || subtotal >= 999) {
       return 0;
     }
-    return deliveryType === 'express' ? 189 : 140;
+    return deliveryType === 'express' ? 189 : 149;
   };
 
   const value: CartContextType = {
