@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { InstagramIcon, FacebookIcon, MapPinIcon, MailIcon, PhoneIcon, GiftIcon, ChevronDownIcon, ChevronUpIcon, ClockIcon } from 'lucide-react';
 
@@ -261,8 +261,13 @@ const Footer = () => {
             <ul className={`space-y-3 text-sm transition-all duration-300 overflow-hidden ${
               openSections.informacion ? 'max-h-48 md:max-h-none' : 'max-h-0 md:max-h-none'}`}>
               <li>
-                <Link to="/nosotros" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                <Link to="/sobre-mi" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
                   Sobre Mí
+                </Link>
+              </li>
+              <li>
+                <Link to="/informacion-fragancias" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                  Sobre Fragancias
                 </Link>
               </li>
               <li>
@@ -270,6 +275,16 @@ const Footer = () => {
                   Envíos y Devoluciones
                 </Link>
               </li>
+                <li>
+                  <Link to="/terminos-condiciones" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                    Términos y Condiciones
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/privacidad" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                    Privacidad
+                  </Link>
+                </li>
             </ul>
           </nav>
           <div className="hidden md:block absolute top-0 right-0 h-full w-px bg-[#D4AF37] opacity-30"></div>

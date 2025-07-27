@@ -111,7 +111,7 @@ const Navbar = () => {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
             <Link 
-              to="/nosotros" 
+              to="/sobre-mi" 
               className="text-gray-900 hover:text-[#D4AF37] font-medium transition-all duration-300 relative group"
             >
               Sobre Mí

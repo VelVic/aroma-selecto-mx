@@ -92,6 +92,19 @@ const AboutPage = () => {
         </div>
       </section>
 
+      {/* Fun Fact Section */}
+      <section className="py-8">
+        <div className="max-w-3xl mx-auto px-4">
+          <div className="flex items-center bg-gradient-to-r from-[#D4AF37]/10 to-[#2C3E50]/10 rounded-lg p-6 shadow-sm">
+            <SparklesIcon className="h-10 w-10 text-[#D4AF37] mr-4 flex-shrink-0" />
+            <div>
+              <h4 className="text-lg font-bold text-[#2C3E50] mb-1">Fun Fact</h4>
+              <p className="text-gray-700">¿Sabías que el sentido del olfato está directamente conectado con la memoria y las emociones? Por eso, una fragancia puede transportarte a un momento especial en segundos.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Equipo Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -229,8 +242,8 @@ const AboutPage = () => {
       <section className="py-16 bg-[#F9F9F9] border-t border-[#D4AF37] border-opacity-30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <SectionTitle>¿Listo para encontrar tu fragancia ideal?</SectionTitle>
-          <p className="text-xl text-[#BDC3C7] mb-8">
-            Explora mi catálogo de decants originales y encuentra el aroma que habla de ti. Si tienes dudas o buscas una recomendación personalizada, ¡contáctame!
+          <p className="text-xl text-[#2C3E50] mb-4">
+            ¡Déjame ayudarte a descubrir el aroma que marcará tu historia! Si tienes dudas, buscas una recomendación personalizada o simplemente quieres platicar de perfumes, estoy para ti.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
@@ -239,7 +252,7 @@ const AboutPage = () => {
               variant="primary"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              Ver Catálogo
+              Ver catálogo de fragancias
             </Button>
             <Button
               as="a"
@@ -247,8 +260,19 @@ const AboutPage = () => {
               target="_blank"
               rel="noopener noreferrer"
               variant="outline"
+              className="hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white border-2 border-[#C13584] transition-colors"
             >
               Escríbeme en Instagram
+            </Button>
+            <Button
+              as="a"
+              href="https://wa.me/527823185711"
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="outline"
+              className="hover:bg-gradient-to-r hover:from-[#25D366] hover:to-[#128C7E] hover:text-white border-2 border-[#25D366] transition-colors"
+            >
+              Escríbeme por WhatsApp
             </Button>
           </div>
         </div>

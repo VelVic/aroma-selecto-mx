@@ -47,10 +47,25 @@ const ContactPage = () => {
           <h1 className="text-4xl md:text-5xl font-logo font-bold mb-6">
             ¿Tienes alguna <span className="text-[#D4AF37]">pregunta?</span>
           </h1>
-          <p className="text-xl text-[#BDC3C7] max-w-3xl mx-auto">
-            Estoy aquí para ayudarte. Contáctame y descubre cómo puedo acercarte
-            a la fragancia perfecta que estás buscando.
+          <p className="text-xl text-[#BDC3C7] max-w-3xl mx-auto mb-4">
+            Estoy aquí para ayudarte, escucharte y compartir mi pasión por las fragancias. No dudes en escribirme, ¡me encanta conversar sobre aromas y resolver cualquier duda que tengas!
           </p>
+          <p className="text-lg text-[#D4AF37] max-w-2xl mx-auto">
+            A veces, una buena charla es el primer paso para encontrar tu aroma ideal.
+          </p>
+        </div>
+      </section>
+
+      {/* Fun Fact Section */}
+      <section className="py-8">
+        <div className="max-w-3xl mx-auto px-4">
+          <div className="flex items-center bg-gradient-to-r from-[#D4AF37]/10 to-[#2C3E50]/10 rounded-lg p-6 shadow-sm">
+            <MailIcon className="h-10 w-10 text-[#D4AF37] mr-4 flex-shrink-0" />
+            <div>
+              <h4 className="text-lg font-bold text-[#2C3E50] mb-1">Fun Fact</h4>
+              <p className="text-gray-700">¿Sabías que en la antigüedad, las cartas importantes se perfumaban para transmitir emociones y dejar una impresión memorable? ¡Hoy puedes dejar huella con tu mensaje y tu fragancia!</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -153,6 +168,33 @@ const ContactPage = () => {
               <p className="text-[#BDC3C7] text-sm">Gutiérrez Zamora</p>
               <p className="text-gray-900 font-medium">Veracruz, México</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mini FAQ */}
+      <section className="py-8">
+        <div className="max-w-3xl mx-auto px-4">
+          <div className="bg-[#F9F9F9] rounded-lg p-6 shadow-sm border-l-4 border-[#D4AF37]">
+            <h3 className="text-xl font-bold text-[#2C3E50] mb-4">Preguntas frecuentes</h3>
+            <ul className="space-y-3 text-gray-700">
+              <li>
+                <strong>¿Cuánto tarda en llegar mi pedido?</strong><br />
+                El tiempo total suele ser de 4-8 días hábiles (preparación + envío nacional).
+              </li>
+              <li>
+                <strong>¿Los decants son originales?</strong><br />
+                Sí, todos los decants provienen de perfumes 100% originales.
+              </li>
+              <li>
+                <strong>¿Puedo pedir una recomendación personalizada?</strong><br />
+                ¡Por supuesto! Escríbeme por Instagram o WhatsApp y te ayudo a elegir.
+              </li>
+              <li>
+                <strong>¿Haces entregas personales?</strong><br />
+                Sí, en Gutiérrez Zamora y zonas cercanas.
+              </li>
+            </ul>
           </div>
         </div>
       </section>
@@ -301,9 +343,9 @@ const ContactPage = () => {
       {/* CTA Section */}
       <section className="py-16 bg-[#F9F9F9] border-t border-[#D4AF37] border-opacity-30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <SectionTitle>¿Listo para encontrar tu fragancia ideal?</SectionTitle>
+          <SectionTitle>¿Listo para platicar sobre fragancias?</SectionTitle>
           <p className="text-xl text-[#BDC3C7] mb-8">
-            Explora mi catálogo de decants originales y encuentra el aroma que habla de ti. Si tienes dudas o buscas una recomendación personalizada, ¡contáctame!
+            Explora mi catálogo de decants originales y, si tienes dudas, ¡escríbeme! Me encanta conversar y ayudarte a encontrar el aroma perfecto para ti. ¿Prefieres una charla rápida? ¡Estoy en Instagram y WhatsApp!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
@@ -312,17 +354,28 @@ const ContactPage = () => {
               variant="primary"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              Ver Catálogo
+              Ver Catálogo de Fragancias
             </Button>
             <Button
-                as="a"
-                href="https://www.instagram.com/aromaselecto.mx/"
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="outline"
-              >
-                Sígueme en Instagram
-              </Button>
+              as="a"
+              href="https://www.instagram.com/aromaselecto.mx/"
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="outline"
+              className="hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white border-2 border-[#C13584] transition-colors"
+            >
+              Escríbeme en Instagram
+            </Button>
+            <Button
+              as="a"
+              href="https://wa.me/527823185711"
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="outline"
+              className="hover:bg-gradient-to-r hover:from-[#25D366] hover:to-[#128C7E] hover:text-white border-2 border-[#25D366] transition-colors"
+            >
+              Escríbeme por WhatsApp
+            </Button>
           </div>
         </div>
       </section>
