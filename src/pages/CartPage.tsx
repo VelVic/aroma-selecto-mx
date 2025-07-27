@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ShoppingBagIcon, TrashIcon, PlusIcon, MinusIcon, MapPinIcon, GiftIcon, TicketIcon, InstagramIcon, MessageCircleIcon, TruckIcon, CreditCardIcon, BuildingIcon, HandIcon, CheckCircleIcon } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../context/useCart';
 import Button from '../components/Button';
 
 const CartPage = () => {
@@ -27,7 +27,7 @@ const CartPage = () => {
   const [showTicket, setShowTicket] = useState(false);
 
   // ← CONFIGURACIÓN ACTUALIZADA
-  const FREE_SHIPPING_MINIMUM = 999; // $999 MXN para envío gratis
+  const FREE_SHIPPING_MINIMUM = 899; // $899 MXN para envío gratis
   const FREE_DECANT_MINIMUM = 600; // $600 MXN para decant gratis
 
   // Cálculos dinámicos mejorados
@@ -681,9 +681,9 @@ const CartPage = () => {
 
       {/* Modal del Ticket - ← OPTIMIZADO PARA CAPTURAS */}
       {showTicket && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-2 z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[95vh] overflow-y-auto">
-            <div className="p-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-0 z-50">
+          <div className="bg-white rounded-none sm:rounded-lg shadow-xl w-full h-full sm:max-w-lg sm:h-auto overflow-y-auto">
+            <div className="p-2 sm:p-4">
               {/* ← HEADER MÁS COMPACTO */}
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-logo font-bold text-gray-900">Ticket de Compra</h2>
@@ -817,12 +817,14 @@ const CartPage = () => {
                 </div>
               </div>
               
-              {/* ← BOTONES DE CONTACTO MÁS COMPACTOS */}
+              {/* ← MENSAJE DE CAPTURA Y BOTONES DE CONTACTO */}
               <div className="space-y-2">
+                <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 text-xs rounded p-3 mb-2 text-center font-medium">
+                  <span>Por favor, toma una <b>captura de pantalla</b> de este ticket y envíala por WhatsApp o Instagram para procesar tu pedido.</span>
+                </div>
                 <p className="text-center text-xs text-[#BDC3C7] mb-3">
-                  Envía captura por tu método preferido:
+                  Envía la captura por tu método preferido:
                 </p>
-                
                 <div className="grid grid-cols-2 gap-2">
                   <a
                     href={`https://wa.me/527823185711?text=¡Hola! Aquí está mi ticket: AS${Date.now().toString().slice(-6)}`}
@@ -833,7 +835,6 @@ const CartPage = () => {
                     <MessageCircleIcon className="h-3 w-3 mr-1" />
                     WhatsApp
                   </a>
-                  
                   <a
                     href="https://www.instagram.com/aromaselecto.mx/"
                     target="_blank"
