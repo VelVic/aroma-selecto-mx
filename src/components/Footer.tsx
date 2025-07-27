@@ -325,10 +325,10 @@ const Footer = () => {
         
       <div className="border-t border-[#D4AF37] border-opacity-30 mt-4 pt-4 text-center text-[#BDC3C7] text-sm">
         <p className="mb-2">
-          © {new Date().getFullYear()} Aroma Selecto. Todos los derechos reservados.
+          © {new Date().getFullYear()} Aroma Selecto MX. Todos los derechos reservados.
         </p>
         <p>
-          Desarrollado por mí, <a href="https://github.com/VelVic" className="text-[#D4AF37] hover:underline font-medium">Victor Velediaz</a>, con asistencia de IA.
+          Desarrollado por <a href="https://github.com/VelVic" className="text-[#D4AF37] hover:underline font-medium">Victor Velediaz</a>{/* , con asistencia de IA. */}
         </p>
       </div>
       </div>
