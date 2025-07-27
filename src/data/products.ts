@@ -31,7 +31,7 @@ export const products: Product[] = [
     image: 'https://img.ltwebstatic.com/images3_spmp/2023/09/22/66/1695397069153bf092e09d056a0129a86d246b126b_thumbnail_720x.jpg',
     images: [
       'https://img.ltwebstatic.com/images3_spmp/2023/09/22/66/1695397069153bf092e09d056a0129a86d246b126b_thumbnail_720x.jpg',
-      'https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+      '/assets/images/fragancias/decants.png',
       'https://img.ltwebstatic.com/images3_spmp/2023/09/22/66/1695397069153bf092e09d056a0129a86d246b126b_thumbnail_720x.jpg'
     ],
     rating: 4.5,
@@ -65,7 +65,7 @@ export const products: Product[] = [
     image: 'https://lirp.cdn-website.com/b9414951/dms3rep/multi/opt/Perfume+Dior+Sauvage+Hombre+100+ml+EDP+DIOR+_+falabella_com-640w.jpg',
     images: [
       'https://lirp.cdn-website.com/b9414951/dms3rep/multi/opt/Perfume+Dior+Sauvage+Hombre+100+ml+EDP+DIOR+_+falabella_com-640w.jpg',
-      'https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+      '/assets/images/fragancias/decants.png',
       'https://lirp.cdn-website.com/b9414951/dms3rep/multi/opt/Perfume+Dior+Sauvage+Hombre+100+ml+EDP+DIOR+_+falabella_com-640w.jpg'
     ],
     rating: 5,
@@ -99,7 +99,7 @@ export const products: Product[] = [
     image: 'https://aromatica.cr/cdn/shop/files/Decant-Cloud-Aromatica-CR-451463140.jpg?v=1750279021&width=1445',
     images: [
       'https://aromatica.cr/cdn/shop/files/Decant-Cloud-Aromatica-CR-451463140.jpg?v=1750279021&width=1445',
-      'https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+      '/assets/images/fragancias/decants.png',
       'https://aromatica.cr/cdn/shop/files/Decant-Cloud-Aromatica-CR-451463140.jpg?v=1750279021&width=1445'
     ],
     rating: 5,
@@ -134,7 +134,7 @@ export const products: Product[] = [
     image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     images: [
       'https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+      '/assets/images/fragancias/decants.png',
       'https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
     ],
     rating: 0,
@@ -202,7 +202,7 @@ export const products: Product[] = [
     image: 'https://america-retail.com/wp-content/uploads/2024/04/dior.jpg',
     images: [
       'https://america-retail.com/wp-content/uploads/2024/04/dior.jpg',
-      'https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+      '/assets/images/fragancias/decants.png',
       'https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
     ],
     rating: 0,
