@@ -99,7 +99,7 @@ const ProductCard = ({
   };
 
   return (
-    <div className="group relative border-2 border-transparent hover:border-[#D4AF37] transition-all duration-300 rounded-lg p-1 sm:p-2 section-card shadow-sm hover:shadow-lg hover:shadow-[#D4AF37]/10">
+    <div className="group relative border-2 border-transparent hover:border-[#D4AF37] transition-all duration-300 rounded-lg p-3 sm:p-2 section-card shadow-sm hover:shadow-lg hover:shadow-[#D4AF37]/10">
       
       {/* Imagen del producto */}
       <div 
@@ -163,12 +163,12 @@ const ProductCard = ({
       </div>
 
       {/* Información del producto */}
-      <div className="mt-2 sm:mt-4">
+      <div className="mt-3 sm:mt-4">
         <div className="flex justify-between items-start">
           <div className="flex-1">
-            <h3 className="text-xs sm:text-sm text-[#BDC3C7]">{brand}</h3>
+            <h3 className="text-base sm:text-sm text-[#BDC3C7]">{brand}</h3>
             <button onClick={handleProductClick} className="text-left">
-              <h2 className="text-xs sm:text-sm font-medium text-gray-900 mt-0.5 sm:mt-1 hover:text-[#D4AF37] transition-colors duration-300 line-clamp-2">
+              <h2 className="text-lg sm:text-sm font-medium text-gray-900 mt-1 sm:mt-1 hover:text-[#D4AF37] transition-colors duration-300 line-clamp-2">
                 {name}
               </h2>
             </button>
@@ -176,7 +176,7 @@ const ProductCard = ({
         </div>
 
         {/* ✅ RATING CORREGIDO */}
-        <div className="mt-2 sm:mt-3 flex items-center justify-between">
+        <div className="mt-2.5 sm:mt-3 flex items-center justify-between">
           <div className="flex items-center">
             <div className="flex items-center">
               {Array.from({ length: 5 }, (_, index) => (
@@ -190,7 +190,7 @@ const ProductCard = ({
                 />
               ))}
             </div>
-            <span className="text-xs text-[#BDC3C7] ml-2">({rating.toFixed(1)})</span>
+            <span className="text-base sm:text-xs text-[#BDC3C7] ml-2">({rating.toFixed(1)})</span>
           </div>
           
           {/* ✅ STOCK STATUS */}
@@ -216,15 +216,15 @@ const ProductCard = ({
 
         {/* ✅ TAMAÑOS DISPONIBLES */}
         {!isComingSoon && variants.length > 0 && (
-          <div className="mt-2 sm:mt-3">
+          <div className="mt-2.5 sm:mt-3">
             <div className="flex items-center justify-between mb-1 sm:mb-2">
-              <span className="text-xs text-gray-500 font-medium">Tamaños:</span>
+              <span className="text-base sm:text-xs text-gray-500 font-medium">Tamaños:</span>
             </div>
-            <div className="flex space-x-1 sm:space-x-2">
+            <div className="flex space-x-2 sm:space-x-2">
               {variants.map((variant) => (
                 <span 
                   key={`size-${variant.size}`}
-                  className={`inline-flex items-center px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-[10px] sm:text-xs font-medium border ${
+                  className={`inline-flex items-center px-3 py-1 sm:px-2 sm:py-1 rounded text-sm sm:text-xs font-medium border ${
                     variant.stock > 0
                       ? 'bg-gray-50 border-gray-200 text-gray-600'
                       : 'bg-red-50 border-red-200 text-red-400 line-through opacity-60'
@@ -238,34 +238,34 @@ const ProductCard = ({
         )}
 
         {/* Precio y botón */}
-        <div className="mt-3 sm:mt-4 flex justify-between items-center">
+        <div className="mt-4 sm:mt-4 flex justify-between items-center">
           <div>
             {isComingSoon ? (
               <div className="flex items-baseline">
-                <span className="text-lg font-bold text-purple-600">$</span>
-                <span className="text-lg font-bold text-purple-600 mx-1">{price.toFixed(0)}</span>
-                <span className="text-sm font-medium text-purple-400">MXN</span>
+                <span className="text-xl sm:text-lg font-bold text-purple-600">$</span>
+                <span className="text-xl sm:text-lg font-bold text-purple-600 mx-1">{price.toFixed(0)}</span>
+                <span className="text-base sm:text-sm font-medium text-purple-400">MXN</span>
                 <span className="text-xs text-purple-400 ml-1">(Estimado)</span>
               </div>
             ) : isSale && salePrice ? (
               <div className="flex flex-col space-y-1">
                 <div className="flex items-baseline">
-                  <span className="text-lg font-bold bg-gradient-to-r from-[#D4AF37] to-[#B8860B] bg-clip-text text-transparent">$</span>
-                  <span className="text-lg font-bold bg-gradient-to-r from-[#D4AF37] to-[#B8860B] bg-clip-text text-transparent mx-1">
+                  <span className="text-xl sm:text-lg font-bold bg-gradient-to-r from-[#D4AF37] to-[#B8860B] bg-clip-text text-transparent">$</span>
+                  <span className="text-xl sm:text-lg font-bold bg-gradient-to-r from-[#D4AF37] to-[#B8860B] bg-clip-text text-transparent mx-1">
                     {salePrice.toFixed(0)}
                   </span>
-                  <span className="text-sm font-medium text-[#BDC3C7]">MXN</span>
+                  <span className="text-base sm:text-sm font-medium text-[#BDC3C7]">MXN</span>
                 </div>
                 <div className="flex items-baseline">
-                  <span className="text-sm text-[#BDC3C7] line-through">$</span>
-                  <span className="text-sm text-[#BDC3C7] line-through mx-1">{price.toFixed(0)}</span>
+                  <span className="text-base sm:text-sm text-[#BDC3C7] line-through">$</span>
+                  <span className="text-base sm:text-sm text-[#BDC3C7] line-through mx-1">{price.toFixed(0)}</span>
                   <span className="text-xs text-[#BDC3C7] line-through">MXN</span>
                 </div>
               </div>
             ) : (
             <div className="flex items-baseline">
-              <span className="text-base sm:text-lg font-bold text-gray-900">$</span>
-              <span className="text-base sm:text-lg font-bold text-gray-900 mx-1">
+              <span className="text-xl sm:text-lg font-bold text-gray-900">$</span>
+              <span className="text-xl sm:text-lg font-bold text-gray-900 mx-1">
                 {/* Mostrar precio del primer tamaño disponible */}
                 {(() => {
                   const price1 = availableVariants && availableVariants[0] && typeof availableVariants[0].price === 'number' && !isNaN(availableVariants[0].price)
@@ -283,7 +283,7 @@ const ProductCard = ({
                   return '--';
                 })()}
               </span>
-              <span className="text-xs sm:text-sm font-medium text-[#BDC3C7]">MXN</span>
+              <span className="text-base sm:text-sm font-medium text-[#BDC3C7]">MXN</span>
             </div>
             )}
           </div>
