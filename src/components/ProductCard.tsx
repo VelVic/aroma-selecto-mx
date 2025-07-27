@@ -12,6 +12,7 @@ interface ProductVariant {
 
 interface ProductCardProps {
   id: string;
+  slug: string;
   name: string;
   brand: string;
   price: number;
@@ -43,6 +44,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ 
   id, 
+  slug,
   name, 
   brand, 
   price, 
@@ -68,7 +70,7 @@ const ProductCard = ({
   const totalStock = variants.reduce((sum, v) => sum + v.stock, 0);
 
   const handleProductClick = () => {
-  navigate(`/fragancia/${id}`);
+  navigate(`/fragancia/${slug}`);
   // window.scrollTo({ top: 0, behavior: 'smooth' }); // ← Ya no es necesario
 };
 
@@ -104,11 +106,15 @@ const ProductCard = ({
         className="aspect-square w-full overflow-hidden rounded-lg bg-[#F9F9F9] cursor-pointer relative" 
         onClick={handleProductClick}
       >
-        <img 
-          src={image} 
-          alt={name} 
-          className="w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-500" 
-        />
+        <picture>
+          <source srcSet={image.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
+          <img
+            src={image}
+            alt={`Foto de ${name} Aroma Selecto MX`}
+            loading="lazy"
+            className="w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-500"
+          />
+        </picture>
         
         <div className="absolute inset-0 bg-gradient-to-t from-[#2C3E50]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         

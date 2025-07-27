@@ -8,6 +8,7 @@ import { products, getAvailableBrands, Product } from '../data/products';
 // ✅ INTERFACE MOVIDA A products.ts - ELIMINAR DE AQUÍ
 // interface Product { ... } ← ELIMINAR
 
+
 const ProductsPage = () => {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();

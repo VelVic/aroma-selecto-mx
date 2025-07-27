@@ -3,20 +3,20 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ShoppingBagIcon, HeartIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, StarIcon, CheckIcon, SnowflakeIcon, LeafIcon, Flower2Icon, SunIcon, CarIcon, PackageIcon, ZapIcon, MessageCircleIcon } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { useCart } from '../context/useCart';
-import { getProductById, getSimilarProducts, type Product } from '../data/products';
+import { getProductBySlug, getSimilarProducts, type Product } from '../data/products';
 import { reviews } from '../data/reviews';
 import Button from '../components/Button';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import SectionTitle from '../components/SectionTitle';
 
 const ProductDetailPage = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
 
-  const product = getProductById(id || '1');
+  const product = getProductBySlug(slug || '');
 
   // Filtra los reviews por el producto actual
 const productReviews = product
@@ -56,7 +56,7 @@ const productReviews = product
       setJustAdded(false);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [id, product]);
+  }, [slug, product]);
 
   useEffect(() => {
     if (product && product.images && product.images.length > 1 && !isCarouselPaused) {
@@ -181,26 +181,34 @@ const productReviews = product
           <div className="lg:col-span-2 flex flex-col items-center">
             <div className="relative group w-full max-w-md">
               <div className="aspect-[5/6] rounded-lg overflow-hidden border-2 border-gray-200 hover:border-[#D4AF37] transition-colors duration-300 shadow-md cursor-zoom-in">
-                <img
-                  src={mainImage}
-                  alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  onClick={handleMainImageClick}
-                  style={{ cursor: 'zoom-in' }}
-                />
+                <picture>
+                  <source srcSet={mainImage.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
+                  <img
+                    src={mainImage}
+                    alt={`Foto principal de ${product.name}`}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    onClick={handleMainImageClick}
+                    style={{ cursor: 'zoom-in' }}
+                  />
+                </picture>
       {/* Zoom Modal */}
       {zoomOpen && (
         <div
           className="fixed inset-0 z-[200] flex items-center justify-center bg-black bg-opacity-80 cursor-zoom-out animate-fadeIn"
           onClick={handleCloseZoom}
         >
-          <img
-            src={mainImage}
-            alt={product.name}
-            className="max-h-[90vh] max-w-[95vw] rounded-lg shadow-2xl border-4 border-[#D4AF37] object-contain"
-            style={{ cursor: 'zoom-out' }}
-            onClick={handleCloseZoom}
-          />
+          <picture>
+            <source srcSet={mainImage.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
+            <img
+              src={mainImage}
+              alt={`Zoom de ${product.name}`}
+              loading="lazy"
+              className="max-h-[90vh] max-w-[95vw] rounded-lg shadow-2xl border-4 border-[#D4AF37] object-contain"
+              style={{ cursor: 'zoom-out' }}
+              onClick={handleCloseZoom}
+            />
+          </picture>
         </div>
       )}
                 {productImages.length > 1 && (
@@ -233,11 +241,15 @@ const productReviews = product
                         }`}
                         onClick={() => selectImage(image, idx)}
                       >
-                        <img
-                          src={image}
-                          alt={`${product.name} view ${idx + 1}`}
-                          className="w-full h-full object-cover"
-                        />
+                        <picture>
+                          <source srcSet={image.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
+                          <img
+                            src={image}
+                            alt={`Miniatura ${idx + 1} de ${product.name}`}
+                            loading="lazy"
+                            className="w-full h-full object-cover"
+                          />
+                        </picture>
                       </button>
                     ))}
                   </div>
