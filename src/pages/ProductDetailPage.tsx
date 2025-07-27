@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ShoppingBagIcon, HeartIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, StarIcon, CheckIcon, SnowflakeIcon, LeafIcon, Flower2Icon, SunIcon, CarIcon, PackageIcon, ZapIcon, MessageCircleIcon } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
-import { useCart } from '../context/CartContext';
-import { getProductById, getSimilarProducts } from '../data/products';
+import { useCart } from '../context/useCart';
+import { getProductById, getSimilarProducts, type Product } from '../data/products';
 import { reviews } from '../data/reviews';
 import Button from '../components/Button';
 import TestimonialCarousel from '../components/TestimonialCarousel';
@@ -27,17 +27,25 @@ const productReviews = product
         avatar: r.avatar ?? 'assets/images/avatars/default_avatar.jpg', // <-- aquí aseguras el string
       }))
   : [];
-  const [selectedSize, setSelectedSize] = useState('');
+  // Nueva lógica para variantes
+  // Selecciona la primera variante con stock > 0, o la primera si todas están agotadas
+  const getDefaultVariant = (product: Product | undefined) => {
+    if (!product || !product.variants) return null;
+    return product.variants.find((v) => v.stock > 0) || product.variants[0] || null;
+  };
+  const [selectedVariant, setSelectedVariant] = useState(getDefaultVariant(product));
   const [quantity, setQuantity] = useState(1);
   const [mainImage, setMainImage] = useState('');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showDetails, setShowDetails] = useState(false);
   const [showOccasion, setShowOccasion] = useState(false);
   const [showShipping, setShowShipping] = useState(false);
+  const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+  const [zoomOpen, setZoomOpen] = useState(false);
 
   useEffect(() => {
     if (product) {
-      setSelectedSize(product.sizes?.[0] || '5ml');
+      setSelectedVariant(getDefaultVariant(product));
       setQuantity(1);
       setMainImage(product.images?.[0] || product.image);
       setCurrentImageIndex(0);
@@ -51,7 +59,7 @@ const productReviews = product
   }, [id, product]);
 
   useEffect(() => {
-    if (product && product.images && product.images.length > 1) {
+    if (product && product.images && product.images.length > 1 && !isCarouselPaused) {
       const interval = setInterval(() => {
         setCurrentImageIndex((prevIndex) => {
           const images = product.images || [];
@@ -62,10 +70,9 @@ const productReviews = product
           return nextIndex;
         });
       }, 4000);
-
       return () => clearInterval(interval);
     }
-  }, [product]);
+  }, [product, isCarouselPaused]);
 
   const goToPrevImage = () => {
     if (product && product.images) {
@@ -88,22 +95,28 @@ const productReviews = product
     setCurrentImageIndex(index);
   };
 
-  const handleAddToCart = () => {
-    if (!product || (product.stock || 0) === 0) return;
-    setIsAdding(true);
+  // Zoom modal handlers
+  const handleMainImageClick = () => {
+    setIsCarouselPaused(true);
+    setZoomOpen(true);
+  };
+  const handleCloseZoom = () => {
+    setZoomOpen(false);
+    setTimeout(() => setIsCarouselPaused(false), 200); // Pequeño delay para evitar conflicto visual
+  };
 
-    const selectedPrice = selectedSize && product.sizesPrices && product.sizesPrices[selectedSize]
-      ? product.sizesPrices[selectedSize]
-      : product.price;
+  const handleAddToCart = () => {
+    if (!product || !selectedVariant || selectedVariant.stock === 0) return;
+    setIsAdding(true);
 
     const productToAdd = {
       id: product.id,
       name: product.name,
       brand: product.brand,
       image: product.image,
-      size: selectedSize,
-      price: selectedPrice,
-      stock: product.stock || 0,
+      size: selectedVariant.size,
+      price: selectedVariant.price,
+      stock: selectedVariant.stock,
       quantity
     };
     addToCart(productToAdd, quantity);
@@ -112,7 +125,7 @@ const productReviews = product
       setIsAdding(false);
       setJustAdded(true);
       setTimeout(() => setJustAdded(false), 3000);
-    }, 500);
+    }, 200);
   };
 
   const averageRating =
@@ -143,9 +156,20 @@ const productReviews = product
 
   const similarProducts = getSimilarProducts(product.id);
 
-  const handleSizeChange = (size: string) => setSelectedSize(size);
+  // Tipar correctamente el handler de variantes
+  type ProductVariant = {
+    size: string;
+    price: number;
+    stock: number;
+  };
+  const handleVariantChange = (variant: ProductVariant) => {
+    setSelectedVariant(variant);
+    setQuantity(1);
+  };
   const decreaseQuantity = () => quantity > 1 && setQuantity(quantity - 1);
-  const increaseQuantity = () => quantity < (product.stock || 10) && setQuantity(quantity + 1);
+  const increaseQuantity = () => {
+    if (selectedVariant && quantity < selectedVariant.stock) setQuantity(quantity + 1);
+  };
 
   const productImages = product.images || [product.image];
 
@@ -156,12 +180,29 @@ const productReviews = product
           {/* Product images */}
           <div className="lg:col-span-2 flex flex-col items-center">
             <div className="relative group w-full max-w-md">
-              <div className="aspect-[5/6] rounded-lg overflow-hidden border-2 border-gray-200 hover:border-[#D4AF37] transition-colors duration-300 shadow-md">
+              <div className="aspect-[5/6] rounded-lg overflow-hidden border-2 border-gray-200 hover:border-[#D4AF37] transition-colors duration-300 shadow-md cursor-zoom-in">
                 <img
                   src={mainImage}
                   alt={product.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  onClick={handleMainImageClick}
+                  style={{ cursor: 'zoom-in' }}
                 />
+      {/* Zoom Modal */}
+      {zoomOpen && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black bg-opacity-80 cursor-zoom-out animate-fadeIn"
+          onClick={handleCloseZoom}
+        >
+          <img
+            src={mainImage}
+            alt={product.name}
+            className="max-h-[90vh] max-w-[95vw] rounded-lg shadow-2xl border-4 border-[#D4AF37] object-contain"
+            style={{ cursor: 'zoom-out' }}
+            onClick={handleCloseZoom}
+          />
+        </div>
+      )}
                 {productImages.length > 1 && (
                   <>
                     <button
@@ -222,33 +263,37 @@ const productReviews = product
               <p className="text-gray-700 leading-relaxed">{product.description}</p>
             </div>
 
-            {/* Tamaños */}
-            {product.sizes && product.sizes.length > 0 && (
+            {/* Tamaños (Variants) */}
+            {product.variants && product.variants.length > 0 && (
               <div className="mt-6">
                 <h3 className="text-base font-medium text-gray-900 mb-3">Tamaños</h3>
                 <div className="grid grid-cols-3 gap-3">
-                  {product.sizes.map(size => (
-                    <div key={size} className="relative">
+                  {product.variants.map(variant => (
+                    <div key={variant.size} className="relative">
                       <button
                         type="button"
                         className={`relative w-full flex flex-col items-center justify-center rounded-lg border-2 py-2 px-2 text-base font-medium transition-all duration-300 ${
-                          selectedSize === size
+                          selectedVariant && selectedVariant.size === variant.size
                             ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37] shadow-md'
                             : 'border-gray-300 bg-white text-gray-900 hover:border-[#D4AF37]/50 hover:bg-[#F9F9F9]'
-                        }`}
-                        onClick={() => handleSizeChange(size)}
+                        } ${variant.stock === 0 ? 'opacity-50' : ''}`}
+                        onClick={() => handleVariantChange(variant)}
+                        aria-disabled={variant.stock === 0}
                       >
-                        <span className="text-lg font-bold">{size}</span>
-                        {size === '10ml' && (
+                        <span className="text-lg font-bold">{variant.size}</span>
+                        {variant.size === '10ml' && (
                           <span className="absolute -top-2 -right-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-xs px-2 py-1 rounded-full font-bold shadow-lg">
                             Popular
                           </span>
+                        )}
+                        {variant.stock === 0 && (
+                          <span className="absolute bottom-1 left-1 right-1 text-xs text-red-500 font-semibold">Agotado</span>
                         )}
                       </button>
                     </div>
                   ))}
                 </div>
-                {selectedSize === '10ml' && (
+                {selectedVariant && selectedVariant.size === '10ml' && (
                   <div className="mt-4 p-2 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
                     <div className="flex items-center space-x-2">
                       <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full flex items-center justify-center">
@@ -268,31 +313,28 @@ const productReviews = product
                 <div className="flex items-baseline">
                   <span className="text-2xl font-bold text-gray-900">$</span>
                   <span className="text-2xl font-bold text-gray-900 mx-2">
-                    {selectedSize && product.sizesPrices && product.sizesPrices[selectedSize]
-                      ? product.sizesPrices[selectedSize].toFixed(0)
-                      : product.price.toFixed(0)
-                    }
+                    {selectedVariant ? selectedVariant.price.toFixed(0) : '--'}
                   </span>
                   <span className="text-lg font-medium text-[#BDC3C7]">MXN</span>
                 </div>
                 <p className="text-base text-[#BDC3C7]">
                   <span className={`mr-2 ${
-                    (product.stock || 0) === 0
+                    selectedVariant && selectedVariant.stock === 0
                       ? 'text-red-500'
-                      : (product.stock || 0) >= 40
+                      : selectedVariant && selectedVariant.stock >= 40
                         ? 'text-green-500'
                         : 'text-orange-500'
                   }`}>●</span>
                   <span className={`font-medium ${
-                    (product.stock || 0) === 0
+                    selectedVariant && selectedVariant.stock === 0
                       ? 'text-red-500'
-                      : (product.stock || 0) >= 40
+                      : selectedVariant && selectedVariant.stock >= 40
                         ? 'text-green-500'
                         : 'text-orange-500'
                   }`}>
-                    {(product.stock || 0) === 0
+                    {selectedVariant && selectedVariant.stock === 0
                       ? 'Agotado'
-                      : (product.stock || 0) >= 40
+                      : selectedVariant && selectedVariant.stock >= 40
                         ? 'Disponible'
                         : 'Agotándose'
                     }
@@ -326,7 +368,7 @@ const productReviews = product
                 {/* Botón Agregar al carrito */}
                 <Button
                   onClick={handleAddToCart}
-                  disabled={(product.stock || 0) === 0}
+                  disabled={!selectedVariant || selectedVariant.stock === 0}
                   className="flex-1"
                   style={justAdded ? { backgroundColor: '#16a34a', color: '#fff' } : {}}
                 >
@@ -343,7 +385,7 @@ const productReviews = product
                   ) : (
                     <>
                       <ShoppingBagIcon className="h-5 w-5 mr-2" />
-                      Agregar al carrito
+                      {selectedVariant && selectedVariant.stock === 0 ? 'Sin stock' : 'Agregar al carrito'}
                     </>
                   )}
                 </Button>
@@ -364,7 +406,7 @@ const productReviews = product
                   <div className="flex items-center">
                     <CheckIcon className="h-5 w-5 text-green-600 mr-2" />
                     <span className="text-green-800 text-sm font-medium">
-                      {quantity > 1 ? `${quantity} productos agregados` : 'Producto agregado'} al carrito ({selectedSize})
+                      {quantity > 1 ? `${quantity} productos agregados` : 'Producto agregado'} al carrito ({selectedVariant?.size})
                     </span>
                   </div>
                 </div>
@@ -535,9 +577,20 @@ const productReviews = product
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <SectionTitle> También te podrían gustar</SectionTitle>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {similarProducts.map(product => (
-                  <ProductCard key={product.id} {...product} />
-                ))}
+                {similarProducts.map(product => {
+                  const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
+                  const safePrice = hasVariants && typeof product.variants[0].price === 'number' && !isNaN(product.variants[0].price)
+                    ? product.variants[0].price
+                    : 0;
+                  return (
+                    <ProductCard
+                      key={product.id}
+                      {...product}
+                      price={safePrice}
+                      variants={Array.isArray(product.variants) ? product.variants : []}
+                    />
+                  );
+                })}
               </div>
             </div>
           </section>

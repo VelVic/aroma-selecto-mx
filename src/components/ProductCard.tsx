@@ -1,9 +1,15 @@
 import { useState } from 'react'; // ← AGREGAR useState
 import { useNavigate } from 'react-router-dom';
 import { StarIcon, HeartIcon, ShoppingBagIcon, SparklesIcon, BellIcon, FlameIcon, CheckIcon } from 'lucide-react'; // ← AGREGAR CheckIcon
-import { useCart } from '../context/CartContext'; // ← AGREGAR useCart
+import { useCart } from '../context/useCart';
 
 // ✅ INTERFACE COMPLETA Y CORREGIDA
+interface ProductVariant {
+  size: string;
+  price: number;
+  stock: number;
+}
+
 interface ProductCardProps {
   id: string;
   name: string;
@@ -13,12 +19,13 @@ interface ProductCardProps {
   image: string;
   rating: number;
   category: string;
-  stock?: number;
+  stock?: number; // legacy, ignorar
   isNew?: boolean;
   isSale?: boolean;
   isComingSoon?: boolean;
-  sizes?: string[];
-  sizesPrices?: { [size: string]: number };
+  sizes?: string[]; // legacy, ignorar
+  sizesPrices?: { [size: string]: number }; // legacy, ignorar
+  variants?: ProductVariant[];
   reviewCount?: number;
   description?: string;
   details?: string[];
@@ -31,8 +38,7 @@ interface ProductCardProps {
     size: string;
     price: number;
     stock: number;
-  }) => void; // Ajusta el tipo según tu modelo Product
-
+  }) => void;
 }
 
 const ProductCard = ({ 
@@ -43,20 +49,23 @@ const ProductCard = ({
   salePrice,
   image, 
   rating, 
-  stock = 0,
   isNew = false,
   isSale = false,
   isComingSoon = false,
-  sizes = [],
-  sizesPrices = {}, // ← AGREGAR default
+  variants = [],
 }: ProductCardProps) => {
   
   const navigate = useNavigate();
   
-  // ← AGREGAR FUNCIONALIDAD DEL CARRITO
+
+  // Calcular stock total y variantes disponibles
   const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
+
+  // Solo variantes con stock > 0
+  const availableVariants = variants.filter(v => v.stock > 0);
+  const totalStock = variants.reduce((sum, v) => sum + v.stock, 0);
 
   const handleProductClick = () => {
   navigate(`/fragancia/${id}`);
@@ -66,39 +75,29 @@ const ProductCard = ({
   // ← AGREGAR FUNCIÓN PARA CARRITO
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    
-    if (isComingSoon || stock === 0) return;
-    
+    if (isComingSoon || totalStock === 0 || availableVariants.length === 0) return;
     setIsAdding(true);
-    
-    // Usar primer tamaño disponible como predeterminado
-    const defaultSize = sizes[0] || '3ml';
-    const defaultPrice = sizesPrices[defaultSize] || price;
-    
+    // Usar primer tamaño disponible con stock
+    const defaultVariant = availableVariants[0] || variants[0];
     const product = {
       id,
       name,
       brand,
       image,
-      size: defaultSize,
-      price: defaultPrice,
-      stock
+      size: defaultVariant?.size || '3ml',
+      price: defaultVariant?.price || price,
+      stock: defaultVariant?.stock || 0
     };
-    
     addToCart(product);
-    
-    // Feedback visual
     setTimeout(() => {
       setIsAdding(false);
       setJustAdded(true);
-      
-      // Reset después de 2 segundos
       setTimeout(() => setJustAdded(false), 2000);
-    }, 500);
+    }, 200);
   };
 
   return (
-    <div className="group relative border-2 border-transparent hover:border-[#D4AF37] transition-all duration-300 rounded-lg p-2 section-card shadow-sm hover:shadow-lg hover:shadow-[#D4AF37]/10">
+    <div className="group relative border-2 border-transparent hover:border-[#D4AF37] transition-all duration-300 rounded-lg p-1 sm:p-2 section-card shadow-sm hover:shadow-lg hover:shadow-[#D4AF37]/10">
       
       {/* Imagen del producto */}
       <div 
@@ -108,7 +107,7 @@ const ProductCard = ({
         <img 
           src={image} 
           alt={name} 
-          className="h-full w-full object-cover object-center group-hover:scale-105 transition-all duration-500" 
+          className="w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-500" 
         />
         
         <div className="absolute inset-0 bg-gradient-to-t from-[#2C3E50]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -158,12 +157,12 @@ const ProductCard = ({
       </div>
 
       {/* Información del producto */}
-      <div className="mt-4">
+      <div className="mt-2 sm:mt-4">
         <div className="flex justify-between items-start">
           <div className="flex-1">
-            <h3 className="text-sm text-[#BDC3C7]">{brand}</h3>
+            <h3 className="text-xs sm:text-sm text-[#BDC3C7]">{brand}</h3>
             <button onClick={handleProductClick} className="text-left">
-              <h2 className="text-sm font-medium text-gray-900 mt-1 hover:text-[#D4AF37] transition-colors duration-300 line-clamp-2">
+              <h2 className="text-xs sm:text-sm font-medium text-gray-900 mt-0.5 sm:mt-1 hover:text-[#D4AF37] transition-colors duration-300 line-clamp-2">
                 {name}
               </h2>
             </button>
@@ -171,7 +170,7 @@ const ProductCard = ({
         </div>
 
         {/* ✅ RATING CORREGIDO */}
-        <div className="mt-3 flex items-center justify-between">
+        <div className="mt-2 sm:mt-3 flex items-center justify-between">
           <div className="flex items-center">
             <div className="flex items-center">
               {Array.from({ length: 5 }, (_, index) => (
@@ -192,15 +191,15 @@ const ProductCard = ({
           {!isComingSoon && (
             <div className="text-xs">
               <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                stock === 0 
+                totalStock === 0 
                   ? 'bg-red-100 text-red-700'
-                  : stock >= 15
+                  : totalStock >= 15
                     ? 'bg-green-100 text-green-700'
                     : 'bg-orange-100 text-orange-700'
               }`}>
-                {stock === 0 
+                {totalStock === 0 
                   ? 'Agotado'
-                  : stock >= 15
+                  : totalStock >= 15
                     ? 'Disponible'
                     : 'Agotándose'
                 }
@@ -209,19 +208,23 @@ const ProductCard = ({
           )}
         </div>
 
-        {/* ✅ TAMAÑOS SIMPLES */}
-        {!isComingSoon && sizes.length > 0 && (
-          <div className="mt-3">
-            <div className="flex items-center justify-between mb-2">
+        {/* ✅ TAMAÑOS DISPONIBLES */}
+        {!isComingSoon && variants.length > 0 && (
+          <div className="mt-2 sm:mt-3">
+            <div className="flex items-center justify-between mb-1 sm:mb-2">
               <span className="text-xs text-gray-500 font-medium">Tamaños:</span>
             </div>
-            <div className="flex space-x-2">
-              {sizes.map((size) => (
+            <div className="flex space-x-1 sm:space-x-2">
+              {variants.map((variant) => (
                 <span 
-                  key={`size-${size}`}
-                  className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-50 border border-gray-200 text-gray-600"
+                  key={`size-${variant.size}`}
+                  className={`inline-flex items-center px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-[10px] sm:text-xs font-medium border ${
+                    variant.stock > 0
+                      ? 'bg-gray-50 border-gray-200 text-gray-600'
+                      : 'bg-red-50 border-red-200 text-red-400 line-through opacity-60'
+                  }`}
                 >
-                  {size}
+                  {variant.size}
                 </span>
               ))}
             </div>
@@ -229,7 +232,7 @@ const ProductCard = ({
         )}
 
         {/* Precio y botón */}
-        <div className="mt-4 flex justify-between items-center">
+        <div className="mt-3 sm:mt-4 flex justify-between items-center">
           <div>
             {isComingSoon ? (
               <div className="flex items-baseline">
@@ -254,14 +257,28 @@ const ProductCard = ({
                 </div>
               </div>
             ) : (
-              <div className="flex items-baseline">
-                <span className="text-lg font-bold text-gray-900">$</span>
-                <span className="text-lg font-bold text-gray-900 mx-1">
-                  {/* ← MOSTRAR PRECIO DEL PRIMER TAMAÑO */}
-                  {sizes.length > 0 && sizesPrices[sizes[0]] ? sizesPrices[sizes[0]].toFixed(0) : price.toFixed(0)}
-                </span>
-                <span className="text-sm font-medium text-[#BDC3C7]">MXN</span>
-              </div>
+            <div className="flex items-baseline">
+              <span className="text-base sm:text-lg font-bold text-gray-900">$</span>
+              <span className="text-base sm:text-lg font-bold text-gray-900 mx-1">
+                {/* Mostrar precio del primer tamaño disponible */}
+                {(() => {
+                  const price1 = availableVariants && availableVariants[0] && typeof availableVariants[0].price === 'number' && !isNaN(availableVariants[0].price)
+                    ? availableVariants[0].price
+                    : undefined;
+                  const price2 = !price1 && variants && variants[0] && typeof variants[0].price === 'number' && !isNaN(variants[0].price)
+                    ? variants[0].price
+                    : undefined;
+                  const price3 = !price1 && !price2 && typeof price === 'number' && !isNaN(price)
+                    ? price
+                    : undefined;
+                  if (typeof price1 === 'number') return price1.toFixed(0);
+                  if (typeof price2 === 'number') return price2.toFixed(0);
+                  if (typeof price3 === 'number') return price3.toFixed(0);
+                  return '--';
+                })()}
+              </span>
+              <span className="text-xs sm:text-sm font-medium text-[#BDC3C7]">MXN</span>
+            </div>
             )}
           </div>
           
@@ -271,13 +288,13 @@ const ProductCard = ({
               e.stopPropagation();
               console.log('Notificar cuando esté disponible:', name);
             } : handleAddToCart}
-            disabled={stock === 0 && !isComingSoon}
+            disabled={totalStock === 0 && !isComingSoon}
             className={`p-2.5 rounded-lg transition-all duration-300 shadow-sm hover:shadow-lg hover:scale-105 group/btn disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 ${
               justAdded
                 ? 'bg-green-600 text-white'
                 : isComingSoon 
                   ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:from-purple-600 hover:to-indigo-700' 
-                  : stock === 0
+                  : totalStock === 0
                     ? 'bg-gray-300 text-gray-500'
                     : 'bg-[#2C3E50] hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] text-[#D4AF37] hover:text-white'
             }`}
@@ -286,7 +303,7 @@ const ProductCard = ({
                 ? 'Producto agregado'
                 : isComingSoon 
                   ? 'Notificarme cuando esté disponible' 
-                  : stock === 0 
+                  : totalStock === 0 
                     ? 'Producto agotado'
                     : 'Agregar al carrito'
             }

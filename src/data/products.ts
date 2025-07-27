@@ -1,8 +1,13 @@
+export interface ProductVariant {
+  size: string;
+  price: number;
+  stock: number;
+}
+
 export interface Product {
   id: string;
   name: string;
   brand: string;
-  price: number;
   image: string;
   images?: string[];
   rating: number;
@@ -11,9 +16,7 @@ export interface Product {
   details?: string[];
   occasions?: string[];
   seasons?: string[];
-  sizes?: string[];
-  sizesPrices?: { [key: string]: number };
-  stock?: number;
+  variants: ProductVariant[];
   reviewCount?: number;
   isNew?: boolean;
   isComingSoon?: boolean;
@@ -27,7 +30,6 @@ export const products: Product[] = [
     id: '1',
     name: 'Nautica Voyage EDT',
     brand: 'Nautica',
-    price: 40,
     image: 'https://img.ltwebstatic.com/images3_spmp/2023/09/22/66/1695397069153bf092e09d056a0129a86d246b126b_thumbnail_720x.jpg',
     images: [
       'https://img.ltwebstatic.com/images3_spmp/2023/09/22/66/1695397069153bf092e09d056a0129a86d246b126b_thumbnail_720x.jpg',
@@ -48,20 +50,17 @@ export const products: Product[] = [
       'Diario: Excelente para la oficina, escuela o uso cotidiano',
     ],
     seasons: ['Primavera', 'Verano'],
-    sizes: ['3ml', '5ml', '10ml'],
-    sizesPrices: {
-      '3ml': 40,
-      '5ml': 60,
-      '10ml': 90
-    },
-    stock: 35,
+    variants: [
+      { size: '3ml', price: 40, stock: 0 },
+      { size: '5ml', price: 60, stock: 10 },
+      { size: '10ml', price: 90, stock: 6 }
+    ],
     isNew: true
   },
   {
     id: '2',
     name: 'Dior Sauvage EDP',
     brand: 'Dior',
-    price: 140,
     image: 'https://lirp.cdn-website.com/b9414951/dms3rep/multi/opt/Perfume+Dior+Sauvage+Hombre+100+ml+EDP+DIOR+_+falabella_com-640w.jpg',
     images: [
       'https://lirp.cdn-website.com/b9414951/dms3rep/multi/opt/Perfume+Dior+Sauvage+Hombre+100+ml+EDP+DIOR+_+falabella_com-640w.jpg',
@@ -82,20 +81,17 @@ export const products: Product[] = [
       'Diario: Muy versátil para el uso diario, universidad o salidas casuales',
     ],
     seasons: ['Primavera', 'Verano', 'Otoño', 'Invierno'],
-    sizes: ['3ml', '5ml', '10ml'],
-    sizesPrices: {
-      '3ml': 140,
-      '5ml': 220,
-      '10ml': 410
-    },
-    stock: 100,
+    variants: [
+      { size: '3ml', price: 140, stock: 0 },
+      { size: '5ml', price: 220, stock: 0 },
+      { size: '10ml', price: 410, stock: 0 }
+    ],
     isComingSoon: true
   },
   {
     id: '3',
     name: 'Ariana Grande Cloud EDP',
     brand: 'Ariana Grande',
-    price: 90,
     image: 'https://aromatica.cr/cdn/shop/files/Decant-Cloud-Aromatica-CR-451463140.jpg?v=1750279021&width=1445',
     images: [
       'https://aromatica.cr/cdn/shop/files/Decant-Cloud-Aromatica-CR-451463140.jpg?v=1750279021&width=1445',
@@ -116,13 +112,11 @@ export const products: Product[] = [
       'Diario: Ideal para el uso diario o universidad si se aplica moderadamente'
     ],
     seasons: ['Otoño', 'Invierno','Primavera', 'Verano'],
-    sizes: ['3ml', '5ml', '10ml'],
-    sizesPrices: {
-      '3ml': 90,
-      '5ml': 140,
-      '10ml': 260
-    },
-    stock: 45,
+    variants: [
+      { size: '3ml', price: 90, stock: 0 },
+      { size: '5ml', price: 140, stock: 11 },
+      { size: '10ml', price: 260, stock: 5 }
+    ],
     reviewCount: 203,
     isNew: true
   },
@@ -130,7 +124,6 @@ export const products: Product[] = [
     id: '4',
     name: 'Good Girl EDP',
     brand: 'Carolina Herrera',
-    price: 110,
     image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     images: [
       'https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
@@ -151,20 +144,17 @@ export const products: Product[] = [
       'Diario: Ideal para el uso diario o universidad si se aplica moderadamente'
     ],
     seasons: ['Primavera', 'Verano', 'Otoño'],
-    sizes: ['3ml', '5ml', '10ml'],
-    sizesPrices: {
-      '3ml': 110,
-      '5ml': 170,
-      '10ml': 310
-    },
-    stock: 0,
+    variants: [
+      { size: '3ml', price: 110, stock: 0 },
+      { size: '5ml', price: 170, stock: 0 },
+      { size: '10ml', price: 310, stock: 0 }
+    ],
     isComingSoon: true
   },
   {
     id: '5',
     name: 'Acqua Di Gio EDP',
     brand: 'Giorgio Armani',
-    price: 90,
     image: 'https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     images: [
       'https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
@@ -185,20 +175,17 @@ export const products: Product[] = [
       'Diario: Excelente para la oficina, escuela o uso cotidiano'
     ],
     seasons: ['Verano', 'Otoño', 'Invierno'],
-    sizes: ['3ml', '5ml', '10ml'],
-    sizesPrices: {
-      '3ml': 100,
-      '5ml': 160,
-      '10ml': 300
-    },
-    stock: 0,
+    variants: [
+      { size: '3ml', price: 100, stock: 0 },
+      { size: '5ml', price: 160, stock: 0 },
+      { size: '10ml', price: 300, stock: 0 }
+    ],
     isComingSoon: true
   },
   {
     id: '6',
     name: 'Born In Roma Coral Fantasy EDP',
     brand: 'Valentino',
-    price: 130,
     image: 'https://america-retail.com/wp-content/uploads/2024/04/dior.jpg',
     images: [
       'https://america-retail.com/wp-content/uploads/2024/04/dior.jpg',
@@ -219,13 +206,11 @@ export const products: Product[] = [
       'Diario: Ideal para el uso diario'
     ],
     seasons: ['Primavera', 'Verano', 'Otoño'],
-    sizes: ['3ml', '5ml', '10ml'],
-    sizesPrices: {
-      '3ml': 160,
-      '5ml': 250,
-      '10ml': 470
-    },
-    stock: 0,
+    variants: [
+      { size: '3ml', price: 160, stock: 0 },
+      { size: '5ml', price: 250, stock: 0 },
+      { size: '10ml', price: 470, stock: 0 }
+    ],
     isComingSoon: true
   },
 ];

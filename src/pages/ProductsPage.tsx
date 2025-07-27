@@ -131,32 +131,39 @@ const ProductsPage = () => {
   // ✅ PRODUCTOS CENTRALIZADOS - ELIMINAR ARRAY LOCAL
   // const products = [...] ← ELIMINAR ESTA LÍNEA COMPLETA
 
+  // Obtener el precio base seguro de un producto
+  const getBasePrice = (product: Product): number => {
+    if (Array.isArray(product.variants) && product.variants.length > 0) {
+      const available = product.variants.find(v => typeof v.price === 'number' && v.stock > 0);
+      if (available) return available.price;
+      const first = product.variants.find(v => typeof v.price === 'number');
+      if (first) return first.price;
+    }
+    return 0;
+  };
+
   // ✅ FUNCIÓN PARA ORDENAR PRODUCTOS - TIPADA CORRECTAMENTE
   const getSortedProducts = (products: Product[]): Product[] => {
     const sorted = [...products];
-    
     switch (sortBy) {
       case 'price-asc':
-        return sorted.sort((a, b) => a.price - b.price);
+        return sorted.sort((a, b) => getBasePrice(a) - getBasePrice(b));
       case 'price-desc':
-        return sorted.sort((a, b) => b.price - a.price);
+        return sorted.sort((a, b) => getBasePrice(b) - getBasePrice(a));
       case 'disponibles':
         return sorted.sort((a, b) => {
-          // Disponibles primero (sin isComingSoon)
           if (!a.isComingSoon && b.isComingSoon) return -1;
           if (a.isComingSoon && !b.isComingSoon) return 1;
           return 0;
         });
       case 'proximamente':
         return sorted.sort((a, b) => {
-          // Próximamente primero (con isComingSoon)
           if (a.isComingSoon && !b.isComingSoon) return -1;
           if (!a.isComingSoon && b.isComingSoon) return 1;
           return 0;
         });
       case 'relevancia':
       default:
-        // Orden por defecto: Nuevos primero, luego por rating
         return sorted.sort((a, b) => {
           if (a.isNew && !b.isNew) return -1;
           if (!a.isNew && b.isNew) return 1;
@@ -165,21 +172,19 @@ const ProductsPage = () => {
     }
   };
 
-  // ✅ APLICAR FILTROS
+  // ✅ APLICAR FILTROS usando basePrice
   const filteredProducts = products.filter(product => {
     // Filtro por categoría
     if (selectedCategories.length > 0 && !selectedCategories.includes(product.category)) {
       return false;
     }
-    
     // Filtro por marca
     if (selectedBrands.length > 0 && !selectedBrands.includes(product.brand)) {
       return false;
     }
-    
     // Filtro por precio
     if (selectedPrices.length > 0) {
-      const price = product.price;
+      const price = getBasePrice(product);
       const matchesPrice = selectedPrices.some(priceRange => {
         switch (priceRange) {
           case 'Menos de $100':
@@ -196,7 +201,6 @@ const ProductsPage = () => {
       });
       if (!matchesPrice) return false;
     }
-    
     return true;
   });
 
@@ -205,8 +209,8 @@ const ProductsPage = () => {
 
   // Justo antes del return, calcula el producto más barato:
   const cheapestProduct = finalProducts.reduce(
-    (min, p) => (p.price < min.price ? p : min),
-    finalProducts[0] || { price: 50 }
+    (min, p) => (getBasePrice(p) < getBasePrice(min) ? p : min),
+    finalProducts[0] || { variants: [{ price: 50 }] }
   );
 
   // ✅ USAR FUNCIÓN IMPORTADA PARA MARCAS
@@ -322,7 +326,7 @@ const ProductsPage = () => {
                   Catálogo de fragancias
                 </h1>
                 <p className="text-sm text-gray-600 mb-1">
-                  Decants de 3ml, 5ml y 10ml desde $ {finalProducts.length > 0 ? cheapestProduct.price : '50'} MXN
+                  Decants de 3ml, 5ml y 10ml desde $ {finalProducts.length > 0 ? getBasePrice(cheapestProduct) : '50'} MXN
                 </p>
               </div>
               
@@ -350,7 +354,7 @@ const ProductsPage = () => {
                   </h1>
                   <div className="flex items-center space-x-4 text-sm">
                     <p className="text-gray-600">
-                      Decants de 3ml, 5ml y 10ml desde $ {finalProducts.length > 0 ? cheapestProduct.price : '50'} MXN
+                      Decants de 3ml, 5ml y 10ml desde $ {finalProducts.length > 0 ? getBasePrice(cheapestProduct) : '50'} MXN
                     </p>
                     <span className="text-gray-300">•</span>
                     <p className="text-gray-500">
@@ -534,7 +538,12 @@ const ProductsPage = () => {
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {finalProducts.map(product => (
-                      <ProductCard key={product.id} {...product} />
+                      <ProductCard
+                        key={product.id}
+                        {...product}
+                        price={getBasePrice(product)}
+                        variants={Array.isArray(product.variants) ? product.variants : []}
+                      />
                     ))}
                   </div>
                 )}
