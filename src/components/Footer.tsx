@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { InstagramIcon, FacebookIcon, MapPinIcon, MailIcon, PhoneIcon, GiftIcon, ChevronDownIcon, ChevronUpIcon, ClockIcon } from 'lucide-react';
+
 
 type SectionKey = 'productos' | 'informacion' | 'contacto' | 'sorteo' | 'redes';
 
@@ -22,7 +23,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#2C3E50] text-white">
+    <footer className="bg-[#2C3E50] text-white relative">
 <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
 
   {/* Sorteo Especial - Acordeón en móvil */}
@@ -188,10 +189,10 @@ const Footer = () => {
             </h3>
           </div>
           <div className="space-y-3">
-            <p className="text-[#BDC3C7] text-sm leading-relaxed">
+            <p className="text-[#BDC3C7] text-sm leading-relaxed text-center md:text-left">
               Aromas que hablan de ti y despiertan emociones únicas. Descubre fragancias exclusivas en formatos accesibles.
             </p>
-            <p className="text-[#D4AF37] text-sm font-medium">
+            <p className="text-[#D4AF37] text-sm font-medium text-center md:text-left">
               Perfumes 100% originales en presentación decant.
             </p>
           </div>
