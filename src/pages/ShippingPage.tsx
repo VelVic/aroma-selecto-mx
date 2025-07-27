@@ -79,7 +79,7 @@ const ShippingPage = () => {
         </div>
       </section>
 
-      {/* Beneficios por Compra */}
+      {/* Beneficios por Compra + Fun Fact */}
       <section className="py-16 bg-[#F9F9F9]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionTitle>Beneficios por Compra</SectionTitle>
@@ -237,7 +237,7 @@ const ShippingPage = () => {
             </h3>
             <div className="space-y-4">
               <div className="flex items-start">
-                <div className="w-8 h-8 bg-[#D4AF37] rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 mt-1">
+                <div className="w-8 h-8 min-w-8 min-h-8 aspect-square bg-[#D4AF37] rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 mt-1">
                   1
                 </div>
                 <div>
@@ -249,7 +249,7 @@ const ShippingPage = () => {
               </div>
               
               <div className="flex items-start">
-                <div className="w-8 h-8 bg-[#2C3E50] rounded-full flex items-center justify-center text-[#D4AF37] font-bold text-sm mr-4 mt-1">
+                <div className="w-8 h-8 min-w-8 min-h-8 aspect-square bg-[#2C3E50] rounded-full flex items-center justify-center text-[#D4AF37] font-bold text-sm mr-4 mt-1">
                   2
                 </div>
                 <div>
@@ -261,7 +261,7 @@ const ShippingPage = () => {
               </div>
               
               <div className="flex items-start">
-                <div className="w-8 h-8 bg-[#D4AF37] rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 mt-1">
+                <div className="w-8 h-8 min-w-8 min-h-8 aspect-square bg-[#D4AF37] rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 mt-1">
                   3
                 </div>
                 <div>
@@ -273,7 +273,7 @@ const ShippingPage = () => {
               </div>
               
               <div className="flex items-start">
-                <div className="w-8 h-8 bg-[#2C3E50] rounded-full flex items-center justify-center text-[#D4AF37] font-bold text-sm mr-4 mt-1">
+                <div className="w-8 h-8 min-w-8 min-h-8 aspect-square bg-[#2C3E50] rounded-full flex items-center justify-center text-[#D4AF37] font-bold text-sm mr-4 mt-1">
                   4
                 </div>
                 <div>
@@ -376,30 +376,47 @@ const ShippingPage = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA Mejorado + Mini FAQ */}
       <section className="py-16 bg-[#F9F9F9] border-t border-[#D4AF37] border-opacity-30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <SectionTitle>¿Tienes Dudas Sobre Envíos?</SectionTitle>
           <p className="text-xl text-[#BDC3C7] mb-8">
-            Contáctame directamente y resolveremos todas tus preguntas sobre envíos y entregas.
+            ¡Estoy aquí para ayudarte! Consulta las preguntas frecuentes o contáctame directamente por el canal que prefieras.
           </p>
+          {/* Mini FAQ */}
+          <div className="mb-10 text-left">
+            <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-[#D4AF37] mb-4">
+              <h4 className="font-semibold text-gray-900 mb-1">¿Cuánto tarda en llegar mi pedido?</h4>
+              <p className="text-[#BDC3C7] text-sm">El tiempo de entrega estándar es de 3-5 días hábiles, pero puede variar según tu ubicación y la paquetería.</p>
+            </div>
+            <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-[#D4AF37] mb-4">
+              <h4 className="font-semibold text-gray-900 mb-1">¿Puedo rastrear mi envío?</h4>
+              <p className="text-[#BDC3C7] text-sm">Sí, recibirás un número de rastreo por correo o WhatsApp una vez que tu pedido sea enviado.</p>
+            </div>
+            <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-[#D4AF37]">
+              <h4 className="font-semibold text-gray-900 mb-1">¿Qué hago si mi paquete no llega?</h4>
+              <p className="text-[#BDC3C7] text-sm">Contáctame por Instagram o WhatsApp y te ayudaré a resolverlo lo antes posible.</p>
+            </div>
+          </div>
+          {/* CTA Buttons con colores de marca */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                as="link"
-                to="/contacto"
-                variant="primary"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                >
-                Contactar Soporte
-              </Button>
-              <Button
-                as="link"
-                to="/fragancias"
-                variant="outline"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              >
-                Ver Productos
-              </Button>
+            <Button
+              as="link"
+              to="/contacto"
+              variant="primary"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              Contáctame
+            </Button>
+            <Button
+              as="link"
+              to='/fragrancias'
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="outline"
+            >
+              Ver Catálogo de Fragancias
+            </Button>
           </div>
         </div>
       </section>

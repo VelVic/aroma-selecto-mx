@@ -25,6 +25,8 @@ const CartPage = () => {
 
   const [paymentMethod, setPaymentMethod] = useState('transfer');
   const [showTicket, setShowTicket] = useState(false);
+  // Estado para acordeón móvil de tipo de entrega
+  const [openDeliveryAccordion, setOpenDeliveryAccordion] = useState('personal');
 
   // ← CONFIGURACIÓN ACTUALIZADA
   const FREE_SHIPPING_MINIMUM = 899; // $899 MXN para envío gratis
@@ -257,427 +259,546 @@ const CartPage = () => {
   }
 
   return (
-    <div className="bg-white pt-16">
-      {/* Hero Section */}
-      <section className="bg-[#F9F9F9] py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-logo font-bold text-gray-900 mb-2">Tu Carrito</h1>
-          <p className="text-[#BDC3C7]">Revisa tus productos y completa tu pedido</p>
+    <main className="bg-[#F9F9F9] pt-20 min-h-screen">
+  {/* Header tipo card */}
+  <section className="mb-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-white rounded-lg shadow-sm px-6 py-6 flex flex-col lg:flex-row lg:items-center lg:justify-between border border-gray-100">
+        <div>
+          <h1 className="text-3xl font-logo font-bold text-gray-900 mb-1">Tu Carrito</h1>
+          <p className="text-[#BDC3C7] text-sm">Revisa tus productos y completa tu pedido</p>
         </div>
-      </section>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid lg:grid-cols-3 gap-12">
-          
-          {/* Lista de Productos */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                <ShoppingBagIcon className="h-5 w-5 text-[#D4AF37] mr-2" />
-                Productos ({cartItems.length})
-              </h2>
-              
-              <div className="space-y-6">
-                {cartItems.map((item) => (
-                  <div key={`${item.id}-${item.size}`} className="flex items-center space-x-4 p-4 border border-gray-100 rounded-lg hover:border-[#D4AF37]/30 transition-colors">
-                    <img 
-                      src={item.image} 
-                      alt={item.name}
-                      className="w-20 h-20 object-cover rounded-lg bg-[#F9F9F9]"
-                    />
-                    
-                    <div className="flex-1">
-                      <h3 className="font-medium text-gray-900">{item.name}</h3>
-                      <p className="text-[#BDC3C7] text-sm">{item.brand} • {item.size}</p>
-                      <p className="text-[#D4AF37] font-semibold">$ {item.price} MXN</p>
-                    </div>
-                    
-                    <div className="flex items-center space-x-3">
-                      <button
-                        onClick={() => handleUpdateQuantity(item.id, item.size, item.quantity - 1)}
-                        className="p-1 rounded-full bg-gray-100 hover:bg-[#D4AF37] hover:text-white transition-colors"
-                      >
-                        <MinusIcon className="h-4 w-4" />
-                      </button>
-                      <span className="w-8 text-center font-medium">{item.quantity}</span>
-                      <button
-                        onClick={() => handleUpdateQuantity(item.id, item.size, item.quantity + 1)}
-                        disabled={item.quantity >= item.stock}
-                        className="p-1 rounded-full bg-gray-100 hover:bg-[#D4AF37] hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        <PlusIcon className="h-4 w-4" />
-                      </button>
-                    </div>
-                    
-                    <div className="text-right">
-                      <p className="font-semibold text-gray-900">$ {(item.price * item.quantity).toFixed(0)} MXN</p>
-                      <button
-                        onClick={() => handleRemoveItem(item.id, item.size)}
-                        className="text-red-500 hover:text-red-700 transition-colors mt-1"
-                      >
-                        <TrashIcon className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* ← ALERTAS DINÁMICAS MEJORADAS SEGÚN TIPO DE ENTREGA */}
-            <div className="space-y-4 mt-6">
-              
-              {/* ← ENTREGA PERSONAL: Solo decant gratis */}
-              {shippingInfo.deliveryType === 'personal' && subtotal < FREE_DECANT_MINIMUM && (
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
-                  <div className="flex items-center">
-                    <GiftIcon className="h-5 w-5 text-green-600 mr-3" />
-                    <div>
-                      <p className="text-green-900 font-medium text-sm">
-                        ¡Falta poco para tu decant gratis!
-                      </p>
-                      <p className="text-green-700 text-sm">
-                        Agrega <strong>${(FREE_DECANT_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y obtén un decant 5ml gratis
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* ← ENVÍO ESTÁNDAR: Decant gratis Y envío gratis */}
-              {shippingInfo.deliveryType === 'standard' && (
-                <>
-                  {/* Alert para Decant Gratis */}
-                  {subtotal < FREE_DECANT_MINIMUM && (
-                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
-                      <div className="flex items-center">
-                        <GiftIcon className="h-5 w-5 text-green-600 mr-3" />
-                        <div>
-                          <p className="text-green-900 font-medium text-sm">
-                            ¡Falta poco para tu decant gratis!
-                          </p>
-                          <p className="text-green-700 text-sm">
-                            Agrega <strong>${(FREE_DECANT_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y obtén un decant 5ml gratis
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Alert para Envío Gratis */}
-                  {subtotal < FREE_SHIPPING_MINIMUM && (
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
-                      <div className="flex items-center">
-                        <TruckIcon className="h-5 w-5 text-blue-600 mr-3" />
-                        <div>
-                          <p className="text-blue-900 font-medium text-sm">
-                            ¡Falta poco para el envío gratis!
-                          </p>
-                          <p className="text-blue-700 text-sm">
-                            Agrega <strong>${(FREE_SHIPPING_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y obtén envío estándar gratis
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Alert cuando se desbloquean ambos beneficios */}
-                  {subtotal >= FREE_SHIPPING_MINIMUM && subtotal >= FREE_DECANT_MINIMUM && (
-                    <div className="bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg p-4">
-                      <div className="flex items-center">
-                        <CheckCircleIcon className="h-5 w-5 text-yellow-600 mr-3" />
-                        <div>
-                          <p className="text-yellow-900 font-medium text-sm">
-                            ¡Felicidades! Desbloqueaste todos los beneficios
-                          </p>
-                          <p className="text-yellow-700 text-sm">
-                            🚚 Envío gratis + 🎁 Decant 5ml gratis incluidos
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
-
-              {/* ← ENVÍO EXPRESS: Decant gratis Y 50% descuento en envío */}
-              {shippingInfo.deliveryType === 'express' && (
-                <>
-                  {/* Alert para Decant Gratis */}
-                  {subtotal < FREE_DECANT_MINIMUM && (
-                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
-                      <div className="flex items-center">
-                        <GiftIcon className="h-5 w-5 text-green-600 mr-3" />
-                        <div>
-                          <p className="text-green-900 font-medium text-sm">
-                            ¡Falta poco para tu decant gratis!
-                          </p>
-                          <p className="text-green-700 text-sm">
-                            Agrega <strong>${(FREE_DECANT_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y obtén un decant 5ml gratis
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Alert para 50% Descuento en Express */}
-                  {subtotal < FREE_SHIPPING_MINIMUM && (
-                    <div className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-lg p-4">
-                      <div className="flex items-center">
-                        <TruckIcon className="h-5 w-5 text-orange-600 mr-3" />
-                        <div>
-                          <p className="text-orange-900 font-medium text-sm">
-                            ¡Falta poco para 50% descuento en envío express!
-                          </p>
-                          <p className="text-orange-700 text-sm">
-                            Agrega <strong>${(FREE_SHIPPING_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y paga solo $95 MXN (en lugar de $189)
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Alert cuando se desbloquean ambos beneficios para Express */}
-                  {subtotal >= FREE_SHIPPING_MINIMUM && subtotal >= FREE_DECANT_MINIMUM && (
-                    <div className="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-lg p-4">
-                      <div className="flex items-center">
-                        <CheckCircleIcon className="h-5 w-5 text-orange-600 mr-3" />
-                        <div>
-                          <p className="text-orange-900 font-medium text-sm">
-                            ¡Felicidades! Desbloqueaste todos los beneficios
-                          </p>
-                          <p className="text-orange-700 text-sm">
-                            🚚 50% descuento en envío express ($95 MXN) + 🎁 Decant 5ml gratis
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
-
-            </div>
-
-            {/* Información de Envío */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 mt-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                <MapPinIcon className="h-5 w-5 text-[#D4AF37] mr-2" />
-                Información de Envío
-              </h2>
-
-              {/* Tipo de Entrega */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-3">Tipo de Entrega</label>
-                <div className="grid md:grid-cols-3 gap-3">
-                  <label className="relative">
-                    <input
-                      type="radio"
-                      name="deliveryType"
-                      value="personal"
-                      checked={shippingInfo.deliveryType === 'personal'}
-                      onChange={(e) => setShippingInfo(prev => ({...prev, deliveryType: e.target.value}))}
-                      className="sr-only"
-                    />
-                    <div className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                      shippingInfo.deliveryType === 'personal' 
-                        ? 'border-[#D4AF37] bg-[#D4AF37]/5' 
-                        : 'border-gray-200 hover:border-[#D4AF37]/50'
-                    }`}>
-                      <HandIcon className="h-6 w-6 text-[#D4AF37] mb-2" />
-                      <h4 className="font-medium text-sm">Entrega Personal</h4>
-                      <p className="text-xs text-[#BDC3C7]">Gutiérrez Zamora</p>
-                      <p className="text-xs font-medium text-green-600 mt-1">GRATIS</p>
-                    </div>
-                  </label>
-                  
-                  <label className="relative">
-                    <input
-                      type="radio"
-                      name="deliveryType"
-                      value="standard"
-                      checked={shippingInfo.deliveryType === 'standard'}
-                      onChange={(e) => setShippingInfo(prev => ({...prev, deliveryType: e.target.value}))}
-                      className="sr-only"
-                    />
-                    <div className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                      shippingInfo.deliveryType === 'standard' 
-                        ? 'border-[#D4AF37] bg-[#D4AF37]/5' 
-                        : 'border-gray-200 hover:border-[#D4AF37]/50'
-                    }`}>
-                      <TruckIcon className="h-6 w-6 text-[#2C3E50] mb-2" />
-                      <h4 className="font-medium text-sm">Envío Estándar</h4>
-                      <p className="text-xs text-[#BDC3C7]">3-5 días hábiles</p>
-                      <p className="text-xs font-medium">
-                        {subtotal >= FREE_SHIPPING_MINIMUM ? (
-                          <span className="text-green-600">GRATIS</span>
-                        ) : (
-                          '$140 MXN'
-                        )}
-                      </p>
-                    </div>
-                  </label>
-                  
-                  <label className="relative">
-                    <input
-                      type="radio"
-                      name="deliveryType"
-                      value="express"
-                      checked={shippingInfo.deliveryType === 'express'}
-                      onChange={(e) => setShippingInfo(prev => ({...prev, deliveryType: e.target.value}))}
-                      className="sr-only"
-                    />
-                    <div className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                      shippingInfo.deliveryType === 'express' 
-                        ? 'border-[#D4AF37] bg-[#D4AF37]/5' 
-                        : 'border-gray-200 hover:border-[#D4AF37]/50'
-                    }`}>
-                      <TruckIcon className="h-6 w-6 text-[#D4AF37] mb-2" />
-                      <h4 className="font-medium text-sm">Envío Express</h4>
-                      <p className="text-xs text-[#BDC3C7]">1-2 días hábiles</p>
-                      <p className="text-xs font-medium">
-                        {subtotal >= FREE_SHIPPING_MINIMUM ? (
-                          <span className="text-orange-600">$95 MXN</span>
-                        ) : (
-                          '$189 MXN'
-                        )}
-                      </p>
-                    </div>
-                  </label>
-                </div>
-              </div>
-
-              {/* ← CAMPOS DINÁMICOS SEGÚN TIPO DE ENTREGA */}
-              {renderShippingFields()}
-            </div>
-          </div>
-
-          {/* Resumen del Pedido */}
-          <div className="lg:col-span-1">
-            <div className="bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm border border-gray-100 p-6 sticky top-24">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Resumen del Pedido</h2>
-              
-              <div className="space-y-4">
-                <div className="flex justify-between">
-                  <span className="text-[#BDC3C7]">Subtotal</span>
-                  <span className="font-medium">${subtotal.toFixed(0)} MXN</span>
-                </div>
-                
-                <div className="flex justify-between">
-                  <span className="text-[#BDC3C7]">Envío</span>
-                  <span className={`font-medium ${finalShippingCost === 0 ? 'text-green-600' : ''}`}>
-                    {finalShippingCost === 0 ? 'GRATIS' : `$${finalShippingCost} MXN`}
-                  </span>
-                </div>
-
-                {/* ← MOSTRAR DESCUENTO EN ENVÍO CORREGIDO EN RESUMEN */}
-                {hasShippingDiscount && finalShippingCost > 0 && shippingInfo.deliveryType === 'express' && (
-                  <div className="flex justify-between text-orange-600">
-                    <span className="text-sm">Descuento envío (50%)</span>
-                    <span className="text-sm font-medium">-$94 MXN</span>
-                  </div>
-                )}
-
-                {hasShippingDiscount && finalShippingCost === 0 && shippingInfo.deliveryType === 'standard' && (
-                  <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
-                    <div className="flex items-center">
-                      <CheckCircleIcon className="h-4 w-4 text-green-600 mr-2" />
-                      <span className="text-green-800 text-sm">¡Envío gratis desbloqueado!</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* ← NUEVA ALERTA PARA EXPRESS CON DESCUENTO EN RESUMEN */}
-                {hasShippingDiscount && finalShippingCost > 0 && shippingInfo.deliveryType === 'express' && (
-                  <div className="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-lg">
-                    <div className="flex items-center">
-                      <CheckCircleIcon className="h-4 w-4 text-orange-600 mr-2" />
-                      <span className="text-orange-800 text-sm">¡50% descuento aplicado!</span>
-                    </div>
-                  </div>
-                )}
-                
-                {freeDecant && (
-                  <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
-                    <div className="flex items-center">
-                      <GiftIcon className="h-4 w-4 text-green-600 mr-2" />
-                      <span className="text-green-800 text-sm">Decant gratis 5ml</span>
-                    </div>
-                    <span className="text-green-600 font-medium">¡Incluido!</span>
-                  </div>
-                )}
-                
-                <div className="border-t pt-4">
-                  <div className="flex justify-between text-lg font-bold">
-                    <span>Total</span>
-                    <span className="text-[#D4AF37]">${total.toFixed(0)} MXN</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Método de Pago */}
-              <div className="mt-6">
-                <h3 className="font-medium text-gray-900 mb-3">Método de Pago</h3>
-                <div className="space-y-2">
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="transfer"
-                      checked={paymentMethod === 'transfer'}
-                      onChange={(e) => setPaymentMethod(e.target.value)}
-                      className="mr-3"
-                    />
-                    <CreditCardIcon className="h-4 w-4 mr-2 text-[#D4AF37]" />
-                    <span className="text-sm">Transferencia bancaria</span>
-                  </label>
-                  
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="oxxo"
-                      checked={paymentMethod === 'oxxo'}
-                      onChange={(e) => setPaymentMethod(e.target.value)}
-                      className="mr-3"
-                    />
-                    <BuildingIcon className="h-4 w-4 mr-2 text-[#D4AF37]" />
-                    <span className="text-sm">Pago en OXXO</span>
-                  </label>
-                  
-                  {/* ← SOLO MOSTRAR EFECTIVO CONTRA ENTREGA SI ES ENTREGA PERSONAL */}
-                  {shippingInfo.deliveryType === 'personal' && (
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="cash"
-                        checked={paymentMethod === 'cash'}
-                        onChange={(e) => setPaymentMethod(e.target.value)}
-                        className="mr-3"
-                      />
-                      <HandIcon className="h-4 w-4 mr-2 text-[#D4AF37]" />
-                      <span className="text-sm">Efectivo contra entrega</span>
-                    </label>
-                  )}
-                </div>
-              </div>
-
-              {/* Botón Generar Ticket */}
-              <button
-                onClick={generateTicket}
-                disabled={!isFormValid()}
-                className="w-full mt-6 bg-[#2C3E50] text-[#D4AF37] py-3 rounded-lg font-medium hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] hover:text-[#2C3E50] transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-              >
-                <TicketIcon className="h-5 w-5 mr-2" />
-                Generar Ticket de Compra
-              </button>
-              
-              <p className="text-xs text-[#BDC3C7] mt-3 text-center">
-                El ticket se enviará por WhatsApp o Instagram para confirmación
-              </p>
-            </div>
-          </div>
+        <div className="mt-4 lg:mt-0 flex items-center space-x-4">
+          <span className="text-sm text-gray-500 font-medium">{cartItems.length} productos</span>
+          <span className="hidden lg:inline text-gray-300">•</span>
+          <span className="text-sm text-[#D4AF37] font-bold">Subtotal: ${subtotal.toFixed(0)} MXN</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  {/* Grid principal */}
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+    {/* Columna 1: Lista de productos */}
+    <div className="lg:col-span-2 flex flex-col gap-6">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+            <ShoppingBagIcon className="h-5 w-5 text-[#D4AF37] mr-2" />
+            Productos ({cartItems.length})
+          </h2>
+          <Button
+            as="link"
+            to="/fragancias"
+            variant="outline"
+            className="hidden sm:inline-flex border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10"
+          >
+            Seguir comprando
+          </Button>
+        </div>
+        <div className="space-y-6 divide-y divide-gray-100">
+          {cartItems.map((item) => (
+            <div
+              key={`${item.id}-${item.size}`}
+              className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-4 bg-[#FAFAFA] rounded-lg hover:shadow-md transition-all border border-transparent hover:border-[#D4AF37]/30 relative"
+            >
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-20 h-20 object-cover rounded-lg bg-[#F9F9F9] mx-auto sm:mx-0"
+              />
+              <div className="flex-1 min-w-0">
+                <h3
+                  className="font-medium text-gray-900 whitespace-normal break-words text-center sm:text-left sm:truncate sm:max-w-none"
+                >
+                  {item.name}
+                </h3>
+                <p
+                  className="text-[#BDC3C7] text-sm whitespace-normal break-words text-center sm:text-left sm:truncate sm:max-w-none"
+                >
+                  {item.brand} • {item.size}
+                </p>
+                <p className="text-[#D4AF37] font-semibold text-center sm:text-left">$ {item.price} MXN</p>
+              </div>
+              <div className="flex items-center space-x-3 mt-2 sm:mt-0">
+                <button
+                  aria-label="Disminuir cantidad"
+                  onClick={() => handleUpdateQuantity(item.id, item.size, item.quantity - 1)}
+                  className="p-1 rounded-full bg-gray-100 hover:bg-[#D4AF37] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                  disabled={item.quantity <= 1}
+                >
+                  <MinusIcon className="h-4 w-4" />
+                </button>
+                <span className="w-8 text-center font-medium">{item.quantity}</span>
+                <button
+                  aria-label="Aumentar cantidad"
+                  onClick={() => handleUpdateQuantity(item.id, item.size, item.quantity + 1)}
+                  disabled={item.quantity >= item.stock}
+                  className="p-1 rounded-full bg-gray-100 hover:bg-[#D4AF37] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4AF37] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <PlusIcon className="h-4 w-4" />
+                </button>
+              </div>
+              <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-end mt-2 sm:mt-0 min-w-[80px]">
+                <p className="font-semibold text-gray-900 text-right whitespace-nowrap">$ {(item.price * item.quantity).toFixed(0)} MXN</p>
+                <button
+                  aria-label="Eliminar producto"
+                  onClick={() => handleRemoveItem(item.id, item.size)}
+                  className="text-red-500 hover:text-white hover:bg-red-500 transition-colors mt-1 ml-2 sm:ml-0 rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-red-400"
+                >
+                  <TrashIcon className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <Button
+          as="link"
+          to="/fragancias"
+          variant="outline"
+          className="mt-6 w-full sm:hidden border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10"
+        >
+          Seguir comprando
+        </Button>
+      </div>
+
+      {/* Alertas dinámicas y beneficios */}
+      <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* ...alertas según tipo de entrega, igual que antes... */}
+        {shippingInfo.deliveryType === 'personal' && subtotal < FREE_DECANT_MINIMUM && (
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
+            <div className="flex items-center">
+              <GiftIcon className="h-5 w-5 text-green-600 mr-3" />
+              <div>
+                <p className="text-green-900 font-medium text-sm">¡Falta poco para tu decant gratis!</p>
+                <p className="text-green-700 text-sm">Agrega <strong>${(FREE_DECANT_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y obtén un decant 5ml gratis</p>
+              </div>
+            </div>
+          </div>
+        )}
+        {shippingInfo.deliveryType === 'standard' && (
+          <>
+            {subtotal < FREE_DECANT_MINIMUM && (
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
+                <div className="flex items-center">
+                  <GiftIcon className="h-5 w-5 text-green-600 mr-3" />
+                  <div>
+                    <p className="text-green-900 font-medium text-sm">¡Falta poco para tu decant gratis!</p>
+                    <p className="text-green-700 text-sm">Agrega <strong>${(FREE_DECANT_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y obtén un decant 5ml gratis</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {subtotal < FREE_SHIPPING_MINIMUM && (
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-center">
+                  <TruckIcon className="h-5 w-5 text-blue-600 mr-3" />
+                  <div>
+                    <p className="text-blue-900 font-medium text-sm">¡Falta poco para el envío gratis!</p>
+                    <p className="text-blue-700 text-sm">Agrega <strong>${(FREE_SHIPPING_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y obtén envío estándar gratis</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {subtotal >= FREE_SHIPPING_MINIMUM && subtotal >= FREE_DECANT_MINIMUM && (
+              <div className="bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg p-4">
+                <div className="flex items-center">
+                  <CheckCircleIcon className="h-5 w-5 text-yellow-600 mr-3" />
+                  <div>
+                    <p className="text-yellow-900 font-medium text-sm">¡Felicidades! Desbloqueaste todos los beneficios</p>
+                    <p className="text-yellow-700 text-sm">🚚 Envío gratis + 🎁 Decant 5ml gratis incluidos</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+        {shippingInfo.deliveryType === 'express' && (
+          <>
+            {subtotal < FREE_DECANT_MINIMUM && (
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
+                <div className="flex items-center">
+                  <GiftIcon className="h-5 w-5 text-green-600 mr-3" />
+                  <div>
+                    <p className="text-green-900 font-medium text-sm">¡Falta poco para tu decant gratis!</p>
+                    <p className="text-green-700 text-sm">Agrega <strong>${(FREE_DECANT_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y obtén un decant 5ml gratis</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {subtotal < FREE_SHIPPING_MINIMUM && (
+              <div className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-lg p-4">
+                <div className="flex items-center">
+                  <TruckIcon className="h-5 w-5 text-orange-600 mr-3" />
+                  <div>
+                    <p className="text-orange-900 font-medium text-sm">¡Falta poco para 50% descuento en envío express!</p>
+                    <p className="text-orange-700 text-sm">Agrega <strong>${(FREE_SHIPPING_MINIMUM - subtotal).toFixed(0)} MXN</strong> más y paga solo $95 MXN (en lugar de $189)</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {subtotal >= FREE_SHIPPING_MINIMUM && subtotal >= FREE_DECANT_MINIMUM && (
+              <div className="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-lg p-4">
+                <div className="flex items-center">
+                  <CheckCircleIcon className="h-5 w-5 text-orange-600 mr-3" />
+                  <div>
+                    <p className="text-orange-900 font-medium text-sm">¡Felicidades! Desbloqueaste todos los beneficios</p>
+                    <p className="text-orange-700 text-sm">🚚 50% descuento en envío express ($95 MXN) + 🎁 Decant 5ml gratis</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Información de Envío y Resumen del Pedido en grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+        {/* Información de Envío */}
+        <div className="space-y-4 mb-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+            <MapPinIcon className="h-5 w-5 text-[#D4AF37] mr-2" />
+            Información de Envío
+          </h2>
+          {/* Tipo de Entrega */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-3">Tipo de Entrega</label>
+        {/* Mobile: acordeón, Desktop: grid */}
+        <div className="block md:hidden">
+          {/* Entrega Personal */}
+          <div className="mb-2 border rounded-lg overflow-hidden">
+            <button
+              type="button"
+              className={`w-full flex items-center justify-between p-4 focus:outline-none ${openDeliveryAccordion === 'personal' ? 'bg-[#D4AF37]/10' : 'bg-white'}`}
+              onClick={() => {
+                if (openDeliveryAccordion !== 'personal') {
+                  setShippingInfo(prev => ({...prev, deliveryType: 'personal'}));
+                  setOpenDeliveryAccordion('personal');
+                } else {
+                  setOpenDeliveryAccordion('');
+                }
+              }}
+            >
+              <span className="flex items-center">
+                <HandIcon className="h-6 w-6 text-[#D4AF37] mr-2" />
+                <span className="font-medium text-sm">Entrega Personal</span>
+              </span>
+              <input
+                type="radio"
+                name="deliveryType"
+                value="personal"
+                checked={shippingInfo.deliveryType === 'personal'}
+                onChange={(e) => {
+                  setShippingInfo(prev => ({...prev, deliveryType: e.target.value}));
+                  setOpenDeliveryAccordion('personal');
+                }}
+                className="ml-2 accent-[#D4AF37]"
+              />
+            </button>
+            {openDeliveryAccordion === 'personal' && (
+              <div className="px-4 pb-4 animate-fade-in">
+                <div className="text-xs text-[#BDC3C7] mb-2">
+                  <p>Gutiérrez Zamora</p>
+                  <p className="text-green-600 font-medium mt-1">GRATIS</p>
+                </div>
+                {shippingInfo.deliveryType === 'personal' && renderShippingFields()}
+              </div>
+            )}
+          </div>
+          {/* Envío Estándar */}
+          <div className="mb-2 border rounded-lg overflow-hidden">
+            <button
+              type="button"
+              className={`w-full flex items-center justify-between p-4 focus:outline-none ${openDeliveryAccordion === 'standard' ? 'bg-[#D4AF37]/10' : 'bg-white'}`}
+              onClick={() => {
+                if (openDeliveryAccordion !== 'standard') {
+                  setShippingInfo(prev => ({...prev, deliveryType: 'standard'}));
+                  setOpenDeliveryAccordion('standard');
+                } else {
+                  setOpenDeliveryAccordion('');
+                }
+              }}
+            >
+              <span className="flex items-center">
+                <TruckIcon className="h-6 w-6 text-[#2C3E50] mr-2" />
+                <span className="font-medium text-sm">Envío Estándar</span>
+              </span>
+              <input
+                type="radio"
+                name="deliveryType"
+                value="standard"
+                checked={shippingInfo.deliveryType === 'standard'}
+                onChange={(e) => {
+                  setShippingInfo(prev => ({...prev, deliveryType: e.target.value}));
+                  setOpenDeliveryAccordion('standard');
+                }}
+                className="ml-2 accent-[#D4AF37]"
+              />
+            </button>
+            {openDeliveryAccordion === 'standard' && (
+              <div className="px-4 pb-4 animate-fade-in">
+                <div className="text-xs text-[#BDC3C7] mb-2">
+                  <p>3-5 días hábiles</p>
+                  <p className="font-medium mt-1">
+                    {subtotal >= FREE_SHIPPING_MINIMUM ? (
+                      <span className="text-green-600">GRATIS</span>
+                    ) : (
+                      '$140 MXN'
+                    )}
+                  </p>
+                </div>
+                {shippingInfo.deliveryType === 'standard' && renderShippingFields()}
+              </div>
+            )}
+          </div>
+          {/* Envío Express */}
+          <div className="mb-2 border rounded-lg overflow-hidden">
+            <button
+              type="button"
+              className={`w-full flex items-center justify-between p-4 focus:outline-none ${openDeliveryAccordion === 'express' ? 'bg-[#D4AF37]/10' : 'bg-white'}`}
+              onClick={() => {
+                if (openDeliveryAccordion !== 'express') {
+                  setShippingInfo(prev => ({...prev, deliveryType: 'express'}));
+                  setOpenDeliveryAccordion('express');
+                } else {
+                  setOpenDeliveryAccordion('');
+                }
+              }}
+            >
+              <span className="flex items-center">
+                <TruckIcon className="h-6 w-6 text-[#D4AF37] mr-2" />
+                <span className="font-medium text-sm">Envío Express</span>
+              </span>
+              <input
+                type="radio"
+                name="deliveryType"
+                value="express"
+                checked={shippingInfo.deliveryType === 'express'}
+                onChange={(e) => {
+                  setShippingInfo(prev => ({...prev, deliveryType: e.target.value}));
+                  setOpenDeliveryAccordion('express');
+                }}
+                className="ml-2 accent-[#D4AF37]"
+              />
+            </button>
+            {openDeliveryAccordion === 'express' && (
+              <div className="px-4 pb-4 animate-fade-in">
+                <div className="text-xs text-[#BDC3C7] mb-2">
+                  <p>1-2 días hábiles</p>
+                  <p className="font-medium mt-1">
+                    {subtotal >= FREE_SHIPPING_MINIMUM ? (
+                      <span className="text-orange-600">$95 MXN</span>
+                    ) : (
+                      '$189 MXN'
+                    )}
+                  </p>
+                </div>
+                {shippingInfo.deliveryType === 'express' && renderShippingFields()}
+              </div>
+            )}
+          </div>
+        </div>
+        {/* Desktop: grid de opciones como antes */}
+        <div className="hidden md:grid md:grid-cols-3 gap-3">
+          {/* ...radios igual que antes... */}
+          <label className="relative">
+            <input
+              type="radio"
+              name="deliveryType"
+              value="personal"
+              checked={shippingInfo.deliveryType === 'personal'}
+              onChange={(e) => setShippingInfo(prev => ({...prev, deliveryType: e.target.value}))}
+              className="sr-only"
+            />
+            <div className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
+              shippingInfo.deliveryType === 'personal' 
+                ? 'border-[#D4AF37] bg-[#D4AF37]/5' 
+                : 'border-gray-200 hover:border-[#D4AF37]/50'
+            }`}>
+              <HandIcon className="h-6 w-6 text-[#D4AF37] mb-2" />
+              <h4 className="font-medium text-sm">Entrega Personal</h4>
+              <p className="text-xs text-[#BDC3C7]">Gutiérrez Zamora</p>
+              <p className="text-xs font-medium text-green-600 mt-1">GRATIS</p>
+            </div>
+          </label>
+          <label className="relative">
+            <input
+              type="radio"
+              name="deliveryType"
+              value="standard"
+              checked={shippingInfo.deliveryType === 'standard'}
+              onChange={(e) => setShippingInfo(prev => ({...prev, deliveryType: e.target.value}))}
+              className="sr-only"
+            />
+            <div className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
+              shippingInfo.deliveryType === 'standard' 
+                ? 'border-[#D4AF37] bg-[#D4AF37]/5' 
+                : 'border-gray-200 hover:border-[#D4AF37]/50'
+            }`}>
+              <TruckIcon className="h-6 w-6 text-[#2C3E50] mb-2" />
+              <h4 className="font-medium text-sm">Envío Estándar</h4>
+              <p className="text-xs text-[#BDC3C7]">3-5 días hábiles</p>
+              <p className="text-xs font-medium">
+                {subtotal >= FREE_SHIPPING_MINIMUM ? (
+                  <span className="text-green-600">GRATIS</span>
+                ) : (
+                  '$140 MXN'
+                )}
+              </p>
+            </div>
+          </label>
+          <label className="relative">
+            <input
+              type="radio"
+              name="deliveryType"
+              value="express"
+              checked={shippingInfo.deliveryType === 'express'}
+              onChange={(e) => setShippingInfo(prev => ({...prev, deliveryType: e.target.value}))}
+              className="sr-only"
+            />
+            <div className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
+              shippingInfo.deliveryType === 'express' 
+                ? 'border-[#D4AF37] bg-[#D4AF37]/5' 
+                : 'border-gray-200 hover:border-[#D4AF37]/50'
+            }`}>
+              <TruckIcon className="h-6 w-6 text-[#D4AF37] mb-2" />
+              <h4 className="font-medium text-sm">Envío Express</h4>
+              <p className="text-xs text-[#BDC3C7]">1-2 días hábiles</p>
+              <p className="text-xs font-medium">
+                {subtotal >= FREE_SHIPPING_MINIMUM ? (
+                  <span className="text-orange-600">$95 MXN</span>
+                ) : (
+                  '$189 MXN'
+                )}
+              </p>
+            </div>
+          </label>
+        </div>
+      </div>
+        {/* Solo desktop: mostrar campos según opción seleccionada */}
+        <div className="hidden md:block">
+          {renderShippingFields()}
+        </div>
+          {!isFormValid() && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+              Por favor, completa todos los campos obligatorios para continuar.
+            </div>
+          )}
+        </div>
+        {/* Resumen del Pedido */}
+        <div className="bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm border border-gray-100 p-6 h-fit">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">Resumen del Pedido</h2>
+          <div className="space-y-4">
+            <div className="flex justify-between">
+              <span className="text-[#BDC3C7]">Subtotal</span>
+              <span className="font-medium">${subtotal.toFixed(0)} MXN</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-[#BDC3C7]">Envío</span>
+              <span className={`font-medium ${finalShippingCost === 0 ? 'text-green-600' : ''}`}>
+                {finalShippingCost === 0 ? 'GRATIS' : `$${finalShippingCost} MXN`}
+              </span>
+            </div>
+            {hasShippingDiscount && finalShippingCost > 0 && shippingInfo.deliveryType === 'express' && (
+              <div className="flex justify-between text-orange-600">
+                <span className="text-sm">Descuento envío (50%)</span>
+                <span className="text-sm font-medium">-$94 MXN</span>
+              </div>
+            )}
+            {hasShippingDiscount && finalShippingCost === 0 && shippingInfo.deliveryType === 'standard' && (
+              <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                <div className="flex items-center">
+                  <CheckCircleIcon className="h-4 w-4 text-green-600 mr-2" />
+                  <span className="text-green-800 text-sm">¡Envío gratis desbloqueado!</span>
+                </div>
+              </div>
+            )}
+            {hasShippingDiscount && finalShippingCost > 0 && shippingInfo.deliveryType === 'express' && (
+              <div className="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                <div className="flex items-center">
+                  <CheckCircleIcon className="h-4 w-4 text-orange-600 mr-2" />
+                  <span className="text-orange-800 text-sm">¡50% descuento aplicado!</span>
+                </div>
+              </div>
+            )}
+            {freeDecant && (
+              <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                <div className="flex items-center">
+                  <GiftIcon className="h-4 w-4 text-green-600 mr-2" />
+                  <span className="text-green-800 text-sm">Decant gratis 5ml</span>
+                </div>
+                <span className="text-green-600 font-medium">¡Incluido!</span>
+              </div>
+            )}
+            <div className="border-t pt-4">
+              <div className="flex justify-between text-lg font-bold">
+                <span>Total</span>
+                <span className="text-[#D4AF37]">${total.toFixed(0)} MXN</span>
+              </div>
+            </div>
+          </div>
+          {/* Método de Pago */}
+          <div className="mt-6">
+            <h3 className="font-medium text-gray-900 mb-3">Método de Pago</h3>
+            <div className="space-y-2">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="transfer"
+                  checked={paymentMethod === 'transfer'}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  className="mr-3"
+                />
+                <CreditCardIcon className="h-4 w-4 mr-2 text-[#D4AF37]" />
+                <span className="text-sm">Transferencia bancaria</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="oxxo"
+                  checked={paymentMethod === 'oxxo'}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  className="mr-3"
+                />
+                <BuildingIcon className="h-4 w-4 mr-2 text-[#D4AF37]" />
+                <span className="text-sm">Pago en OXXO</span>
+              </label>
+              {shippingInfo.deliveryType === 'personal' && (
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="cash"
+                    checked={paymentMethod === 'cash'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="mr-3"
+                  />
+                  <HandIcon className="h-4 w-4 mr-2 text-[#D4AF37]" />
+                  <span className="text-sm">Efectivo contra entrega</span>
+                </label>
+              )}
+            </div>
+          </div>
+          {/* Botón Generar Ticket */}
+          <button
+            onClick={generateTicket}
+            disabled={!isFormValid()}
+            className="w-full mt-6 bg-[#2C3E50] text-[#D4AF37] py-3 rounded-lg font-medium hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] hover:text-[#2C3E50] transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          >
+            <TicketIcon className="h-5 w-5 mr-2" />
+            Generar Ticket de Compra
+          </button>
+          <p className="text-xs text-[#BDC3C7] mt-3 text-center">
+            El ticket se enviará por WhatsApp o Instagram para confirmación
+          </p>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
 
       {/* Modal del Ticket - ← OPTIMIZADO PARA CAPTURAS */}
       {showTicket && (
@@ -694,7 +815,6 @@ const CartPage = () => {
                   ✕
                 </button>
               </div>
-              
               {/* Contenido del Ticket - ← MÁS COMPACTO */}
               <div className="p-4 section-card rounded-lg mb-4 ">
                 {/* ← HEADER DEL TICKET SIMPLIFICADO */}
@@ -709,7 +829,6 @@ const CartPage = () => {
                     minute: '2-digit'
                   })}</p>
                 </div>
-                
                 {/* ← CONTENIDO MÁS COMPACTO */}
                 <div className="space-y-3">
                   <div>
@@ -717,14 +836,12 @@ const CartPage = () => {
                     <div className="text-xs text-[#BDC3C7] space-y-0.5">
                       <p>{shippingInfo.fullName}</p>
                       <p>{shippingInfo.phone} • {shippingInfo.email}</p>
-                      
                       {/* ← DIRECCIÓN EN UNA LÍNEA SI NO ES ENTREGA PERSONAL */}
                       {shippingInfo.deliveryType !== 'personal' && (
                         <p>{shippingInfo.address}, {shippingInfo.city}, {shippingInfo.state} {shippingInfo.postalCode}</p>
                       )}
                     </div>
                   </div>
-
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <h4 className="font-medium text-gray-900 mb-1 text-sm">Entrega:</h4>
@@ -734,7 +851,6 @@ const CartPage = () => {
                          'Express (1-2d)'}
                       </p>
                     </div>
-
                     <div>
                       <h4 className="font-medium text-gray-900 mb-1 text-sm">Pago:</h4>
                       <p className="text-xs text-[#BDC3C7]">
@@ -745,7 +861,6 @@ const CartPage = () => {
                       </p>
                     </div>
                   </div>
-                  
                   <div>
                     <h4 className="font-medium text-gray-900 mb-2 text-sm">Productos:</h4>
                     <div className="space-y-1">
@@ -757,7 +872,6 @@ const CartPage = () => {
                       ))}
                     </div>
                   </div>
-                  
                   {/* ← DECANT GRATIS MÁS COMPACTO */}
                   {freeDecant && (
                     <div className="bg-green-50 border border-green-200 rounded p-2">
@@ -773,7 +887,6 @@ const CartPage = () => {
                       </p>
                     </div>
                   )}
-                  
                   {/* ← TOTALES MÁS COMPACTOS */}
                   <div className="border-t pt-3">
                     <div className="space-y-1">
@@ -785,7 +898,6 @@ const CartPage = () => {
                         <span>Envío:</span>
                         <span>{finalShippingCost === 0 ? 'GRATIS' : `$${finalShippingCost} MXN`}</span>
                       </div>
-                      
                       {/* ← DESCUENTOS MÁS COMPACTOS */}
                       {hasShippingDiscount && finalShippingCost > 0 && shippingInfo.deliveryType === 'express' && (
                         <div className="flex justify-between text-xs text-orange-600">
@@ -793,14 +905,12 @@ const CartPage = () => {
                           <span>-$94 MXN</span>
                         </div>
                       )}
-                      
                       {hasShippingDiscount && finalShippingCost === 0 && shippingInfo.deliveryType === 'standard' && (
                         <div className="flex justify-between text-xs text-green-600">
                           <span>Envío gratis:</span>
                           <span>-$140 MXN</span>
                         </div>
                       )}
-                      
                       {freeDecant && (
                         <div className="flex justify-between text-xs text-green-600">
                           <span>Decant gratis:</span>
@@ -808,7 +918,6 @@ const CartPage = () => {
                         </div>
                       )}
                     </div>
-                    
                     <div className="flex justify-between font-bold text-sm border-t pt-2 mt-2">
                       <span>Total:</span>
                       <span className="text-[#D4AF37]">${total.toFixed(0)} MXN</span>
@@ -816,15 +925,11 @@ const CartPage = () => {
                   </div>
                 </div>
               </div>
-              
               {/* ← MENSAJE DE CAPTURA Y BOTONES DE CONTACTO */}
               <div className="space-y-2">
                 <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 text-xs rounded p-3 mb-2 text-center font-medium">
                   <span>Por favor, toma una <b>captura de pantalla</b> de este ticket y envíala por WhatsApp o Instagram para procesar tu pedido.</span>
                 </div>
-                <p className="text-center text-xs text-[#BDC3C7] mb-3">
-                  Envía la captura por tu método preferido:
-                </p>
                 <div className="grid grid-cols-2 gap-2">
                   <a
                     href={`https://wa.me/527823185711?text=¡Hola! Aquí está mi ticket: AS${Date.now().toString().slice(-6)}`}
@@ -862,7 +967,6 @@ const CartPage = () => {
                 Te confirmamos stock y detalles al recibir tu ticket
               </p>
             </div>
-            
             <div className="text-center p-6 bg-white rounded-lg shadow-sm">
               <TruckIcon className="h-12 w-12 text-[#D4AF37] mx-auto mb-4" />
               <h3 className="font-semibold text-gray-900 mb-2">Preparación Rápida</h3>
@@ -870,7 +974,6 @@ const CartPage = () => {
                 Tu pedido se prepara en 1-3 días con el máximo cuidado
               </p>
             </div>
-            
             <div className="text-center p-6 bg-white rounded-lg shadow-sm">
               <GiftIcon className="h-12 w-12 text-[#D4AF37] mx-auto mb-4" />
               <h3 className="font-semibold text-gray-900 mb-2">Garantía de Calidad</h3>
@@ -881,7 +984,7 @@ const CartPage = () => {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 };
 

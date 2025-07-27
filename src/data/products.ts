@@ -3,9 +3,13 @@ export interface ProductVariant {
   price: number;
   stock: number;
 }
+export const getProductBySlug = (slug: string): Product | undefined => {
+  return products.find(product => product.slug === slug);
+};
 
 export interface Product {
   id: string;
+  slug: string;
   name: string;
   brand: string;
   image: string;
@@ -28,6 +32,7 @@ export interface Product {
 export const products: Product[] = [
   {
     id: '1',
+    slug: 'nautica-voyage-edt',
     name: 'Nautica Voyage EDT',
     brand: 'Nautica',
     image: 'https://img.ltwebstatic.com/images3_spmp/2023/09/22/66/1695397069153bf092e09d056a0129a86d246b126b_thumbnail_720x.jpg',
@@ -59,6 +64,7 @@ export const products: Product[] = [
   },
   {
     id: '2',
+    slug: 'dior-sauvage-edp',
     name: 'Dior Sauvage EDP',
     brand: 'Dior',
     image: 'https://lirp.cdn-website.com/b9414951/dms3rep/multi/opt/Perfume+Dior+Sauvage+Hombre+100+ml+EDP+DIOR+_+falabella_com-640w.jpg',
@@ -67,7 +73,7 @@ export const products: Product[] = [
       '/assets/images/fragancias/decants.png',
       'https://lirp.cdn-website.com/b9414951/dms3rep/multi/opt/Perfume+Dior+Sauvage+Hombre+100+ml+EDP+DIOR+_+falabella_com-640w.jpg'
     ],
-    rating: 5,
+    rating: 0,
     category: 'Para Hombre',
     description: 'Dior Sauvage es un manifiesto de frescura radical y nobleza salvaje. Inspirada en los vastos paisajes bajo un cielo azul intenso, esta fragancia es para el hombre moderno, magnético y seguro de si mismo. Su composición poderosa y carismática deja una estela inolvidable y versátil para cualquier ocación. ¡Un clásico contemporáneo que nunca falla!',
     details: [
@@ -90,6 +96,7 @@ export const products: Product[] = [
   },
   {
     id: '3',
+    slug: 'ariana-grande-cloud-edp',
     name: 'Ariana Grande Cloud EDP',
     brand: 'Ariana Grande',
     image: 'https://aromatica.cr/cdn/shop/files/Decant-Cloud-Aromatica-CR-451463140.jpg?v=1750279021&width=1445',
@@ -122,6 +129,7 @@ export const products: Product[] = [
   },
   {
     id: '4',
+    slug: 'good-girl-edp',
     name: 'Good Girl EDP',
     brand: 'Carolina Herrera',
     image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
@@ -153,6 +161,7 @@ export const products: Product[] = [
   },
   {
     id: '5',
+    slug: 'acqua-di-gio-edp',
     name: 'Acqua Di Gio EDP',
     brand: 'Giorgio Armani',
     image: 'https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
@@ -184,6 +193,7 @@ export const products: Product[] = [
   },
   {
     id: '6',
+    slug: 'born-in-roma-coral-fantasy-edp',
     name: 'Born In Roma Coral Fantasy EDP',
     brand: 'Valentino',
     image: 'https://america-retail.com/wp-content/uploads/2024/04/dior.jpg',
