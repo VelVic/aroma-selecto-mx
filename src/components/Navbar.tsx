@@ -203,7 +203,7 @@ const Navbar = () => {
               Fragancias
             </Link>
             <Link 
-              to="/nosotros" 
+              to="/sobre-mi" 
               className="block text-[#2C3E50] hover:text-[#D4AF37] font-medium py-2 px-3 rounded-lg hover:bg-[#D4AF37]/10 transition-all duration-300"
               onClick={() => setIsMenuOpen(false)}
             >
