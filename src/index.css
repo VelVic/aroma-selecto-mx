@@ -3,51 +3,8 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* Fuentes locales Cinzel */
-@font-face {
-  font-family: 'Cinzel';
-  src: url('./assets/fonts/cinzel-v25-latin-regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Cinzel';
-  src: url('./assets/fonts/cinzel-v25-latin-700.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Cinzel';
-  src: url('./assets/fonts/cinzel-v25-latin-800-woff2') format('woff2');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
 
-/* Fuentes locales Lato */
-@font-face {
-  font-family: 'Lato';
-  src: url('./assets/fonts/lato-v25-latin-regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Lato';
-  src: url('./assets/fonts/lato-v25-latin-700.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Lato';
-  src: url('./assets/fonts/latol-v25-latin-700italic-woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
+/* Google Fonts se cargan desde index.html */
 
 /* Estilos personalizados */
 body {

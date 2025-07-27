@@ -9,8 +9,10 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import ShippingPage from './pages/ShippingPage';
 import CartPage from './pages/CartPage';
-import { CartProvider } from './context/CartContext'; // ← IMPORTAR
-import ScrollToTop from './components/ScrollToTop'; // ← AGREGA ESTA LÍNEA
+import { CartProvider } from './context/CartProvider';
+import CartDrawer from './components/CartDrawer';
+import ScrollToTop from './components/ScrollToTop';
+import ScrollToTopOnNavigate from './components/ScrollToTopOnNavigate';
 
 export function App() {
   return (
@@ -21,9 +23,11 @@ export function App() {
           v7_relativeSplatPath: true
         }}
       >
-        <ScrollToTop /> {/* ← AGREGA ESTA LÍNEA */}
+        <ScrollToTop />
+        <ScrollToTopOnNavigate />
         <div className="flex flex-col min-h-screen">
           <Navbar />
+          <CartDrawer />
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<HomePage />} />
