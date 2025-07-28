@@ -13,7 +13,9 @@ interface TestimonialCarouselProps {
   }>;
 }
 
-const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) => {
+import React from 'react';
+
+const TestimonialCarousel = React.memo(({ testimonials }: TestimonialCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -140,6 +142,6 @@ const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default TestimonialCarousel;

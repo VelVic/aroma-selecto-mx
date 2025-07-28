@@ -37,9 +37,9 @@ export const products: Product[] = [
     brand: 'Nautica',
     image: 'https://img.ltwebstatic.com/images3_spmp/2023/09/22/66/1695397069153bf092e09d056a0129a86d246b126b_thumbnail_720x.jpg',
     images: [
-      'https://img.ltwebstatic.com/images3_spmp/2023/09/22/66/1695397069153bf092e09d056a0129a86d246b126b_thumbnail_720x.jpg',
-      '/assets/images/fragancias/decants.png',
-      'https://img.ltwebstatic.com/images3_spmp/2023/09/22/66/1695397069153bf092e09d056a0129a86d246b126b_thumbnail_720x.jpg'
+      '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp',
+      '/assets/images/fragancias/decants.webp',
+      '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-2.webp'
     ],
     rating: 4.5,
     category: 'Para Hombre',
@@ -69,9 +69,9 @@ export const products: Product[] = [
     brand: 'Dior',
     image: 'https://lirp.cdn-website.com/b9414951/dms3rep/multi/opt/Perfume+Dior+Sauvage+Hombre+100+ml+EDP+DIOR+_+falabella_com-640w.jpg',
     images: [
-      'https://lirp.cdn-website.com/b9414951/dms3rep/multi/opt/Perfume+Dior+Sauvage+Hombre+100+ml+EDP+DIOR+_+falabella_com-640w.jpg',
-      '/assets/images/fragancias/decants.png',
-      'https://lirp.cdn-website.com/b9414951/dms3rep/multi/opt/Perfume+Dior+Sauvage+Hombre+100+ml+EDP+DIOR+_+falabella_com-640w.jpg'
+      '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-1.webp',
+      '/assets/images/fragancias/decants.webp',
+      '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-2.webp'
     ],
     rating: 0,
     category: 'Para Hombre',
@@ -101,9 +101,9 @@ export const products: Product[] = [
     brand: 'Ariana Grande',
     image: 'https://aromatica.cr/cdn/shop/files/Decant-Cloud-Aromatica-CR-451463140.jpg?v=1750279021&width=1445',
     images: [
-      'https://aromatica.cr/cdn/shop/files/Decant-Cloud-Aromatica-CR-451463140.jpg?v=1750279021&width=1445',
-      '/assets/images/fragancias/decants.png',
-      'https://aromatica.cr/cdn/shop/files/Decant-Cloud-Aromatica-CR-451463140.jpg?v=1750279021&width=1445'
+      '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp',
+      '/assets/images/fragancias/decants.webp',
+      '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-2.webp'
     ],
     rating: 5,
     category: 'Para Mujer',

@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ShoppingBagIcon, HeartIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, StarIcon, CheckIcon, SnowflakeIcon, LeafIcon, Flower2Icon, SunIcon, CarIcon, PackageIcon, ZapIcon, MessageCircleIcon } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
@@ -8,15 +9,91 @@ import { reviews } from '../data/reviews';
 import Button from '../components/Button';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import SectionTitle from '../components/SectionTitle';
+import { Helmet } from 'react-helmet';
+
+// Hook personalizado para resetear un estado booleano después de un tiempo
+function useAutoReset(value: boolean, resetAfterMs: number, onReset?: () => void) {
+  const [state, setState] = useState(value);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (state) {
+      timeoutRef.current = setTimeout(() => {
+        setState(false);
+        if (onReset) onReset();
+      }, resetAfterMs);
+    }
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [state, resetAfterMs, onReset]);
+
+  return [state, setState] as const;
+}
+type ProductImageProps = {
+  src: string;
+  alt: string;
+  className?: string;
+  loading?: 'eager' | 'lazy';
+  style?: React.CSSProperties;
+  onClick?: () => void;
+};
+function ProductImage({ src, alt, className = '', loading = 'lazy', style, onClick }: ProductImageProps) {
+  const [imgSrc, setImgSrc] = useState(src);
+  const defaultImg = '/assets/images/logos/isologo_light.png';
+
+  // Sincroniza el estado interno con el prop src
+  useEffect(() => {
+    setImgSrc(src);
+  }, [src]);
+
+  const handleError = () => {
+    if (imgSrc !== defaultImg) setImgSrc(defaultImg);
+  };
+
+  if (imgSrc.endsWith('.svg')) {
+    return (
+      <img
+        src={imgSrc}
+        alt={alt}
+        loading={loading}
+        className={className}
+        style={style}
+        onClick={onClick}
+        onError={handleError}
+      />
+    );
+  }
+  return (
+    <picture>
+      <source srcSet={imgSrc} type="image/webp" />
+      <img
+        src={imgSrc}
+        alt={alt}
+        loading={loading}
+        className={className}
+        style={style}
+        onClick={onClick}
+        onError={handleError}
+      />
+    </picture>
+  );
+}
 
 const ProductDetailPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
-  const [justAdded, setJustAdded] = useState(false);
+  const [justAdded, setJustAdded] = useAutoReset(false, 3000);
 
   const product = getProductBySlug(slug || '');
+
+  // SEO helpers (deben ir aquí, después de obtener product)
+  const seoTitle = product ? `${product.name} | ${product.brand} | Aroma Selecto` : 'Detalle de producto | Aroma Selecto';
+  const seoDescription = product ? product.description?.slice(0, 160) : 'Descubre los mejores perfumes y fragancias en Aroma Selecto.';
+  const seoImage = product ? (product.images?.[0] || product.image) : '/assets/images/logos/isologo_light.png';
+  const seoUrl = typeof window !== 'undefined' ? window.location.href : '';
 
   // Filtra los reviews por el producto actual
 const productReviews = product
@@ -56,7 +133,7 @@ const productReviews = product
       setJustAdded(false);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [slug, product]);
+  }, [slug, product, setJustAdded]);
 
   useEffect(() => {
     if (product && product.images && product.images.length > 1 && !isCarouselPaused) {
@@ -124,7 +201,6 @@ const productReviews = product
     setTimeout(() => {
       setIsAdding(false);
       setJustAdded(true);
-      setTimeout(() => setJustAdded(false), 3000);
     }, 200);
   };
 
@@ -174,41 +250,55 @@ const productReviews = product
   const productImages = product.images || [product.image];
 
   return (
-    <div className="bg-white pt-16">
+    <>
+      <Helmet>
+        <title>{seoTitle}</title>
+        <meta name="description" content={seoDescription} />
+        <meta property="og:title" content={seoTitle} />
+        <meta property="og:description" content={seoDescription} />
+        <meta property="og:image" content={seoImage} />
+        <meta property="og:type" content="product" />
+        <meta property="og:url" content={seoUrl} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={seoTitle} />
+        <meta name="twitter:description" content={seoDescription} />
+        <meta name="twitter:image" content={seoImage} />
+      </Helmet>
+      <div className="bg-white pt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="lg:grid lg:grid-cols-5 lg:gap-x-6">
           {/* Product images */}
           <div className="lg:col-span-2 flex flex-col items-center">
-            <div className="relative group w-full max-w-md">
+            <div 
+              className="relative group w-full max-w-md"
+              onMouseEnter={() => setIsCarouselPaused(true)}
+              onMouseLeave={() => setIsCarouselPaused(false)}
+              onFocus={() => setIsCarouselPaused(true)}
+              onBlur={() => setIsCarouselPaused(false)}
+            >
               <div className="aspect-[5/6] rounded-lg overflow-hidden border-2 border-gray-200 hover:border-[#D4AF37] transition-colors duration-300 shadow-md cursor-zoom-in">
-                <picture>
-                  <source srcSet={mainImage.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
-                  <img
-                    src={mainImage}
-                    alt={`Foto principal de ${product.name}`}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    onClick={handleMainImageClick}
-                    style={{ cursor: 'zoom-in' }}
-                  />
-                </picture>
+                <ProductImage
+                  src={mainImage}
+                  alt={`Foto principal de ${product.name}`}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  onClick={handleMainImageClick}
+                  style={{ cursor: 'zoom-in' }}
+                />
       {/* Zoom Modal */}
       {zoomOpen && (
         <div
           className="fixed inset-0 z-[200] flex items-center justify-center bg-black bg-opacity-80 cursor-zoom-out animate-fadeIn"
           onClick={handleCloseZoom}
         >
-          <picture>
-            <source srcSet={mainImage.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
-            <img
-              src={mainImage}
-              alt={`Zoom de ${product.name}`}
-              loading="lazy"
-              className="max-h-[90vh] max-w-[95vw] rounded-lg shadow-2xl border-4 border-[#D4AF37] object-contain"
-              style={{ cursor: 'zoom-out' }}
-              onClick={handleCloseZoom}
-            />
-          </picture>
+          <ProductImage
+            src={mainImage}
+            alt={`Zoom de ${product.name}`}
+            loading="lazy"
+            className="max-h-[90vh] max-w-[95vw] rounded-lg shadow-2xl border-4 border-[#D4AF37] object-contain"
+            style={{ cursor: 'zoom-out' }}
+            onClick={handleCloseZoom}
+          />
         </div>
       )}
                 {productImages.length > 1 && (
@@ -216,12 +306,20 @@ const productReviews = product
                     <button
                       onClick={goToPrevImage}
                       className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/90 backdrop-blur-sm hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] text-[#2C3E50] hover:text-white rounded-full shadow-lg hover:shadow-xl hover:shadow-[#D4AF37]/20 transition-all duration-300 hover:scale-110 z-10 group/btn opacity-0 group-hover:opacity-100"
+                      onMouseEnter={() => setIsCarouselPaused(true)}
+                      onMouseLeave={() => setIsCarouselPaused(false)}
+                      onFocus={() => setIsCarouselPaused(true)}
+                      onBlur={() => setIsCarouselPaused(false)}
                     >
                       <ChevronLeftIcon className="h-5 w-5 group-hover/btn:scale-110 transition-transform duration-200" />
                     </button>
                     <button
                       onClick={goToNextImage}
                       className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/90 backdrop-blur-sm hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] text-[#2C3E50] hover:text-white rounded-full shadow-lg hover:shadow-xl hover:shadow-[#D4AF37]/20 transition-all duration-300 hover:scale-110 z-10 group/btn opacity-0 group-hover:opacity-100"
+                      onMouseEnter={() => setIsCarouselPaused(true)}
+                      onMouseLeave={() => setIsCarouselPaused(false)}
+                      onFocus={() => setIsCarouselPaused(true)}
+                      onBlur={() => setIsCarouselPaused(false)}
                     >
                       <ChevronRightIcon className="h-5 w-5 group-hover/btn:scale-110 transition-transform duration-200" />
                     </button>
@@ -240,16 +338,17 @@ const productReviews = product
                             : 'ring-1 ring-gray-200 border-gray-200 hover:border-[#D4AF37]/50'
                         }`}
                         onClick={() => selectImage(image, idx)}
+                        onMouseEnter={() => setIsCarouselPaused(true)}
+                        onMouseLeave={() => setIsCarouselPaused(false)}
+                        onFocus={() => setIsCarouselPaused(true)}
+                        onBlur={() => setIsCarouselPaused(false)}
                       >
-                        <picture>
-                          <source srcSet={image.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
-                          <img
-                            src={image}
-                            alt={`Miniatura ${idx + 1} de ${product.name}`}
-                            loading="lazy"
-                            className="w-full h-full object-cover"
-                          />
-                        </picture>
+                        <ProductImage
+                          src={image}
+                          alt={`Miniatura ${idx + 1} de ${product.name}`}
+                          loading="lazy"
+                          className="w-full h-full object-cover"
+                        />
                       </button>
                     ))}
                   </div>
@@ -430,11 +529,19 @@ const productReviews = product
                   <button
                     onClick={() => setShowDetails(!showDetails)}
                     className="flex items-center justify-between w-full text-left mb-3"
+                    aria-expanded={showDetails}
+                    aria-controls="product-details-panel"
+                    id="product-details-toggle"
                   >
                     <h3 className="text-base font-medium text-gray-900">Detalles del producto</h3>
                     <ChevronDownIcon className={`h-5 w-5 transition-transform duration-300 text-gray-900 hover:text-[#D4AF37] ${showDetails ? 'rotate-180' : ''}`} />
                   </button>
-                  <div className={`overflow-hidden transition-all duration-300 ${showDetails ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                  <div
+                    id="product-details-panel"
+                    role="region"
+                    aria-labelledby="product-details-toggle"
+                    className={`overflow-hidden transition-all duration-300 ${showDetails ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+                  >
                     <ul className="space-y-2 pb-1">
                       {product.details.map((detail, idx) => (
                         <li key={idx} className="text-[#BDC3C7] flex items-start text-sm">
@@ -452,11 +559,19 @@ const productReviews = product
                 <button
                   onClick={() => setShowOccasion(!showOccasion)}
                   className="flex items-center justify-between w-full text-left mb-3"
+                  aria-expanded={showOccasion}
+                  aria-controls="product-occasion-panel"
+                  id="product-occasion-toggle"
                 >
                   <h3 className="text-base font-medium text-gray-900">Ocasión</h3>
                   <ChevronDownIcon className={`h-5 w-5 transition-transform duration-300 text-gray-900 hover:text-[#D4AF37] ${showOccasion ? 'rotate-180' : ''}`} />
                 </button>
-                <div className={`overflow-hidden transition-all duration-300 ${showOccasion ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div
+                  id="product-occasion-panel"
+                  role="region"
+                  aria-labelledby="product-occasion-toggle"
+                  className={`overflow-hidden transition-all duration-300 ${showOccasion ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+                >
                   <div className="space-y-4 pb-1">
                     {/* Ocasiones dinámicas */}
                     <div>
@@ -506,11 +621,19 @@ const productReviews = product
                 <button
                   onClick={() => setShowShipping(!showShipping)}
                   className="flex items-center justify-between w-full text-left mb-3"
+                  aria-expanded={showShipping}
+                  aria-controls="product-shipping-panel"
+                  id="product-shipping-toggle"
                 >
                   <h3 className="text-base font-medium text-gray-900">Información de envíos</h3>
                   <ChevronDownIcon className={`h-5 w-5 transition-transform duration-300 text-gray-900 hover:text-[#D4AF37] ${showShipping ? 'rotate-180' : ''}`} />
                 </button>
-                <div className={`overflow-hidden transition-all duration-300 ${showShipping ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div
+                  id="product-shipping-panel"
+                  role="region"
+                  aria-labelledby="product-shipping-toggle"
+                  className={`overflow-hidden transition-all duration-300 ${showShipping ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+                >
                   <div className="space-y-3 pb-1">
                     <div className="flex items-center text-[#BDC3C7] text-sm">
                       <span className="text-[#D4AF37] mr-2"><CarIcon className="h-5 w-5" /></span>
@@ -606,7 +729,8 @@ const productReviews = product
               </div>
             </div>
           </section>
-    </div>
+      </div>
+    </>
   );
 };
 

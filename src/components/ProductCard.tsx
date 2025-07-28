@@ -42,6 +42,10 @@ interface ProductCardProps {
   }) => void;
 }
 
+
+import React from 'react';
+
+
 const ProductCard = ({ 
   id, 
   slug,
@@ -56,10 +60,7 @@ const ProductCard = ({
   isComingSoon = false,
   variants = [],
 }: ProductCardProps) => {
-  
   const navigate = useNavigate();
-  
-
   // Calcular stock total y variantes disponibles
   const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
@@ -70,9 +71,8 @@ const ProductCard = ({
   const totalStock = variants.reduce((sum, v) => sum + v.stock, 0);
 
   const handleProductClick = () => {
-  navigate(`/fragancia/${slug}`);
-  // window.scrollTo({ top: 0, behavior: 'smooth' }); // ← Ya no es necesario
-};
+    navigate(`/fragancia/${slug}`);
+  };
 
   // ← AGREGAR FUNCIÓN PARA CARRITO
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -100,7 +100,6 @@ const ProductCard = ({
 
   return (
     <div className="group relative border-2 border-transparent hover:border-[#D4AF37] transition-all duration-300 rounded-lg p-3 sm:p-2 section-card shadow-sm hover:shadow-lg hover:shadow-[#D4AF37]/10">
-      
       {/* Imagen del producto */}
       <div 
         className="aspect-square w-full overflow-hidden rounded-lg bg-[#F9F9F9] cursor-pointer relative" 
@@ -115,9 +114,7 @@ const ProductCard = ({
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-500"
           />
         </picture>
-        
         <div className="absolute inset-0 bg-gradient-to-t from-[#2C3E50]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        
         {/* ✅ OVERLAY PARA PRÓXIMAMENTE */}
         {isComingSoon && (
           <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] flex items-center justify-center rounded-lg">
@@ -130,7 +127,6 @@ const ProductCard = ({
             </div>
           </div>
         )}
-        
         {/* Badges */}
         <div className="absolute top-2 left-2 space-y-1">
           {isNew && !isComingSoon && (
@@ -152,7 +148,6 @@ const ProductCard = ({
             </span>
           )}
         </div>
-
         {/* Heart icon */}
         <button 
           className="absolute top-2 right-2 p-2 rounded-full bg-white/90 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] hover:scale-110 shadow-lg"
@@ -161,7 +156,6 @@ const ProductCard = ({
           <HeartIcon className="h-4 w-4 text-[#BDC3C7] hover:text-white transition-colors" />
         </button>
       </div>
-
       {/* Información del producto */}
       <div className="mt-3 sm:mt-4">
         <div className="flex justify-between items-start">
@@ -174,7 +168,6 @@ const ProductCard = ({
             </button>
           </div>
         </div>
-
         {/* ✅ RATING CORREGIDO */}
         <div className="mt-2.5 sm:mt-3 flex items-center justify-between">
           <div className="flex items-center">
@@ -192,7 +185,6 @@ const ProductCard = ({
             </div>
             <span className="text-base sm:text-xs text-[#BDC3C7] ml-2">({rating.toFixed(1)})</span>
           </div>
-          
           {/* ✅ STOCK STATUS */}
           {!isComingSoon && (
             <div className="text-xs">
@@ -213,7 +205,6 @@ const ProductCard = ({
             </div>
           )}
         </div>
-
         {/* ✅ TAMAÑOS DISPONIBLES */}
         {!isComingSoon && variants.length > 0 && (
           <div className="mt-2.5 sm:mt-3">
@@ -236,7 +227,6 @@ const ProductCard = ({
             </div>
           </div>
         )}
-
         {/* Precio y botón */}
         <div className="mt-4 sm:mt-4 flex justify-between items-center">
           <div>
@@ -287,7 +277,6 @@ const ProductCard = ({
             </div>
             )}
           </div>
-          
           {/* ← BOTÓN CON FUNCIONALIDAD PERO MISMO ESTILO */}
           <button 
             onClick={isComingSoon ? (e) => {
@@ -331,4 +320,4 @@ const ProductCard = ({
   );
 };
 
-export default ProductCard;
+export default React.memo(ProductCard);
