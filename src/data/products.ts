@@ -57,7 +57,7 @@ export const products: Product[] = [
     seasons: ['Primavera', 'Verano'],
     variants: [
       { size: '3ml', price: 40, stock: 0 },
-      { size: '5ml', price: 60, stock: 10 },
+      { size: '5ml', price: 50, stock: 10 },
       { size: '10ml', price: 90, stock: 6 }
     ],
     isNew: true
@@ -88,9 +88,9 @@ export const products: Product[] = [
     ],
     seasons: ['Primavera', 'Verano', 'Otoño', 'Invierno'],
     variants: [
-      { size: '3ml', price: 140, stock: 0 },
-      { size: '5ml', price: 220, stock: 0 },
-      { size: '10ml', price: 410, stock: 0 }
+      { size: '3ml', price: 130, stock: 0 },
+      { size: '5ml', price: 210, stock: 0 },
+      { size: '10ml', price: 400, stock: 0 }
     ],
     isComingSoon: true
   },
@@ -121,8 +121,8 @@ export const products: Product[] = [
     seasons: ['Otoño', 'Invierno','Primavera', 'Verano'],
     variants: [
       { size: '3ml', price: 90, stock: 0 },
-      { size: '5ml', price: 140, stock: 11 },
-      { size: '10ml', price: 260, stock: 5 }
+      { size: '5ml', price: 130, stock: 11 },
+      { size: '10ml', price: 250, stock: 5 }
     ],
     reviewCount: 203,
     isNew: true
@@ -153,9 +153,9 @@ export const products: Product[] = [
     ],
     seasons: ['Primavera', 'Verano', 'Otoño'],
     variants: [
-      { size: '3ml', price: 110, stock: 0 },
-      { size: '5ml', price: 170, stock: 0 },
-      { size: '10ml', price: 310, stock: 0 }
+      { size: '3ml', price: 100, stock: 0 },
+      { size: '5ml', price: 160, stock: 0 },
+      { size: '10ml', price: 300, stock: 0 }
     ],
     isComingSoon: true
   },
@@ -185,9 +185,9 @@ export const products: Product[] = [
     ],
     seasons: ['Verano', 'Otoño', 'Invierno'],
     variants: [
-      { size: '3ml', price: 100, stock: 0 },
+      { size: '3ml', price: 110, stock: 0 },
       { size: '5ml', price: 160, stock: 0 },
-      { size: '10ml', price: 300, stock: 0 }
+      { size: '10ml', price: 310, stock: 0 }
     ],
     isComingSoon: true
   },
@@ -217,9 +217,9 @@ export const products: Product[] = [
     ],
     seasons: ['Primavera', 'Verano', 'Otoño'],
     variants: [
-      { size: '3ml', price: 160, stock: 0 },
-      { size: '5ml', price: 250, stock: 0 },
-      { size: '10ml', price: 470, stock: 0 }
+      { size: '3ml', price: 150, stock: 0 },
+      { size: '5ml', price: 230, stock: 0 },
+      { size: '10ml', price: 450, stock: 0 }
     ],
     isComingSoon: true
   },
