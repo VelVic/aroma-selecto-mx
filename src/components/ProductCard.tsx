@@ -27,7 +27,6 @@ interface ProductCardProps {
   sizes?: string[]; // legacy, ignorar
   sizesPrices?: { [size: string]: number }; // legacy, ignorar
   variants?: ProductVariant[];
-  reviewCount?: number;
   description?: string;
   details?: string[];
   images?: string[];

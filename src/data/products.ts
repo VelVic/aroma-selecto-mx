@@ -21,7 +21,6 @@ export interface Product {
   occasions?: string[];
   seasons?: string[];
   variants: ProductVariant[];
-  reviewCount?: number;
   isNew?: boolean;
   isComingSoon?: boolean;
   isSale?: boolean;
@@ -35,11 +34,11 @@ export const products: Product[] = [
     slug: 'nautica-voyage-edt',
     name: 'Nautica Voyage EDT',
     brand: 'Nautica',
-    image: 'https://img.ltwebstatic.com/images3_spmp/2023/09/22/66/1695397069153bf092e09d056a0129a86d246b126b_thumbnail_720x.jpg',
+    image: '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-2.webp',
     images: [
       '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp',
-      '/assets/images/fragancias/decants.webp',
-      '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-2.webp'
+      '/assets/images/fragancias/decants-all-sizes.webp',
+      '/assets/images/fragancias/nautica-voyage/nautica-voyage-decants-group.webp'
     ],
     rating: 4.5,
     category: 'Para Hombre',
@@ -67,10 +66,10 @@ export const products: Product[] = [
     slug: 'dior-sauvage-edp',
     name: 'Dior Sauvage EDP',
     brand: 'Dior',
-    image: 'https://lirp.cdn-website.com/b9414951/dms3rep/multi/opt/Perfume+Dior+Sauvage+Hombre+100+ml+EDP+DIOR+_+falabella_com-640w.jpg',
+    image: '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-2.webp',
     images: [
       '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-1.webp',
-      '/assets/images/fragancias/decants.webp',
+      '/assets/images/fragancias/decants-all-sizes.webp',
       '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-2.webp'
     ],
     rating: 0,
@@ -99,11 +98,11 @@ export const products: Product[] = [
     slug: 'ariana-grande-cloud-edp',
     name: 'Ariana Grande Cloud EDP',
     brand: 'Ariana Grande',
-    image: 'https://aromatica.cr/cdn/shop/files/Decant-Cloud-Aromatica-CR-451463140.jpg?v=1750279021&width=1445',
+    image: '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-2.webp',
     images: [
       '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp',
-      '/assets/images/fragancias/decants.webp',
-      '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-2.webp'
+      '/assets/images/fragancias/decants-all-sizes.webp',
+      '/assets/images/fragancias/ariana-grande-cloud/ariana-cloud-decants-group.webp'
     ],
     rating: 5,
     category: 'Para Mujer',
@@ -124,7 +123,6 @@ export const products: Product[] = [
       { size: '5ml', price: 130, stock: 11 },
       { size: '10ml', price: 250, stock: 5 }
     ],
-    reviewCount: 203,
     isNew: true
   },
   {
