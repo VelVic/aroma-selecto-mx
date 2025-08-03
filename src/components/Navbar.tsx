@@ -104,10 +104,10 @@ const Navbar = () => {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
             <Link 
-              to="/fragancias" 
+              to="/productos" 
               className="text-gray-900 hover:text-[#D4AF37] font-medium transition-all duration-300 relative group"
             >
-              Fragancias
+              Productos
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
             <Link 
@@ -196,11 +196,11 @@ const Navbar = () => {
               Inicio
             </Link>
             <Link 
-              to="/fragancias" 
+              to="/productos" 
               className="block text-[#2C3E50] hover:text-[#D4AF37] font-medium py-2 px-3 rounded-lg hover:bg-[#D4AF37]/10 transition-all duration-300"
               onClick={() => setIsMenuOpen(false)}
             >
-              Fragancias
+              Productos
             </Link>
             <Link 
               to="/sobre-mi" 

@@ -1,12 +1,26 @@
 import { MapPinIcon, HeartIcon, StarIcon, ShieldCheckIcon, TruckIcon, SparklesIcon, UsersIcon, SearchIcon, TargetIcon } from 'lucide-react';
 import Button from '../components/Button';
 import SectionTitle from '../components/SectionTitle';
+import useScrollFadeIn from '../hooks/useScrollFadeIn';
 
 const AboutPage = () => {
+  // Animaciones para Hero y CTA
+  const heroAnim = useScrollFadeIn();
+  const ctaAnim = useScrollFadeIn();
+  const historiaAnim = useScrollFadeIn();
+  const misionVisionAnim = useScrollFadeIn();
+  const funFactAnim = useScrollFadeIn();
+  const equipoAnim = useScrollFadeIn();
+  const valoresAnim = useScrollFadeIn();
+  const ubicacionAnim = useScrollFadeIn();
+
   return (
     <div className="bg-[#F9F9F9] pt-16">
       {/* Hero Section */}
-      <section className="relative bg-[#2C3E50] text-white py-20">
+      <section
+        ref={heroAnim.ref}
+        className={`relative bg-[#2C3E50] text-white py-20 transition-all duration-700 ${heroAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="absolute inset-0 overflow-hidden">
           <img 
             src="https://granaroma.co/wp-content/uploads/2024/03/decants-gran-aroma-perfumes-de-nicho-768x360-1.jpg" 
@@ -28,7 +42,10 @@ const AboutPage = () => {
       </section>
 
       {/* Historia/Origen Section */}
-        <section className="py-16 bg-white">
+      <section
+        ref={historiaAnim.ref}
+        className={`py-16 bg-white transition-all duration-700 ${historiaAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -56,10 +73,13 @@ const AboutPage = () => {
             </div>
             </div>
         </div>
-        </section>
+      </section>
 
       {/* Misión y Visión */}
-      <section className="py-16">
+      <section
+        ref={misionVisionAnim.ref}
+        className={`py-16 transition-all duration-700 ${misionVisionAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8">
             <div className="section-card p-8 rounded-lg shadow-sm">
@@ -93,7 +113,10 @@ const AboutPage = () => {
       </section>
 
       {/* Fun Fact Section */}
-      <section className="py-8">
+      <section
+        ref={funFactAnim.ref}
+        className={`py-8 transition-all duration-700 ${funFactAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-3xl mx-auto px-4">
           <div className="flex items-center bg-gradient-to-r from-[#D4AF37]/10 to-[#2C3E50]/10 rounded-lg p-6 shadow-sm">
             <SparklesIcon className="h-10 w-10 text-[#D4AF37] mr-4 flex-shrink-0" />
@@ -106,7 +129,10 @@ const AboutPage = () => {
       </section>
 
       {/* Equipo Section */}
-      <section className="py-16 bg-white">
+      <section
+        ref={equipoAnim.ref}
+        className={`py-16 bg-white transition-all duration-700 ${equipoAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <SectionTitle>Sobre mí</SectionTitle>
@@ -131,7 +157,10 @@ const AboutPage = () => {
       </section>
 
       {/* Valores Section */}
-      <section className="py-16">
+      <section
+        ref={valoresAnim.ref}
+        className={`py-16 transition-all duration-700 ${valoresAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionTitle>Mis Valores</SectionTitle>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -193,7 +222,10 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <section className="py-16">
+      <section
+        ref={ubicacionAnim.ref}
+        className={`py-16 transition-all duration-700 ${ubicacionAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionTitle>Mi ubicación y entregas</SectionTitle>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -239,7 +271,10 @@ const AboutPage = () => {
       </section>
 
       {/* CTA Section - SIGUIENDO TU ESTILO EXACTO */}
-      <section className="py-16 bg-[#F9F9F9] border-t border-[#D4AF37] border-opacity-30">
+      <section
+        ref={ctaAnim.ref}
+        className={`py-16 bg-[#F9F9F9] border-t border-[#D4AF37] border-opacity-30 transition-all duration-700 ${ctaAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <SectionTitle>¿Listo para encontrar tu fragancia ideal?</SectionTitle>
           <p className="text-xl text-[#2C3E50] mb-4">
@@ -248,11 +283,11 @@ const AboutPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               as="link"
-              to="/fragancias"
+              to="/productos"
               variant="primary"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              Ver catálogo de fragancias
+              Ver catálogo de productos
             </Button>
             <Button
               as="a"
@@ -266,7 +301,7 @@ const AboutPage = () => {
             </Button>
             <Button
               as="a"
-              href="https://wa.me/527823185711"
+              href="https://wa.me/527208784641?text=¡Hola! Vengo de la sección 'Acerca de mi' de Aroma Selecto MX, ¿Podrías ayudarme?"
               target="_blank"
               rel="noopener noreferrer"
               variant="outline"

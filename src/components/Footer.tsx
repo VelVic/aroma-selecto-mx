@@ -221,18 +221,18 @@ const Footer = () => {
               openSections.productos ? 'max-h-48 md:max-h-none' : 'max-h-0 md:max-h-none'
             }`}>
               <li>
-                <Link to="/fragancias?category=mujer" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                <Link to="/productos?gender=Mujer" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
                   Fragancias Femeninas
                 </Link>
               </li>
               <li>
-                <Link to="/fragancias?category=hombre" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                <Link to="/productos?gender=Hombre" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
                   Fragancias Masculinas
                 </Link>
               </li>
               <li>
-                <Link to="/fragancias" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
-                  Sets de Regalo
+                <Link to="/productos?type=set" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
+                  Sets Especiales
                 </Link>
               </li>
             </ul>
@@ -321,13 +321,13 @@ const Footer = () => {
               </li>
               <li>
                 <a 
-                  href="https://wa.me/527823185711?text=¡Hola! Me interesa conocer más sobre sus perfumes" 
+                  href="https://wa.me/527208784641?text=¡Hola! Me interesa conocer más sobre sus productos." 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex items-center text-[#BDC3C7] hover:text-[#D4AF37] transition-colors group"
                 >
                   <PhoneIcon className="h-4 w-4 mr-2 text-[#D4AF37] group-hover:scale-110 transition-transform" />
-                  +52 782 318 5711 (WhatsApp)
+                  720 878 4641 (WhatsApp)
                 </a>
               </li>
               <li className="flex items-center text-[#BDC3C7] mt-1">
@@ -344,7 +344,7 @@ const Footer = () => {
           © {new Date().getFullYear()} Aroma Selecto MX. Todos los derechos reservados.
         </p>
         <p>
-          Desarrollado por <a href="https://github.com/VelVic" className="text-[#D4AF37] hover:underline font-medium">Victor Velediaz</a>{/* , con asistencia de IA. */}
+          Desarrollado por <a href="https://github.com/VelVic" className="text-[#D4AF37] hover:underline font-medium">Victor V.</a>{/* , con asistencia de IA. */}
         </p>
       </div>
       </div>
