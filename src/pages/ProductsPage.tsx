@@ -1,556 +1,265 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { FilterIcon, XIcon } from 'lucide-react';
-import ProductCard from '../components/ProductCard';
-// ✅ IMPORTAR PRODUCTOS CENTRALIZADOS
-import { products, getAvailableBrands, Product } from '../data/products';
+  // Opciones de filtro
+  const typeOptions = [
+    { value: 'perfume', label: 'Perfumes' },
+    { value: 'decant', label: 'Decants' },
+    { value: 'set', label: 'Sets' },
+  ];
+  const genderOptions = [
+    { value: 'Mujer', label: 'Mujer' },
+    { value: 'Hombre', label: 'Hombre' },
+    { value: 'Mixto', label: 'Mixto' },
+  ];
+  const priceOptions = [
+    { value: 'Menos de 100', label: 'Menos de $100' },
+    { value: '100-200', label: 'Entre $100 y $200' },
+    { value: '200-300', label: 'Entre $200 y $300' },
+    { value: 'Mas de 300', label: 'Más de $300' },
+  ];
+  const badgeOptions = [
+    { value: 'isNew', label: 'Más relevante' },
+    { value: 'priceAsc', label: 'Más barato' },
+    { value: 'priceDesc', label: 'Más caro' },
+    { value: 'isSale', label: 'Oferta' },
+    { value: 'isComingSoon', label: 'Próximamente' },
+  ];
+  // Marcas dinámicas (solo de perfumes)
+  const brandOptions = Array.from(new Set(perfumes.map(p => p.brand))).map(brand => ({ value: brand, label: brand }));
 
-// ✅ INTERFACE MOVIDA A products.ts - ELIMINAR DE AQUÍ
-// interface Product { ... } ← ELIMINAR
-
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import useScrollFadeIn from '../hooks/useScrollFadeIn';
+import { useNavigate } from 'react-router-dom';
+import { perfumes } from '../data/perfumes';
+import { decants } from '../data/decants';
+import { sets } from '../data/sets';
+import PerfumeCard from '../components/PerfumeCard';
+import DecantCard from '../components/DecantCard';
+import SetCard from '../components/SetCard';
+import ProductFilters from '../components/ProductFilters';
 
 const ProductsPage = () => {
-  const [filtersOpen, setFiltersOpen] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
-  
-  // Estados para filtros - TIPADOS CORRECTAMENTE
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [selectedPrices, setSelectedPrices] = useState<string[]>([]);
-  
-  // ✅ ESTADO PARA ORDENAMIENTO
-  const [sortBy, setSortBy] = useState('relevancia');
+  // Estados para todos los filtros
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]); // 'perfume', 'decant', 'set'
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]); // marcas dinámicas
+  const [selectedGenders, setSelectedGenders] = useState<string[]>([]); // 'Mujer', 'Hombre', 'Mixto'
+  const [selectedPrices, setSelectedPrices] = useState<string[]>([]); // rangos de precio
+  const [selectedBadge, setSelectedBadge] = useState<string>(''); // badge general
+  const [filtersOpen, setFiltersOpen] = useState(false); // para modal móvil
 
-  // ✅ FUNCIÓN PARA ACTUALIZAR URL CON TODOS LOS FILTROS
-  const updateURLParams = (categories: string[], brands: string[], prices: string[]) => {
-    const params = new URLSearchParams();
-    
-    // Solo agregar parámetros que tengan valores
-    if (categories.length > 0) {
-      params.set('category', categories.join(','));
-    }
-    if (brands.length > 0) {
-      params.set('brand', brands.join(','));
-    }
-    if (prices.length > 0) {
-      params.set('price', prices.join(','));
-    }
-    
-    // Actualizar URL sin recargar página
-    setSearchParams(params);
-  };
-  
-  // ✅ EFECTO CORREGIDO - Con dependencias adecuadas
+  // Leer filtros desde la URL
+  const location = useLocation();
+  const navigate = useNavigate();
+  // Flag para saber si es la primera carga
+  const [initializedFromUrl, setInitializedFromUrl] = useState(false);
   useEffect(() => {
-    // Scroll automático al cargar la página
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // Leer parámetros de URL
-    const categoryParam = searchParams.get('category');
-    const brandParam = searchParams.get('brand');
-    const priceParam = searchParams.get('price');
-    
-    // Resetear estados antes de aplicar nuevos filtros
-    setSelectedCategories([]);
-    setSelectedBrands([]);
-    setSelectedPrices([]);
-    
-    // Mapear categorías desde URL
-    const categoryMap: { [key: string]: string } = {
-      'mujer': 'Para Mujer',
-      'hombre': 'Para Hombre', 
-      'premium': 'Decants Premium'
-    };
-    
-    // Aplicar filtros desde URL
-    if (categoryParam) {
-      const categories = categoryParam.split(',').map(cat => 
-        categoryMap[cat] || cat
-      );
-      setSelectedCategories(categories);
-    }
-    
-    if (brandParam) {
-      const brands = brandParam.split(',');
-      setSelectedBrands(brands);
-    }
-    
-    if (priceParam) {
-      const prices = priceParam.split(',');
+    if (!initializedFromUrl) {
+      const params = new URLSearchParams(location.search);
+      // Gender (multi)
+      const genders = params.getAll('gender').filter(g => ['Hombre','Mujer','Mixto'].includes(g));
+      setSelectedGenders(genders);
+      // Type (multi)
+      const types = params.getAll('type').filter(t => ['perfume','decant','set'].includes(t));
+      setSelectedTypes(types);
+      // Price (multi)
+      const prices = params.getAll('price').filter(p => ['Menos de 100','100-200','200-300','Mas de 300'].includes(p));
       setSelectedPrices(prices);
+      // Brand (multi)
+      const brands = params.getAll('brand');
+      setSelectedBrands(brands);
+      // Badge (single)
+      const badge = params.get('badge');
+      if (badge && ['isNew','priceAsc','priceDesc','isSale','isComingSoon'].includes(badge)) {
+        setSelectedBadge(badge);
+      } else {
+        setSelectedBadge('');
+      }
+      setInitializedFromUrl(true);
     }
-  }, [searchParams]);
+  }, [location.search, initializedFromUrl]);
 
-  // ✅ FUNCIÓN ACTUALIZADA PARA MANEJAR CHECKBOXES
-  const handleCheckboxChange = (value: string, setter: React.Dispatch<React.SetStateAction<string[]>>, currentValues: string[]) => {
-    let newValues: string[];
-    
-    if (currentValues.includes(value)) {
-      newValues = currentValues.filter(item => item !== value);
-    } else {
-      newValues = [...currentValues, value];
+  // Sincronizar filtros con la URL
+  useEffect(() => {
+    if (!initializedFromUrl) return;
+    const params = new URLSearchParams();
+    selectedGenders.forEach(g => params.append('gender', g));
+    selectedTypes.forEach(t => params.append('type', t));
+    selectedPrices.forEach(p => params.append('price', p));
+    selectedBrands.forEach(b => params.append('brand', b));
+    if (selectedBadge) params.set('badge', selectedBadge);
+    // Solo actualiza si la URL no coincide
+    if (location.search !== `?${params.toString()}`) {
+      navigate({ search: params.toString() }, { replace: true });
     }
-    
-    setter(newValues);
-    
-    // Actualizar URL según el tipo de filtro
-    if (setter === setSelectedCategories) {
-      updateURLParams(newValues, selectedBrands, selectedPrices);
-    } else if (setter === setSelectedBrands) {
-      updateURLParams(selectedCategories, newValues, selectedPrices);
-    } else if (setter === setSelectedPrices) {
-      updateURLParams(selectedCategories, selectedBrands, newValues);
-    }
+  }, [selectedGenders, selectedTypes, selectedPrices, selectedBrands, selectedBadge, location.search, navigate, initializedFromUrl]);
+
+
+  // --- Lógica de filtrado ---
+  // Helper para filtrar por precio
+  const priceMatch = (price: number) => {
+    if (selectedPrices.length === 0) return true;
+    return selectedPrices.some(range => {
+      if (range === 'Menos de 100') return price < 100;
+      if (range === '100-200') return price >= 100 && price < 200;
+      if (range === '200-300') return price >= 200 && price < 300;
+      if (range === 'Mas de 300') return price >= 300;
+      return true;
+    });
   };
 
-  // ✅ FUNCIÓN PARA LIMPIAR TODOS LOS FILTROS
-  const clearAllFilters = () => {
-    setSelectedCategories([]);
-    setSelectedBrands([]);
-    setSelectedPrices([]);
-    // Limpiar URL también
-    setSearchParams(new URLSearchParams());
-  };
-
-  // ✅ FUNCIÓN PARA LIMPIAR FILTRO ESPECÍFICO
-  const removeFilter = (type: 'category' | 'brand' | 'price', value: string) => {
-    if (type === 'category') {
-      const newCategories = selectedCategories.filter(cat => cat !== value);
-      setSelectedCategories(newCategories);
-      updateURLParams(newCategories, selectedBrands, selectedPrices);
-    } else if (type === 'brand') {
-      const newBrands = selectedBrands.filter(brand => brand !== value);
-      setSelectedBrands(newBrands);
-      updateURLParams(selectedCategories, newBrands, selectedPrices);
-    } else if (type === 'price') {
-      const newPrices = selectedPrices.filter(price => price !== value);
-      setSelectedPrices(newPrices);
-      updateURLParams(selectedCategories, selectedBrands, newPrices);
-    }
-  };
-
-  // ✅ PRODUCTOS CENTRALIZADOS - ELIMINAR ARRAY LOCAL
-  // const products = [...] ← ELIMINAR ESTA LÍNEA COMPLETA
-
-  // Obtener el precio base seguro de un producto
-  const getBasePrice = (product: Product): number => {
-    if (Array.isArray(product.variants) && product.variants.length > 0) {
-      const available = product.variants.find(v => typeof v.price === 'number' && v.stock > 0);
-      if (available) return available.price;
-      const first = product.variants.find(v => typeof v.price === 'number');
-      if (first) return first.price;
-    }
-    return 0;
-  };
-
-  // ✅ FUNCIÓN PARA ORDENAR PRODUCTOS - TIPADA CORRECTAMENTE
-  const getSortedProducts = (products: Product[]): Product[] => {
-    const sorted = [...products];
-    switch (sortBy) {
-      case 'price-asc':
-        return sorted.sort((a, b) => getBasePrice(a) - getBasePrice(b));
-      case 'price-desc':
-        return sorted.sort((a, b) => getBasePrice(b) - getBasePrice(a));
-      case 'disponibles':
-        return sorted.sort((a, b) => {
-          if (!a.isComingSoon && b.isComingSoon) return -1;
-          if (a.isComingSoon && !b.isComingSoon) return 1;
-          return 0;
-        });
-      case 'proximamente':
-        return sorted.sort((a, b) => {
-          if (a.isComingSoon && !b.isComingSoon) return -1;
-          if (!a.isComingSoon && b.isComingSoon) return 1;
-          return 0;
-        });
-      case 'relevancia':
-      default:
-        return sorted.sort((a, b) => {
-          if (a.isNew && !b.isNew) return -1;
-          if (!a.isNew && b.isNew) return 1;
-          return b.rating - a.rating;
-        });
-    }
-  };
-
-  // ✅ APLICAR FILTROS usando basePrice
-  const filteredProducts = products.filter(product => {
-    // Filtro por categoría
-    if (selectedCategories.length > 0 && !selectedCategories.includes(product.category)) {
-      return false;
-    }
-    // Filtro por marca
-    if (selectedBrands.length > 0 && !selectedBrands.includes(product.brand)) {
-      return false;
-    }
-    // Filtro por precio
-    if (selectedPrices.length > 0) {
-      const price = getBasePrice(product);
-      const matchesPrice = selectedPrices.some(priceRange => {
-        switch (priceRange) {
-          case 'Menos de $100':
-            return price < 100;
-          case '$100 - $200':
-            return price >= 100 && price <= 200;
-          case '$200 - $300':
-            return price >= 200 && price <= 300;
-          case 'Más de $300':
-            return price > 300;
-          default:
-            return true;
-        }
-      });
-      if (!matchesPrice) return false;
-    }
+  // Filtrar perfumes
+  let filteredPerfumes = perfumes.filter(p => {
+    if (selectedTypes.length && !selectedTypes.includes('perfume')) return false;
+    if (selectedBrands.length && !selectedBrands.includes(p.brand)) return false;
+    if (selectedGenders.length && !selectedGenders.includes(
+      p.category === 'hombre' ? 'Hombre' : p.category === 'mujer' ? 'Mujer' : 'Mixto'
+    )) return false;
+    if (selectedPrices.length && !(p.prices && p.prices.some(priceMatch))) return false;
+    // Badges
+    if (selectedBadge === 'isSale' && !p.isSale) return false;
+    if (selectedBadge === 'isNew' && !p.isNew) return false;
     return true;
   });
+  // Ordenar por badge
+  if (selectedBadge === 'priceAsc') filteredPerfumes = [...filteredPerfumes].sort((a, b) => (a.prices?.[0] ?? 0) - (b.prices?.[0] ?? 0));
+  if (selectedBadge === 'priceDesc') filteredPerfumes = [...filteredPerfumes].sort((a, b) => (b.prices?.[0] ?? 0) - (a.prices?.[0] ?? 0));
 
-  // ✅ PRODUCTOS FINALES: FILTRADOS Y ORDENADOS
-  const finalProducts = getSortedProducts(filteredProducts);
+  // Filtrar decants
+  let filteredDecants = decants.filter(d => {
+    if (selectedTypes.length && !selectedTypes.includes('decant')) return false;
+    const relatedPerfume = perfumes.find(p => p.id === d.perfumeId);
+    if (!relatedPerfume) return false;
+    if (selectedBrands.length && !selectedBrands.includes(relatedPerfume.brand)) return false;
+    if (selectedGenders.length && !selectedGenders.includes(
+      relatedPerfume.category === 'hombre' ? 'Hombre' : relatedPerfume.category === 'mujer' ? 'Mujer' : 'Mixto'
+    )) return false;
+    if (selectedPrices.length && !(d.variants && d.variants.some(v => priceMatch(v.price)))) return false;
+    // Badges: ahora se buscan en el objeto decant
+    if (selectedBadge === 'isSale' && !d.isSale) return false;
+    if (selectedBadge === 'isNew' && !d.isNew) return false;
+    if (selectedBadge === 'isComingSoon' && !d.isComingSoon) return false;
+    return true;
+  });
+  if (selectedBadge === 'priceAsc') filteredDecants = [...filteredDecants].sort((a, b) => (a.variants?.[0]?.price ?? 0) - (b.variants?.[0]?.price ?? 0));
+  if (selectedBadge === 'priceDesc') filteredDecants = [...filteredDecants].sort((a, b) => (b.variants?.[0]?.price ?? 0) - (a.variants?.[0]?.price ?? 0));
 
-  // Justo antes del return, calcula el producto más barato:
-  const cheapestProduct = finalProducts.reduce(
-    (min, p) => (getBasePrice(p) < getBasePrice(min) ? p : min),
-    finalProducts[0] || { variants: [{ price: 50 }] }
-  );
+  // Filtrar sets
+  let filteredSets = sets.filter(s => {
+    if (selectedTypes.length && !selectedTypes.includes('set')) return false;
+    // Calcular category del set según los items
+    let setCategory: 'Hombre' | 'Mujer' | 'Mixto' = 'Mixto';
+    const categories = s.items.map(item => {
+      if (item.type === 'perfume') {
+        const perfume = perfumes.find(p => p.id === item.decantId);
+        return perfume?.category;
+      }
+      if (item.type === 'decant') {
+        const decant = decants.find(d => d.id === item.decantId);
+        const perfume = decant ? perfumes.find(p => p.id === decant.perfumeId) : undefined;
+        return perfume?.category;
+      }
+      return undefined;
+    }).filter(Boolean);
+    if (categories.length > 0) {
+      const unique = Array.from(new Set(categories));
+      if (unique.length === 1) {
+        setCategory = unique[0] === 'hombre' ? 'Hombre' : unique[0] === 'mujer' ? 'Mujer' : 'Mixto';
+      } else {
+        setCategory = 'Mixto';
+      }
+    }
+    if (selectedGenders.length && !selectedGenders.includes(setCategory)) return false;
+    if (selectedPrices.length && !(s.variants && s.variants.some(v => priceMatch(v.price)))) return false;
+    if (selectedBadge === 'isSale' && !s.isSale) return false;
+    if (selectedBadge === 'isNew' && !s.isNew) return false;
+    if (selectedBadge === 'isComingSoon' && !s.isComingSoon) return false;
+    return true;
+  });
+  if (selectedBadge === 'priceAsc') filteredSets = [...filteredSets].sort((a, b) => (a.variants?.[0]?.price ?? 0) - (b.variants?.[0]?.price ?? 0));
+  if (selectedBadge === 'priceDesc') filteredSets = [...filteredSets].sort((a, b) => (b.variants?.[0]?.price ?? 0) - (a.variants?.[0]?.price ?? 0));
 
-  // ✅ USAR FUNCIÓN IMPORTADA PARA MARCAS
-  const availableBrands = getAvailableBrands();
+  // Animación de aparición para la sección principal
+  const mainAnim = useScrollFadeIn();
 
   return (
-    <div className="bg-[#F9F9F9] pt-20">
-      <div>
-        {/* Mobile filter dialog */}
-        <div className={`fixed inset-0 flex z-40 lg:hidden ${filtersOpen ? 'visible' : 'invisible'}`}>
-          <div 
-            className={`fixed inset-0 bg-black bg-opacity-25 transition-opacity duration-300 ${filtersOpen ? 'opacity-100' : 'opacity-0'}`} 
-            onClick={() => setFiltersOpen(false)} 
-          />
-          <div className={`relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl transition-transform duration-300 ${filtersOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-            {/* Mobile header con botón limpiar */}
-            <div className="flex items-center justify-between px-4 mt-12">
-              <h2 className="text-lg font-medium text-gray-900">Filtros</h2>
-              <div className="flex items-center space-x-3">
-                <button 
-                  type="button"
-                  className="text-sm text-[#D4AF37] hover:text-[#2C3E50] font-medium transition-colors duration-300"
-                  onClick={clearAllFilters}
-                >
-                  Limpiar
-                </button>
-                <button 
-                  type="button" 
-                  className="text-gray-600 hover:text-[#D4AF37] p-2 rounded-lg hover:bg-[#D4AF37]/10 transition-all duration-300" 
-                  onClick={() => setFiltersOpen(false)}
-                >
-                  <XIcon className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Mobile Filters */}
-            <div className="border-t border-gray-200">
-              <div className="px-4 py-6">
-                <h3 className="text-sm font-medium text-gray-900">Categoría</h3>
-                <div className="mt-2 space-y-2">
-                  {['Para Mujer', 'Para Hombre', 'Decants Premium'].map(category => (
-                    <div key={category} className="flex items-center">
-                      <input 
-                        id={`category-${category}`} 
-                        name="category[]" 
-                        type="checkbox" 
-                        checked={selectedCategories.includes(category)}
-                        onChange={() => handleCheckboxChange(category, setSelectedCategories, selectedCategories)}
-                        className="h-4 w-4 rounded border-gray-300 text-[#D4AF37] focus:ring-[#D4AF37] focus:ring-2" 
-                      />
-                      <label htmlFor={`category-${category}`} className="ml-3 text-sm text-gray-600">
-                        {category}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="px-4 py-6 border-t border-gray-200">
-                <h3 className="text-sm font-medium text-gray-900">Marca</h3>
-                <div className="mt-2 space-y-2">
-                  {availableBrands.map(brand => (
-                    <div key={brand} className="flex items-center">
-                      <input 
-                        id={`brand-${brand}`} 
-                        name="brand[]" 
-                        type="checkbox" 
-                        checked={selectedBrands.includes(brand)}
-                        onChange={() => handleCheckboxChange(brand, setSelectedBrands, selectedBrands)}
-                        className="h-4 w-4 rounded border-gray-300 text-[#D4AF37] focus:ring-[#D4AF37] focus:ring-2" 
-                      />
-                      <label htmlFor={`brand-${brand}`} className="ml-3 text-sm text-gray-600">
-                        {brand}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="px-4 py-6 border-t border-gray-200">
-                <h3 className="text-sm font-medium text-gray-900">Precio</h3>
-                <div className="mt-2 space-y-2">
-                  {['Menos de $100', '$100 - $200', '$200 - $300', 'Más de $300'].map(price => (
-                    <div key={price} className="flex items-center">
-                      <input 
-                        id={`price-${price}`} 
-                        name="price[]" 
-                        type="checkbox" 
-                        checked={selectedPrices.includes(price)}
-                        onChange={() => handleCheckboxChange(price, setSelectedPrices, selectedPrices)}
-                        className="h-4 w-4 rounded border-gray-300 text-[#D4AF37] focus:ring-[#D4AF37] focus:ring-2" 
-                      />
-                      <label htmlFor={`price-${price}`} className="ml-3 text-sm text-gray-600">
-                        {price}
-                      </label>
-                    </div>
-                  ))}
-                </div>
+    <div className="bg-[#F9F9F9] pt-20 min-h-screen flex flex-col items-center">
+      {/* Header principal */}
+      <div
+        ref={mainAnim.ref}
+        className={`w-full max-w-7xl flex flex-col lg:flex-row gap-8 transition-all duration-700 ${mainAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
+        {/* Filtros como componente modular */}
+        <ProductFilters
+          selectedTypes={selectedTypes}
+          setSelectedTypes={setSelectedTypes}
+          selectedBrands={selectedBrands}
+          setSelectedBrands={setSelectedBrands}
+          selectedGenders={selectedGenders}
+          setSelectedGenders={setSelectedGenders}
+          selectedPrices={selectedPrices}
+          setSelectedPrices={setSelectedPrices}
+          filtersOpen={filtersOpen}
+          setFiltersOpen={setFiltersOpen}
+          typeOptions={typeOptions}
+          brandOptions={brandOptions}
+          genderOptions={genderOptions}
+          priceOptions={priceOptions}
+        />
+        {/* Contenido principal */}
+        <main className="flex-1">
+          {/* Título y subtítulo en contenedor blanco */}
+          <div className="mb-8 w-full">
+            <div className="bg-white rounded-lg shadow px-6 py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-[#2C3E50] mb-2">Catálogo de productos</h1>
+                <p className="text-gray-600">Catálogo completo de productos</p>
               </div>
             </div>
           </div>
-        </div>
-
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* ✅ HEADER CON ORDENAMIENTO */}
-          <div className="bg-white rounded-lg px-4 sm:px-6 py-4 sm:py-5 mb-6">
-            
-            {/* MÓVIL: Layout vertical */}
-            <div className="block lg:hidden">
-              <div className="text-center mb-3">
-                <h1 className="text-3xl font-logo font-bold tracking-tight text-[#2C3E50] mb-0">
-                  Catálogo de fragancias
-                </h1>
-                <p className="text-sm text-gray-600 mb-1">
-                  Decants de 3ml, 5ml y 10ml desde $ {finalProducts.length > 0 ? getBasePrice(cheapestProduct) : '50'} MXN
-                </p>
-              </div>
-              
-              <div className="flex items-center justify-between px-1">
-                <p className="text-xs text-gray-500">
-                  {finalProducts.length} productos disponibles
-                </p>
-                <button 
-                  type="button" 
-                  className="bg-[#2C3E50] hover:bg-[#D4AF37] text-[#D4AF37] hover:text-[#2C3E50] px-3 py-2 rounded-lg flex items-center transition-all duration-300 shadow-sm" 
-                  onClick={() => setFiltersOpen(true)}
+          {/* Botones flotantes de badges (filtros generales) */}
+          <div className="mb-6 w-full">
+            <div className="flex gap-3 overflow-x-auto pb-2 lg:overflow-x-visible lg:flex-wrap">
+              {badgeOptions.map(option => (
+                <button
+                  key={option.value}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold border transition-colors duration-200 whitespace-nowrap ${selectedBadge === option.value ? 'bg-[#D4AF37] text-white border-[#D4AF37]' : 'bg-white text-[#2C3E50] border-gray-300 hover:bg-[#D4AF37]/10'}`}
+                  onClick={() => {
+                    setSelectedBadge(option.value);
+                  }}
                 >
-                  <FilterIcon className="h-4 w-4 mr-2" />
-                  <span className="text-sm font-medium">Filtros</span>
+                  {option.label}
                 </button>
-              </div>
-            </div>
-
-            {/* DESKTOP: Layout horizontal compacto */}
-            <div className="hidden lg:block">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h1 className="text-3xl font-logo font-bold tracking-tight text-[#2C3E50] mb-1">
-                    Catálogo de fragancias
-                  </h1>
-                  <div className="flex items-center space-x-4 text-sm">
-                    <p className="text-gray-600">
-                      Decants de 3ml, 5ml y 10ml desde $ {finalProducts.length > 0 ? getBasePrice(cheapestProduct) : '50'} MXN
-                    </p>
-                    <span className="text-gray-300">•</span>
-                    <p className="text-gray-500">
-                      {finalProducts.length} productos disponibles
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-4">
-                  {/* ✅ SELECT FUNCIONAL CON ORDENAMIENTO */}
-                  <select 
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="text-sm font-medium text-gray-700 py-2 pl-3 pr-8 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-[#D4AF37] bg-white"
-                  >
-                    <option value="relevancia">Más Relevantes</option>
-                    <option value="price-asc">Precio: Menor a Mayor</option>
-                    <option value="price-desc">Precio: Mayor a Menor</option>
-                    <option value="disponibles">Disponibles Primero</option>
-                    <option value="proximamente">Próximamente</option>
-                  </select>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-
-          {/* ✅ CHIPS - FUNCIONANDO PERFECTAMENTE */}
-          {(selectedCategories.length > 0 || selectedBrands.length > 0 || selectedPrices.length > 0) && (
-            <div className="mb-6 flex flex-wrap gap-2 px-4 sm:px-0">
-              <span className="text-sm text-gray-600 mr-2">Filtros activos:</span>
-              
-              {selectedCategories.map(category => (
-                <span 
-                  key={category}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#D4AF37] text-[#2C3E50]"
-                >
-                  {category}
-                  <button 
-                    onClick={() => removeFilter('category', category)}
-                    className="ml-2 hover:text-red-600 transition-colors"
-                    title="Remover este filtro"
-                  >
-                    <XIcon className="h-3 w-3" />
-                  </button>
-                </span>
+          {/* Grid de productos filtrados en contenedor para evitar que el footer se pegue */}
+          <div className="w-full min-h-[400px] flex mb-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+              {/* Perfumes filtrados */}
+              {filteredPerfumes.map(perfume => (
+                <PerfumeCard key={perfume.id} perfume={perfume} />
               ))}
-              
-              {selectedBrands.map(brand => (
-                <span 
-                  key={brand}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
-                >
-                  {brand}
-                  <button 
-                    onClick={() => removeFilter('brand', brand)}
-                    className="ml-2 hover:text-red-600 transition-colors"
-                    title="Remover este filtro"
-                  >
-                    <XIcon className="h-3 w-3" />
-                  </button>
-                </span>
-              ))}
-              
-              {selectedPrices.map(price => (
-                <span 
-                  key={price}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
-                >
-                  {price}
-                  <button 
-                    onClick={() => removeFilter('price', price)}
-                    className="ml-2 hover:text-red-600 transition-colors"
-                    title="Remover este filtro"
-                  >
-                    <XIcon className="h-3 w-3" />
-                  </button>
-                </span>
+              {/* Decants filtrados */}
+              {filteredDecants.map(decant => {
+                const relatedPerfume = perfumes.find(p => p.id === decant.perfumeId);
+                return (
+                  <DecantCard
+                    key={decant.id}
+                    decant={decant}
+                    perfumeName={relatedPerfume?.name}
+                    perfumeBrand={relatedPerfume?.brand}
+                    image={relatedPerfume?.image}
+                    slug={decant.id}
+                    rating={relatedPerfume?.rating}
+                  />
+                );
+              })}
+              {/* Sets filtrados */}
+              {filteredSets.map(set => (
+                <SetCard key={set.id} set={set} />
               ))}
             </div>
-          )}
-
-          <section className="pb-24">
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-8 gap-y-10">
-              {/* Desktop Filters con botón limpiar */}
-              <div className="hidden lg:block">
-                <div className="card-solid p-6 space-y-8">
-                  <div className="flex items-center justify-between pb-4 border-b border-[#D4AF37]/20">
-                    <h2 className="text-lg font-medium text-gray-900">Filtros</h2>
-                    <button 
-                      type="button"
-                      className="text-sm text-[#D4AF37] hover:text-[#2C3E50] font-medium transition-colors duration-300"
-                      onClick={clearAllFilters}
-                    >
-                      Limpiar todo
-                    </button>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-4 pb-2 border-b border-[#D4AF37]/20">
-                      Categoría
-                    </h3>
-                    <div className="space-y-3">
-                      {['Para Mujer', 'Para Hombre', 'Decants Premium'].map(category => (
-                        <div key={category} className="flex items-center">
-                          <input 
-                            id={`desktop-category-${category}`} 
-                            name="category[]" 
-                            type="checkbox" 
-                            checked={selectedCategories.includes(category)}
-                            onChange={() => handleCheckboxChange(category, setSelectedCategories, selectedCategories)}
-                            className="h-4 w-4 rounded border-gray-300 text-[#D4AF37] focus:ring-[#D4AF37] focus:ring-2" 
-                          />
-                          <label htmlFor={`desktop-category-${category}`} className="ml-3 text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer">
-                            {category}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-4 pb-2 border-b border-[#D4AF37]/20">
-                      Marca
-                    </h3>
-                    <div className="space-y-3">
-                      {availableBrands.map(brand => (
-                        <div key={brand} className="flex items-center">
-                          <input 
-                            id={`desktop-brand-${brand}`} 
-                            name="brand[]" 
-                            type="checkbox" 
-                            checked={selectedBrands.includes(brand)}
-                            onChange={() => handleCheckboxChange(brand, setSelectedBrands, selectedBrands)}
-                            className="h-4 w-4 rounded border-gray-300 text-[#D4AF37] focus:ring-[#D4AF37] focus:ring-2" 
-                          />
-                          <label htmlFor={`desktop-brand-${brand}`} className="ml-3 text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer">
-                            {brand}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-4 pb-2 border-b border-[#D4AF37]/20">
-                      Precio
-                    </h3>
-                    <div className="space-y-3">
-                      {['Menos de $100', '$100 - $200', '$200 - $300', 'Más de $300'].map(price => (
-                        <div key={price} className="flex items-center">
-                          <input 
-                            id={`desktop-price-${price}`} 
-                            name="price[]" 
-                            type="checkbox" 
-                            checked={selectedPrices.includes(price)}
-                            onChange={() => handleCheckboxChange(price, setSelectedPrices, selectedPrices)}
-                            className="h-4 w-4 rounded border-gray-300 text-[#D4AF37] focus:ring-[#D4AF37] focus:ring-2" 
-                          />
-                          <label htmlFor={`desktop-price-${price}`} className="ml-3 text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer">
-                            {price}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Product grid */}
-              <div className="lg:col-span-3">
-                {finalProducts.length === 0 ? (
-                  <div className="text-center py-12">
-                    <p className="text-gray-500 text-lg">No se encontraron productos con los filtros seleccionados.</p>
-                    <button 
-                      onClick={clearAllFilters}
-                      className="mt-4 text-[#D4AF37] hover:text-[#2C3E50] font-medium transition-colors"
-                    >
-                      Limpiar filtros
-                    </button>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {finalProducts.map(product => (
-                      <ProductCard
-                        key={product.id}
-                        {...product}
-                        price={getBasePrice(product)}
-                        variants={Array.isArray(product.variants) ? product.variants : []}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </section>
+          </div>
         </main>
       </div>
     </div>

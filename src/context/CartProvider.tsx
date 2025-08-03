@@ -1,39 +1,18 @@
-import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import React, { useState, ReactNode, useCallback } from 'react';
+import { CartContext } from './cartContext';
 
 export interface CartItem {
   id: string;
   name: string;
   brand: string;
   image: string;
-  size: string;
+  size: number;
   price: number;
   quantity: number;
   stock: number;
 }
 
-interface CartContextType {
-  items: CartItem[];
-  addToCart: (product: Omit<CartItem, 'quantity'>, quantity?: number) => void;
-  removeFromCart: (id: string, size: string) => void;
-  updateQuantity: (id: string, size: string, quantity: number) => void;
-  clearCart: () => void;
-  getCartCount: () => number;
-  getCartSubtotal: () => number;
-  getShippingCost: (deliveryType: string, subtotal: number) => number;
-  cartDrawerOpen: boolean;
-  openCartDrawer: () => void;
-  closeCartDrawer: () => void;
-}
-
-export const CartContext = createContext<CartContextType | undefined>(undefined);
-
-export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
-  }
-  return context;
-};
+// useCart ahora se importa desde cartContext.ts
 
 interface CartProviderProps {
   children: ReactNode;
@@ -46,7 +25,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const openCartDrawer = useCallback(() => setCartDrawerOpen(true), []);
   const closeCartDrawer = useCallback(() => setCartDrawerOpen(false), []);
 
-  const addToCart = (product: Omit<CartItem, 'quantity'>, quantity = 1) => {
+  const addToCart = (product: Omit<CartItem, 'quantity'>) => {
     setItems(currentItems => {
       const existingItemIndex = currentItems.findIndex(
         item => item.id === product.id && item.size === product.size
@@ -54,23 +33,23 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       if (existingItemIndex !== -1) {
         const updatedItems = [...currentItems];
         const currentQuantity = updatedItems[existingItemIndex].quantity;
-        const newQuantity = Math.min(currentQuantity + quantity, product.stock);
+        const newQuantity = Math.min(currentQuantity + 1, product.stock);
         updatedItems[existingItemIndex].quantity = newQuantity;
         return updatedItems;
       } else {
-        return [...currentItems, { ...product, quantity: Math.min(quantity, product.stock) }];
+        return [...currentItems, { ...product, quantity: 1 }];
       }
     });
     openCartDrawer(); // Abrir drawer al agregar
   };
 
-  const removeFromCart = (id: string, size: string) => {
+  const removeFromCart = (id: string, size: number) => {
     setItems(currentItems => 
       currentItems.filter(item => !(item.id === id && item.size === size))
     );
   };
 
-  const updateQuantity = (id: string, size: string, quantity: number) => {
+  const updateQuantity = (id: string, size: number, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(id, size);
       return;
@@ -103,7 +82,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     return deliveryType === 'express' ? 189 : 149;
   };
 
-  const value: CartContextType = {
+  const value = {
     items,
     addToCart,
     removeFromCart,

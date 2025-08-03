@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useScrollToTopOnRouteChange } from './utils/useScrollToTopOnRouteChange';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
@@ -17,6 +18,12 @@ import FragranceInfoPage from './pages/FragranceInfoPage';
 import PrivacidadPage from './pages/PrivacydadPage';
 import TerminosCondicionesPage from './pages/TermsAndConditionsPage';
 
+
+function ScrollToTopHandler() {
+  useScrollToTopOnRouteChange();
+  return null;
+}
+
 export function App() {
   return (
     <CartProvider>
@@ -26,6 +33,7 @@ export function App() {
           v7_relativeSplatPath: true
         }}
       >
+        <ScrollToTopHandler />
         <ScrollToTop />
         <ScrollToTopOnNavigate />
         <div className="flex flex-col min-h-screen">
@@ -34,8 +42,8 @@ export function App() {
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/fragancias" element={<ProductsPage />} />
-              <Route path="/fragancia/:slug" element={<ProductDetailPage />} /> {/* Recuerde actualizar los enlaces y la lógica de ProductDetailPage */}
+              {/* <Route path="/fragancias" element={<ProductsPage />} /> */}
+              {/* <Route path="/fragancia/:slug" element={<ProductDetailPage />} /> */}
               <Route path="/iniciar-sesion" element={<LoginPage />} />
               <Route path="/sobre-mi" element={<AboutPage />} />
               <Route path="/contacto" element={<ContactPage />} />
@@ -44,6 +52,9 @@ export function App() {
               <Route path='/informacion-fragancias' element={<FragranceInfoPage />} />
               <Route path="/privacidad" element={<PrivacidadPage />} />
               <Route path="/terminos-condiciones" element={<TerminosCondicionesPage />} />
+
+              <Route path="/productos" element={<ProductsPage />} />
+              <Route path="/:tipo/:id" element={<ProductDetailPage />} />
             </Routes>
           </main>
           <Footer />
