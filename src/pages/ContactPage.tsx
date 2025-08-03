@@ -1,16 +1,28 @@
 import { useState } from 'react';
+import useScrollFadeIn from '../hooks/useScrollFadeIn';
 import { PhoneIcon, MailIcon, ClockIcon, MapPinIcon, InstagramIcon, CheckCircleIcon, TruckIcon, CalendarIcon, AlertCircleIcon } from 'lucide-react';
 import Button from '../components/Button';
 import ComingSoonOverlay from '../components/ComingSoonOverlay';
 import SectionTitle from '../components/SectionTitle';
 
 const ContactPage = () => {
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: 'consulta',
     message: ''
   });
+
+  // Animaciones para secciones principales
+  const heroAnim = useScrollFadeIn();
+  const funFactAnim = useScrollFadeIn();
+  const infoAnim = useScrollFadeIn();
+  const horariosAnim = useScrollFadeIn();
+  const faqAnim = useScrollFadeIn();
+  const formAnim = useScrollFadeIn();
+  const pedidosAnim = useScrollFadeIn();
+  const ctaAnim = useScrollFadeIn();
 
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -33,7 +45,10 @@ const ContactPage = () => {
   return (
     <div className="bg-white pt-16">
       {/* Hero Section */}
-      <section className="relative bg-[#2C3E50] text-white py-20">
+      <section
+        ref={heroAnim.ref}
+        className={`relative bg-[#2C3E50] text-white py-20 transition-all duration-700 ${heroAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="absolute inset-0 overflow-hidden">
           <img 
             src="https://images.unsplash.com/photo-1596524430615-b46475ddff6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
@@ -42,7 +57,6 @@ const ContactPage = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#2C3E50]/80 to-[#2C3E50]/60"></div>
         </div>
-        
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-logo font-bold mb-6">
             ¿Tienes alguna <span className="text-[#D4AF37]">pregunta?</span>
@@ -57,7 +71,10 @@ const ContactPage = () => {
       </section>
 
       {/* Fun Fact Section */}
-      <section className="py-8">
+      <section
+        ref={funFactAnim.ref}
+        className={`py-8 transition-all duration-700 ${funFactAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-3xl mx-auto px-4">
           <div className="flex items-center bg-gradient-to-r from-[#D4AF37]/10 to-[#2C3E50]/10 rounded-lg p-6 shadow-sm">
             <MailIcon className="h-10 w-10 text-[#D4AF37] mr-4 flex-shrink-0" />
@@ -70,10 +87,12 @@ const ContactPage = () => {
       </section>
 
       {/* Información de Contacto Principal */}
-      <section className="py-16 bg-white">
+      <section
+        ref={infoAnim.ref}
+        className={`py-16 bg-white transition-all duration-700 ${infoAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-8">
-            
             {/* Instagram - Principal */}
             <div className="text-center section-card p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow border border-[#D4AF37]/20">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -93,7 +112,6 @@ const ContactPage = () => {
               </Button>
               <p className="text-sm text-[#BDC3C7] mt-3">Respuesta en minutos</p>
             </div>
-
             {/* WhatsApp */}
             <div className="text-center section-card p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow">
               <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -103,17 +121,16 @@ const ContactPage = () => {
               <p className="text-[#BDC3C7] mb-4">Contacto directo</p>
               <Button
                 as="a"
-                href="https://wa.me/527823185711"
+                href="https://wa.me/527208784641?text=¡Hola! Vengo de la sección 'Contacto' de Aroma Selecto MX, ¿Podrías ayudarme?"
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="primary"
                 className="px-6 py-2 font-medium inline-block"
               >
-                782 318 5711
+                720 878 4641
               </Button>
               <p className="text-sm text-[#BDC3C7] mt-3">Solo consultas urgentes</p>
             </div>
-
             {/* Email */}
             <div className="text-center p-6 section-card bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow">
               <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-4">
@@ -136,10 +153,12 @@ const ContactPage = () => {
       </section>
 
       {/* Horarios y Servicios */}
-      <section className="py-16 bg-[#F9F9F9]">
+      <section
+        ref={horariosAnim.ref}
+        className={`py-16 bg-[#F9F9F9] transition-all duration-700 ${horariosAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionTitle>Horarios y Servicios</SectionTitle>
-
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-white p-6 rounded-lg shadow-sm text-center">
               <ClockIcon className="h-12 w-12 text-[#D4AF37] mx-auto mb-4" />
@@ -147,21 +166,18 @@ const ContactPage = () => {
               <p className="text-[#BDC3C7] text-sm">Lunes a Viernes</p>
               <p className="text-gray-900 font-medium">9:00 AM - 7:00 PM</p>
             </div>
-            
             <div className="bg-white p-6 rounded-lg shadow-sm text-center">
               <CalendarIcon className="h-12 w-12 text-[#D4AF37] mx-auto mb-4" />
               <h3 className="font-semibold text-gray-900 mb-2">Consultas</h3>
               <p className="text-[#BDC3C7] text-sm">Miércoles y Viernes</p>
               <p className="text-gray-900 font-medium">Atención especializada</p>
             </div>
-            
             <div className="bg-white p-6 rounded-lg shadow-sm text-center">
               <TruckIcon className="h-12 w-12 text-[#D4AF37] mx-auto mb-4" />
               <h3 className="font-semibold text-gray-900 mb-2">Entregas Locales</h3>
               <p className="text-[#BDC3C7] text-sm">Zonas cercanas: 10:00 AM - 8:00 PM</p>
               <p className="text-[#BDC3C7] text-sm">Zonas lejanas: Antes de las 6:00 PM</p>
             </div>
-            
             <div className="bg-white p-6 rounded-lg shadow-sm text-center">
               <MapPinIcon className="h-12 w-12 text-[#D4AF37] mx-auto mb-4" />
               <h3 className="font-semibold text-gray-900 mb-2">Ubicación</h3>
@@ -173,7 +189,10 @@ const ContactPage = () => {
       </section>
 
       {/* Mini FAQ */}
-      <section className="py-8">
+      <section
+        ref={faqAnim.ref}
+        className={`py-8 transition-all duration-700 ${faqAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-3xl mx-auto px-4">
           <div className="bg-[#F9F9F9] rounded-lg p-6 shadow-sm border-l-4 border-[#D4AF37]">
             <h3 className="text-xl font-bold text-[#2C3E50] mb-4">Preguntas frecuentes</h3>
@@ -200,7 +219,10 @@ const ContactPage = () => {
       </section>
 
       {/* Formulario de Contacto */}
-      <section className="py-16 bg-white">
+      <section
+        ref={formAnim.ref}
+        className={`py-16 bg-white transition-all duration-700 ${formAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <SectionTitle>Envía un mensaje</SectionTitle>
@@ -214,7 +236,6 @@ const ContactPage = () => {
               <p className="text-green-800">¡Mensaje enviado exitosamente! Te responderé pronto.</p>
             </div>
           )}
-
           <div className='relative'>
             <form onSubmit={handleSubmit} className="bg-[#F9F9F9] p-8 rounded-lg shadow-sm">
               <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -302,10 +323,12 @@ const ContactPage = () => {
       </section>
 
       {/* Información importante sobre pedidos */}
-      <section className="py-16 bg-[#F9F9F9]">
+      <section
+        ref={pedidosAnim.ref}
+        className={`py-16 bg-[#F9F9F9] transition-all duration-700 ${pedidosAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionTitle>Información importante sobre pedidos</SectionTitle>
-          
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-[#D4AF37]">
               <div className="flex items-center mb-4">
@@ -316,7 +339,6 @@ const ContactPage = () => {
                 Los pedidos tardan entre <strong>1-3 días</strong> en ser preparados para envío o entrega personal.
               </p>
             </div>
-            
             <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-[#D4AF37]">
               <div className="flex items-center mb-4">
                 <TruckIcon className="h-6 w-6 text-[#D4AF37] mr-3" />
@@ -326,7 +348,6 @@ const ContactPage = () => {
                 Las entregas personales normalmente se realizan <strong>al día siguiente</strong> de confirmar el pedido.
               </p>
             </div>
-            
             <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-[#D4AF37]">
               <div className="flex items-center mb-4">
                 <ClockIcon className="h-6 w-6 text-[#D4AF37] mr-3" />
@@ -341,7 +362,10 @@ const ContactPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-[#F9F9F9] border-t border-[#D4AF37] border-opacity-30">
+      <section
+        ref={ctaAnim.ref}
+        className={`py-16 bg-[#F9F9F9] border-t border-[#D4AF37] border-opacity-30 transition-all duration-700 ${ctaAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <SectionTitle>¿Listo para platicar sobre fragancias?</SectionTitle>
           <p className="text-xl text-[#BDC3C7] mb-8">
@@ -350,11 +374,11 @@ const ContactPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               as="link"
-              to="/fragancias"
+              to="/productos"
               variant="primary"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              Ver Catálogo de Fragancias
+              Ver Catálogo de Productos
             </Button>
             <Button
               as="a"
@@ -368,7 +392,7 @@ const ContactPage = () => {
             </Button>
             <Button
               as="a"
-              href="https://wa.me/527823185711"
+              href="https://wa.me/527208784641?text=¡Hola! Vengo de la sección 'Contacto' de Aroma Selecto MX, ¿Podrías ayudarme?"
               target="_blank"
               rel="noopener noreferrer"
               variant="outline"

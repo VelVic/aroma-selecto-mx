@@ -1,12 +1,28 @@
+
 import { TruckIcon, ShieldCheckIcon, ClockIcon, AlertCircleIcon, CheckCircleIcon, XCircleIcon, MailIcon, PhoneIcon, InstagramIcon, GiftIcon, MapPinIcon } from 'lucide-react';
 import Button from '../components/Button';
 import SectionTitle from '../components/SectionTitle';
+import useScrollFadeIn from '../hooks/useScrollFadeIn';
+
 
 const ShippingPage = () => {
+  // Animaciones para cada sección principal
+  const heroAnim = useScrollFadeIn();
+  const tiposEnvioAnim = useScrollFadeIn();
+  const beneficiosAnim = useScrollFadeIn();
+  const procesoAnim = useScrollFadeIn();
+  const devolucionesAnim = useScrollFadeIn();
+  const contactoAnim = useScrollFadeIn();
+  const notaAnim = useScrollFadeIn();
+  const ctaAnim = useScrollFadeIn();
+
   return (
     <div className="bg-white pt-16">
       {/* Hero Section */}
-      <section className="relative bg-[#2C3E50] text-white py-20">
+      <section 
+        {...heroAnim}
+        className={`relative bg-[#2C3E50] text-white py-20 transition-all duration-700 ${heroAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="absolute inset-0 overflow-hidden">
           <img 
             src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
@@ -15,7 +31,6 @@ const ShippingPage = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#2C3E50]/80 to-[#2C3E50]/60"></div>
         </div>
-        
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-logo font-bold mb-6">
             Envíos y <span className="text-[#D4AF37]">Devoluciones</span>
@@ -27,7 +42,9 @@ const ShippingPage = () => {
       </section>
 
       {/* Tipos de Envío */}
-      <section className="py-16 bg-white">
+      <section
+        {...tiposEnvioAnim}
+        className={`py-16 bg-white transition-all duration-700 ${tiposEnvioAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionTitle>Opciones de Envío</SectionTitle>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -45,8 +62,7 @@ const ShippingPage = () => {
                 <p className="text-[#D4AF37] font-medium">GRATIS</p>
               </div>
             </div>
-
-            {/* Envío Estándar */}
+            {/* ...existing code... */}
             <div className="text-center section-card p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow border border-[#D4AF37]/20">
               <div className="w-16 h-16 bg-[#2C3E50] rounded-full flex items-center justify-center mx-auto mb-4">
                 <TruckIcon className="h-8 w-8 text-[#D4AF37]" />
@@ -60,8 +76,7 @@ const ShippingPage = () => {
                 <p className="text-green-600 font-medium">Gratis en compras +$899</p>
               </div>
             </div>
-
-            {/* Envío Express */}
+            {/* ...existing code... */}
             <div className="text-center section-card p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow border border-[#D4AF37]/20">
               <div className="w-16 h-16 bg-gradient-to-r from-[#D4AF37] to-[#B8860B] rounded-full flex items-center justify-center mx-auto mb-4">
                 <TruckIcon className="h-8 w-8 text-white" />
@@ -80,7 +95,10 @@ const ShippingPage = () => {
       </section>
 
       {/* Beneficios por Compra + Fun Fact */}
-      <section className="py-16 bg-[#F9F9F9]">
+      <section 
+        {...beneficiosAnim}
+        className={`py-16 bg-[#F9F9F9] transition-all duration-700 ${beneficiosAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionTitle>Beneficios por Compra</SectionTitle>
           {/* Tarjetas de Beneficios */}
@@ -96,7 +114,7 @@ const ShippingPage = () => {
                 para descubrir nuevas fragancias!
               </p>
             </div>
-            
+            {/* ...existing code... */}
             <div className="bg-white p-8 rounded-lg shadow-sm border-l-4 border-[#D4AF37]">
               <div className="flex items-center mb-4">
                 <TruckIcon className="h-8 w-8 text-[#D4AF37] mr-4" />
@@ -113,10 +131,14 @@ const ShippingPage = () => {
       </section>
 
       {/* Proceso de Envío */}
-      <section className="py-16 bg-white">
+      <section  
+        {...procesoAnim}
+        className={`py-16 bg-white transition-all duration-700 ${procesoAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionTitle>Proceso de Envío</SectionTitle>
           <div className="grid md:grid-cols-4 gap-6">
+            {/* ...existing code... */}
             <div className="text-center">
               <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
                 1
@@ -126,7 +148,7 @@ const ShippingPage = () => {
                 Realizas tu compra y recibes confirmación inmediata
               </p>
             </div>
-            
+            {/* ...existing code... */}
             <div className="text-center">
               <div className="w-16 h-16 bg-[#2C3E50] rounded-full flex items-center justify-center mx-auto mb-4 text-[#D4AF37] font-bold text-xl">
                 2
@@ -136,7 +158,7 @@ const ShippingPage = () => {
                 1-3 días para preparar cuidadosamente tu fragancia
               </p>
             </div>
-            
+            {/* ...existing code... */}
             <div className="text-center">
               <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
                 3
@@ -146,7 +168,7 @@ const ShippingPage = () => {
                 Protección especial para que llegue perfecto
               </p>
             </div>
-            
+            {/* ...existing code... */}
             <div className="text-center">
               <div className="w-16 h-16 bg-[#2C3E50] rounded-full flex items-center justify-center mx-auto mb-4 text-[#D4AF37] font-bold text-xl">
                 4
@@ -161,11 +183,15 @@ const ShippingPage = () => {
       </section>
 
       {/* Política de Devoluciones */}
-      <section className="py-16 bg-[#F9F9F9]">
+      <section 
+        {...devolucionesAnim}
+        className={`py-16 bg-[#F9F9F9] transition-all duration-700 ${devolucionesAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionTitle>Política de Devoluciones</SectionTitle>
-          {/* Plazo y Condiciones */}
+          {/* ...existing code... */}
           <div className="grid lg:grid-cols-2 gap-8 mb-12">
+            {/* ...existing code... */}
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <div className="flex items-center mb-4">
                 <ClockIcon className="h-6 w-6 text-[#D4AF37] mr-3" />
@@ -179,7 +205,7 @@ const ShippingPage = () => {
                 Fuera de este plazo, no será posible realizar cambios, reposiciones ni reembolsos.
               </p>
             </div>
-            
+            {/* ...existing code... */}
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <div className="flex items-center mb-4">
                 <ShieldCheckIcon className="h-6 w-6 text-[#D4AF37] mr-3" />
@@ -193,8 +219,7 @@ const ShippingPage = () => {
               </ul>
             </div>
           </div>
-
-          {/* Casos Elegibles */}
+          {/* ...existing code... */}
           <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
             <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
               <CheckCircleIcon className="h-6 w-6 text-green-600 mr-3" />
@@ -215,8 +240,7 @@ const ShippingPage = () => {
               </div>
             </div>
           </div>
-
-          {/* Productos No Elegibles */}
+          {/* ...existing code... */}
           <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
             <h3 className="text-xl font-semibold text-red-800 mb-4 flex items-center">
               <XCircleIcon className="h-6 w-6 text-red-600 mr-3" />
@@ -229,13 +253,13 @@ const ShippingPage = () => {
               <li>• Devoluciones por preferencias personales (no gustó el aroma)</li>
             </ul>
           </div>
-
-          {/* Procedimiento */}
+          {/* ...existing code... */}
           <div className="bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg p-6">
             <h3 className="text-xl font-semibold text-gray-900 mb-6">
               Procedimiento para Solicitar Reposición o Reembolso
             </h3>
             <div className="space-y-4">
+              {/* ...existing code... */}
               <div className="flex items-start">
                 <div className="w-8 h-8 min-w-8 min-h-8 aspect-square bg-[#D4AF37] rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 mt-1">
                   1
@@ -247,7 +271,7 @@ const ShippingPage = () => {
                   </p>
                 </div>
               </div>
-              
+              {/* ...existing code... */}
               <div className="flex items-start">
                 <div className="w-8 h-8 min-w-8 min-h-8 aspect-square bg-[#2C3E50] rounded-full flex items-center justify-center text-[#D4AF37] font-bold text-sm mr-4 mt-1">
                   2
@@ -259,7 +283,7 @@ const ShippingPage = () => {
                   </p>
                 </div>
               </div>
-              
+              {/* ...existing code... */}
               <div className="flex items-start">
                 <div className="w-8 h-8 min-w-8 min-h-8 aspect-square bg-[#D4AF37] rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 mt-1">
                   3
@@ -271,7 +295,7 @@ const ShippingPage = () => {
                   </p>
                 </div>
               </div>
-              
+              {/* ...existing code... */}
               <div className="flex items-start">
                 <div className="w-8 h-8 min-w-8 min-h-8 aspect-square bg-[#2C3E50] rounded-full flex items-center justify-center text-[#D4AF37] font-bold text-sm mr-4 mt-1">
                   4
@@ -289,14 +313,16 @@ const ShippingPage = () => {
       </section>
 
       {/* Contacto para Devoluciones - DISEÑO MEJORADO */}
-      <section className="py-16 bg-white">
+      <section
+        {...contactoAnim}
+        className={`py-16 bg-white transition-all duration-700 ${contactoAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionTitle>Contacto para Devoluciones</SectionTitle>
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-8">
-            
-            {/* Instagram - Principal */}
+            {/* ...existing code... */}
             <div className="text-center section-card p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow border border-[#D4AF37]/20">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <InstagramIcon className="h-8 w-8 text-white" />
@@ -315,8 +341,7 @@ const ShippingPage = () => {
               </Button>
               <p className="text-sm text-[#BDC3C7] mt-3">Respuesta en minutos</p>
             </div>
-
-            {/* Email */}
+            {/* ...existing code... */}
             <div className="text-center p-6 section-card bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow">
               <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-4">
                 <MailIcon className="h-8 w-8 text-white" />
@@ -333,8 +358,7 @@ const ShippingPage = () => {
               </Button>
               <p className="text-sm text-[#BDC3C7] mt-3">Respuesta en 24 horas</p>
             </div>
-
-            {/* WhatsApp */}
+            {/* ...existing code... */}
             <div className="text-center section-card p-6 bg-gradient-to-br from-[#F9F9F9] to-white rounded-lg shadow-sm hover:shadow-lg transition-shadow">
               <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <PhoneIcon className="h-8 w-8 text-white" />
@@ -343,24 +367,22 @@ const ShippingPage = () => {
               <p className="text-[#BDC3C7] mb-4">Contacto directo</p>
               <Button
                 as="a"
-                href="https://wa.me/527823185711"
+                href="https://wa.me/527208784641?text=¡Hola! Vengo de la sección 'Envíos y Devoluciones' de Aroma Selecto MX, ¿Podrías ayudarme?"
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="primary"
                 className="px-6 py-2 font-medium inline-block"
               >
-                782 318 5711
+                720 878 4641
               </Button>
               <p className="text-sm text-[#BDC3C7] mt-3">Solo consultas urgentes</p>
             </div>
-
           </div>
         </div>
       </section>
-      
 
       {/* Nota Importante */}
-      <section className="py-8 bg-[#F9F9F9] border-t border-[#D4AF37] border-opacity-30">
+      <section className="py-8 bg-[#F9F9F9] border-t border-[#D4AF37] border-opacity-30" {...notaAnim}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
             <div className="flex items-center mb-3">
@@ -377,7 +399,10 @@ const ShippingPage = () => {
       </section>
 
       {/* CTA Mejorado + Mini FAQ */}
-      <section className="py-16 bg-[#F9F9F9] border-t border-[#D4AF37] border-opacity-30">
+      <section
+        {...ctaAnim}
+        className={`py-16 bg-[#F9F9F9] transition-all duration-700 ${ctaAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <SectionTitle>¿Tienes Dudas Sobre Envíos?</SectionTitle>
           <p className="text-xl text-[#BDC3C7] mb-8">
@@ -402,20 +427,19 @@ const ShippingPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               as="link"
-              to="/contacto"
+              to="/productos"
               variant="primary"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              Contáctame
+              Ver Catálogo de Productos
             </Button>
             <Button
               as="link"
-              to='/fragrancias'
-              target="_blank"
-              rel="noopener noreferrer"
+              to="/contacto"
               variant="outline"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              Ver Catálogo de Fragancias
+              Contáctame
             </Button>
           </div>
         </div>

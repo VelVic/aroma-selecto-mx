@@ -1,10 +1,25 @@
 import SectionTitle from '../components/SectionTitle';
 import Button from '../components/Button';
+import useScrollFadeIn from '../hooks/useScrollFadeIn';
 
-const FragranceInfoPage = () => (
-  <div className="w-full bg-[#F9F9F9] min-h-screen">
+const FragranceInfoPage = () => {
+  // Animaciones para secciones principales
+  const heroAnim = useScrollFadeIn();
+  const queEsAnim = useScrollFadeIn();
+  const tiposAnim = useScrollFadeIn();
+  const notasAnim = useScrollFadeIn();
+  const elegirAnim = useScrollFadeIn();
+  const cuidadosAnim = useScrollFadeIn();
+  const faqAnim = useScrollFadeIn();
+  const ctaAnim = useScrollFadeIn();
+
+  return (
+    <div className="bg-white pt-16">
     {/* Hero/Encabezado */}
-    <section className="relative bg-[#2C3E50] text-white py-20 px-4 text-center mt-16">
+    <section 
+      {...heroAnim}
+    className={`relative bg-[#2C3E50] text-white py-20 transition-all duration-700 ${heroAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-logo font-bold mb-6">El Fascinante Mundo de las Fragancias: Un Viaje Olfativo</h1>
         <p className="text-lg md:text-xl text-[#BDC3C7] mb-8">¡Bienvenido al cautivador universo de los aromas! Aquí, exploraremos la magia detrás de cada gota de perfume, desentrañando sus secretos y aprendiendo a apreciarlos al máximo. Prepárate para despertar tus sentidos y sumergirte en un viaje olfativo inolvidable.</p>
@@ -12,7 +27,10 @@ const FragranceInfoPage = () => (
     </section>
 
     {/* ¿Qué es una fragancia? */}
-    <section className="py-16 bg-white">
+    <section 
+      {...queEsAnim}
+      className={`py-8 transition-all duration-700 ${queEsAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+    >
       <div className="max-w-3xl mx-auto px-4">
         <SectionTitle>¿Qué es una fragancia?</SectionTitle>
         <p className="text-base md:text-lg text-[#2C3E50] mt-4">En pocas palabras, una fragancia es una mezcla compleja de compuestos aromáticos, o notas, disueltos en alcohol y agua. Su objetivo principal es emitir un olor agradable, ya sea en el cuerpo humano, en objetos o en el ambiente. Más allá de su función básica, las fragancias tienen el poder de evocar emociones, recuerdos y hasta influir en nuestro estado de ánimo. Son una forma de arte invisible, una extensión de nuestra personalidad y una herramienta para dejar una impresión duradera.</p>
@@ -20,7 +38,10 @@ const FragranceInfoPage = () => (
     </section>
 
     {/* Tipos de fragancias */}
-    <section className="py-16 bg-[#F9F9F9]">
+    <section
+      {...tiposAnim}
+      className={`py-8 transition-all duration-700 ${tiposAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+    >
       <div className="max-w-4xl mx-auto px-4">
         <SectionTitle>Tipos de fragancias: Concentración y duración</SectionTitle>
         <p className="mb-6 text-[#2C3E50]">La intensidad y la duración de una fragancia dependen de la concentración de aceites aromáticos en su composición. Aquí te explicamos los tipos más comunes, de mayor a menor concentración:</p>
@@ -79,7 +100,9 @@ const FragranceInfoPage = () => (
     </section>
 
     {/* Notas olfativas */}
-    <section className="py-16 bg-white">
+    <section
+      {...notasAnim}
+      className={`py-8 transition-all duration-700 ${notasAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
       <div className="max-w-4xl mx-auto px-4">
         <SectionTitle>Notas olfativas: La pirámide aromática</SectionTitle>
         <p className="mb-6 text-[#2C3E50]">Las fragancias se construyen como una sinfonía, con diferentes capas de aromas que se revelan con el tiempo. Esto se conoce como la pirámide olfativa, y se divide en tres tipos de notas:</p>
@@ -92,7 +115,9 @@ const FragranceInfoPage = () => (
     </section>
 
     {/* Cómo elegir la fragancia perfecta */}
-    <section className="py-16 bg-[#F9F9F9]">
+    <section
+      {...elegirAnim}
+      className={`py-8 transition-all duration-700 ${elegirAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
       <div className="max-w-4xl mx-auto px-4">
         <SectionTitle>Cómo elegir la fragancia perfecta</SectionTitle>
         <ul className="space-y-4 text-base">
@@ -106,7 +131,9 @@ const FragranceInfoPage = () => (
     </section>
 
     {/* Cuidados y almacenamiento */}
-    <section className="py-16 bg-white">
+    <section
+      {...cuidadosAnim}
+      className={`py-8 transition-all duration-700 ${cuidadosAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
       <div className="max-w-4xl mx-auto px-4">
         <SectionTitle>Cuidados y almacenamiento</SectionTitle>
         <ul className="space-y-4 text-base">
@@ -119,7 +146,10 @@ const FragranceInfoPage = () => (
     </section>
 
     {/* Preguntas frecuentes */}
-    <section className="py-16 bg-[#F9F9F9]">
+    <section
+      {...faqAnim}
+      className={`py-8 transition-all duration-700 ${faqAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+    >
       <div className="max-w-4xl mx-auto px-4">
         <SectionTitle>Preguntas frecuentes (FAQ)</SectionTitle>
         <div className="space-y-6 text-base">
@@ -144,17 +174,21 @@ const FragranceInfoPage = () => (
     </section>
 
     {/* CTA final */}
-    <section className="py-16 bg-white text-center">
+    <section
+      {...ctaAnim}
+      className={`py-8 bg-white text-center transition-all duration-700 ${ctaAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+    >
       <div className="max-w-2xl mx-auto px-4">
         <h2 className="text-2xl md:text-3xl font-logo font-bold mb-6">¡Descubre tu próximo aroma favorito!</h2>
         <p className="mb-8 text-[#2C3E50]">¿Listo para explorar más a fondo el mundo de las fragancias?</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button as="link" to="/fragancias" variant="primary">Ver Catálogo de Fragancias</Button>
+          <Button as="link" to="/productos" variant="primary">Ver Catálogo de Productos</Button>
           <Button as="link" to="/contacto" variant="outline" >Contactame para asesoría</Button>
         </div>
       </div>
     </section>
   </div>
 );
+}
 
 export default FragranceInfoPage;

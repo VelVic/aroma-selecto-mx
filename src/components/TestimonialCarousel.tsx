@@ -9,7 +9,10 @@ interface TestimonialCarouselProps {
     rating: number;
     comment: string;
     avatar: string;
-    productName?: string;
+    productName?: {
+      name: string;
+      link: string;
+    };
   }>;
 }
 
