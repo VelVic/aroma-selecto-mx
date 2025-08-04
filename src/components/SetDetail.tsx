@@ -1,27 +1,22 @@
-
 import { SetPromo } from '../data/sets';
 import { perfumes } from '../data/perfumes';
 import { decants } from '../data/decants';
 import ProductImageCarousel from './ProductImageCarousel';
 import Accordion from './Accordion';
+import React, { useState, useEffect } from 'react';
+import { useCart } from '../context/cartContext';
+import Button from './Button';
 
 interface SetDetailProps {
   setPromo: SetPromo;
 }
 
-
-import React, { useState, useEffect } from 'react';
-import { useCart } from '../context/useCart';
-import Button from './Button';
-
 const SetDetail: React.FC<SetDetailProps> = ({ setPromo }) => {
-  const { addToCart } = useCart();
-  // Estado para variante seleccionada (solo decants)
-  const [selectedVariant, setSelectedVariant] = useState(0);
-  // Para mostrar feedback visual de agregado al carrito
-  const [showToast, setShowToast] = useState(false);
-  // Estado para favoritos
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { addToCart } = useCart(); // ✅ SOLO UNA VEZ
+  const [selectedVariant, setSelectedVariant] = useState(0); // ✅ SOLO UNA VEZ
+  const [showToast, setShowToast] = useState(false); // ✅ SOLO UNA VEZ
+  const [isFavorite, setIsFavorite] = useState(false); // ✅ SOLO UNA VEZ
+  const [isAdding, setIsAdding] = useState(false); // ✅ NUEVO: Prevenir múltiples clicks
 
   // Cargar favoritos desde localStorage al montar
   useEffect(() => {
@@ -160,14 +155,22 @@ const SetDetail: React.FC<SetDetailProps> = ({ setPromo }) => {
                 </>
               )}
             </div>
+            
             <div className="flex flex-col sm:flex-row gap-3 mt-8">
               {/* Botón agregar para decants */}
               {setPromo.setType === 'decants' && setPromo.variants ? (
                 setPromo.variants[selectedVariant]?.stock > 0 ? (
                   <Button
-                  className="flex-1 px-6 py-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B]"
+                    className="flex-1 px-6 py-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B]"
+                    disabled={isAdding} // ✅ NUEVO: Deshabilitar mientras procesa
                     onClick={() => {
+                      if (isAdding) return; // ✅ NUEVO: Prevenir múltiples clicks
+                      
+                      setIsAdding(true); // ✅ NUEVO: Marcar como procesando
+                      
                       const variant = setPromo.variants[selectedVariant];
+                      console.log('CLICK Agregar al carrito - UNA SOLA VEZ', setPromo.id, variant.size);
+                      
                       addToCart({
                         id: setPromo.id,
                         name: setPromo.name,
@@ -177,11 +180,15 @@ const SetDetail: React.FC<SetDetailProps> = ({ setPromo }) => {
                         price: variant.price,
                         stock: variant.stock,
                       });
+                      
                       setShowToast(true);
-                      setTimeout(() => setShowToast(false), 2000);
+                      setTimeout(() => {
+                        setShowToast(false);
+                        setIsAdding(false); // ✅ NUEVO: Rehabilitar después de 2s
+                      }, 2000);
                     }}
                   >
-                    Agregar al carrito
+                    {isAdding ? 'Agregando...' : 'Agregar al carrito'} {/* ✅ NUEVO: Feedback visual */}
                   </Button>
                 ) : (
                   <Button
@@ -192,12 +199,20 @@ const SetDetail: React.FC<SetDetailProps> = ({ setPromo }) => {
                   </Button>
                 )
               ) : null}
+              
               {/* Botón agregar para híbridos y perfumes */}
               {(setPromo.setType === 'hybrid' || setPromo.setType === 'perfumes') && (
                 setPromo.isAvailableToOrder !== false ? (
                   <Button
-                  className="flex-1 px-6 py-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B]"
+                    className="flex-1 px-6 py-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B]"
+                    disabled={isAdding} // ✅ NUEVO: Deshabilitar mientras procesa
                     onClick={() => {
+                      if (isAdding) return; // ✅ NUEVO: Prevenir múltiples clicks
+                      
+                      setIsAdding(true); // ✅ NUEVO: Marcar como procesando
+                      
+                      console.log('CLICK Agregar al carrito - UNA SOLA VEZ', setPromo.id);
+                      
                       addToCart({
                         id: setPromo.id,
                         name: setPromo.name,
@@ -207,11 +222,15 @@ const SetDetail: React.FC<SetDetailProps> = ({ setPromo }) => {
                         price: setPromo.salePrice ?? setPromo.variants?.[0]?.price ?? 0,
                         stock: 99,
                       });
+                      
                       setShowToast(true);
-                      setTimeout(() => setShowToast(false), 2000);
+                      setTimeout(() => {
+                        setShowToast(false);
+                        setIsAdding(false); // ✅ NUEVO: Rehabilitar después de 2s
+                      }, 2000);
                     }}
                   >
-                    Agregar al carrito
+                    {isAdding ? 'Agregando...' : 'Agregar al carrito'} {/* ✅ NUEVO: Feedback visual */}
                   </Button>
                 ) : (
                   <Button
@@ -222,6 +241,7 @@ const SetDetail: React.FC<SetDetailProps> = ({ setPromo }) => {
                   </Button>
                 )
               )}
+              
               <Button
                 className={`flex-1 px-6 py-3 flex items-center justify-center gap-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 ${isFavorite ? 'text-red-600 border-red-400' : 'text-[#2C3E50] border-[#D4AF37]'} hover:bg-[#F9F9F9]`}
                 variant='outline'
@@ -234,6 +254,7 @@ const SetDetail: React.FC<SetDetailProps> = ({ setPromo }) => {
                 {isFavorite ? 'Favorito' : 'Favoritos'}
               </Button>
             </div>
+            
             {/* Toast feedback al agregar al carrito */}
             {showToast && (
               <div className="fixed top-6 left-1/2 transform -translate-x-1/2 bg-[#2C3E50] text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2 animate-fade-in">
@@ -243,6 +264,7 @@ const SetDetail: React.FC<SetDetailProps> = ({ setPromo }) => {
                 <span>Producto añadido al carrito</span>
               </div>
             )}
+            
             <div className="mt-10 space-y-4">
               {/* Acordeón único de contenido */}
               <Accordion title="Contenido">

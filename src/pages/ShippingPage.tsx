@@ -7,7 +7,6 @@ import useScrollFadeIn from '../hooks/useScrollFadeIn';
 
 const ShippingPage = () => {
   // Animaciones para cada sección principal
-  const heroAnim = useScrollFadeIn();
   const tiposEnvioAnim = useScrollFadeIn();
   const beneficiosAnim = useScrollFadeIn();
   const procesoAnim = useScrollFadeIn();
@@ -19,10 +18,7 @@ const ShippingPage = () => {
   return (
     <div className="bg-white pt-16">
       {/* Hero Section */}
-      <section 
-        {...heroAnim}
-        className={`relative bg-[#2C3E50] text-white py-20 transition-all duration-700 ${heroAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-      >
+      <section className="relative bg-[#2C3E50] text-white py-20">
         <div className="absolute inset-0 overflow-hidden">
           <img 
             src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 

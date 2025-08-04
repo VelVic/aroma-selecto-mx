@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../context/useCart';
+import { useCart } from '../context/cartContext';
 import type { Perfume } from '../data/perfumes';
 import { SparklesIcon, FlameIcon, HeartIcon, StarIcon, ShoppingBagIcon } from 'lucide-react';
 
@@ -26,8 +26,12 @@ const PerfumeCard: React.FC<PerfumeCardProps> = ({ perfume }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
 
-  const handleAddToCart = () => {
+const handleAddToCart = () => {
+    if (isAdding) return; // ✅ NUEVO: Prevenir múltiples clicks
+    
     setIsAdding(true);
+    console.log('CLICK Agregar al carrito - UNA SOLA VEZ', perfume.id);
+    
     addToCart({
       id: perfume.id,
       name: perfume.name,
@@ -35,7 +39,7 @@ const PerfumeCard: React.FC<PerfumeCardProps> = ({ perfume }) => {
       image: perfume.image,
       size: sizes[0] || 0,
       price: prices[0] || 0,
-      stock: 1 // Bajo pedido, solo 1 por default
+      stock: 50 // Bajo pedido, solo 1 por default
     });
     setTimeout(() => {
       setIsAdding(false);
@@ -43,7 +47,6 @@ const PerfumeCard: React.FC<PerfumeCardProps> = ({ perfume }) => {
       setTimeout(() => setJustAdded(false), 1200);
     }, 800);
   };
-
   return (
     <div
       className="group relative border-2 border-transparent hover:border-[#D4AF37] transition-all duration-300 rounded-lg p-3 sm:p-2 section-card shadow-sm hover:shadow-lg hover:shadow-[#D4AF37]/10"
@@ -157,6 +160,7 @@ const PerfumeCard: React.FC<PerfumeCardProps> = ({ perfume }) => {
           {/* Botón agregar al carrito con feedback visual */}
           <button
             onClick={handleAddToCart}
+            disabled={isAdding} // ✅ NUEVO: Deshabilitar mientras procesa
             className={`p-2.5 rounded-lg transition-all duration-300 shadow-sm hover:shadow-lg hover:scale-105 group/btn disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 ${
               justAdded
                 ? 'bg-green-600 text-white'

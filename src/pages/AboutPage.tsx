@@ -5,7 +5,6 @@ import useScrollFadeIn from '../hooks/useScrollFadeIn';
 
 const AboutPage = () => {
   // Animaciones para Hero y CTA
-  const heroAnim = useScrollFadeIn();
   const ctaAnim = useScrollFadeIn();
   const historiaAnim = useScrollFadeIn();
   const misionVisionAnim = useScrollFadeIn();
@@ -17,10 +16,7 @@ const AboutPage = () => {
   return (
     <div className="bg-[#F9F9F9] pt-16">
       {/* Hero Section */}
-      <section
-        ref={heroAnim.ref}
-        className={`relative bg-[#2C3E50] text-white py-20 transition-all duration-700 ${heroAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-      >
+      <section className="relative bg-[#2C3E50] text-white py-20">
         <div className="absolute inset-0 overflow-hidden">
           <img 
             src="https://granaroma.co/wp-content/uploads/2024/03/decants-gran-aroma-perfumes-de-nicho-768x360-1.jpg" 

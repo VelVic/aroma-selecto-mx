@@ -72,7 +72,7 @@ const ProductCartItem = ({ item, onUpdateQuantity, onRemoveItem }: {
 };
 import useScrollFadeIn from '../hooks/useScrollFadeIn';
 import { ShoppingBagIcon, TrashIcon, PlusIcon, MinusIcon, MapPinIcon, GiftIcon, TicketIcon, InstagramIcon, MessageCircleIcon, TruckIcon, CreditCardIcon, BuildingIcon, HandIcon, CheckCircleIcon } from 'lucide-react';
-import { useCart } from '../context/useCart';
+import { useCart } from '../context/cartContext';
 import Button from '../components/Button';
 
 const CartPage = () => {

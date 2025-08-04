@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StarIcon, HeartIcon, ShoppingBagIcon, SparklesIcon, BellIcon, FlameIcon, CheckIcon } from 'lucide-react';
-import { useCart } from '../context/useCart';
+import { useCart } from '../context/cartContext';
 
 import type { Decant } from '../data/decants';
 
@@ -240,16 +240,22 @@ const DecantCard: React.FC<DecantCardProps> = ({ decant, perfumeName, perfumeBra
               e.stopPropagation();
               console.log('Notificar cuando esté disponible:', name);
             } : () => {
+              // ✅ NUEVO: Prevenir múltiples clicks
+              if (isAdding || availableVariants.length === 0) return;
+              
               setIsAdding(true);
-              // Añadir al carrito
+              console.log('CLICK Agregar al carrito - UNA SOLA VEZ', decant.id);
+              
+              const firstAvailable = availableVariants[0];
+              
               addToCart({
                 id: decant.id,
                 name,
                 brand,
                 image: imgSrc,
-                size: typeof variants[0]?.size === 'number' ? variants[0].size : 0,
-                price,
-                stock: totalStock,
+                size: firstAvailable.size,
+                price: firstAvailable.price,
+                stock: firstAvailable.stock,
               });
               setTimeout(() => {
                 setIsAdding(false);
@@ -257,13 +263,13 @@ const DecantCard: React.FC<DecantCardProps> = ({ decant, perfumeName, perfumeBra
                 setTimeout(() => setJustAdded(false), 1200);
               }, 800);
             }}
-            disabled={totalStock === 0 && !isComingSoon}
+            disabled={isAdding || (availableVariants.length === 0 && !isComingSoon)} // ✅ NUEVO: Deshabilitar mientras procesa
             className={`p-2.5 rounded-lg transition-all duration-300 shadow-sm hover:shadow-lg hover:scale-105 group/btn disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 ${
               justAdded
                 ? 'bg-green-600 text-white'
                 : isComingSoon 
                   ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:from-purple-600 hover:to-indigo-700' 
-                  : totalStock === 0
+                  : availableVariants.length === 0
                     ? 'bg-gray-300 text-gray-500'
                     : 'bg-[#2C3E50] hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B] text-[#D4AF37] hover:text-white'
             }`}
@@ -272,7 +278,7 @@ const DecantCard: React.FC<DecantCardProps> = ({ decant, perfumeName, perfumeBra
                 ? 'Producto agregado'
                 : isComingSoon 
                   ? 'Notificarme cuando esté disponible' 
-                  : totalStock === 0 
+                  : availableVariants.length === 0 
                     ? 'Producto agotado'
                     : 'Agregar al carrito'
             }

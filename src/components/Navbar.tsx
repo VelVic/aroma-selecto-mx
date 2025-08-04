@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBagIcon, UserIcon, MenuIcon, XIcon } from 'lucide-react';
-import { useCart } from '../context/useCart';
+import { useCart } from '../context/cartContext'; // ← IMPORTAR CONTEXT
 import Button from './Button';
 
 const Navbar = () => {

@@ -15,7 +15,6 @@ const ContactPage = () => {
   });
 
   // Animaciones para secciones principales
-  const heroAnim = useScrollFadeIn();
   const funFactAnim = useScrollFadeIn();
   const infoAnim = useScrollFadeIn();
   const horariosAnim = useScrollFadeIn();
@@ -45,10 +44,7 @@ const ContactPage = () => {
   return (
     <div className="bg-white pt-16">
       {/* Hero Section */}
-      <section
-        ref={heroAnim.ref}
-        className={`relative bg-[#2C3E50] text-white py-20 transition-all duration-700 ${heroAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-      >
+      <section className="relative bg-[#2C3E50] text-white py-20">
         <div className="absolute inset-0 overflow-hidden">
           <img 
             src="https://images.unsplash.com/photo-1596524430615-b46475ddff6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 

@@ -51,17 +51,12 @@ const HomePage = () => {
   const perfumesAnim = useScrollFadeIn();
   const setsAnim = useScrollFadeIn();
   const categoriesAnim = useScrollFadeIn();
-  const heroAnim = useScrollFadeIn();
 
   return (
-    <div className="w-full bg-[#F9F9F9]">
+    <div className="w-full bg-[#F9F9F9] mt-16">
       {/* Hero Section - COLORES ACTUALIZADOS */}
       {/* Animación de aparición para el Hero */}
-      const heroAnim = useScrollFadeIn();
-      <section
-        ref={heroAnim.ref}
-        className={`relative bg-[#2C3E50] text-white min-h-[calc(100vh-4rem)] flex items-center mt-10 transition-all duration-700 ${heroAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-      >
+      <section className="relative bg-[#2C3E50] text-white min-h-[calc(100vh-4rem)] flex items-center mt-10">
         <div className="absolute inset-0 overflow-hidden">
           <picture>
             <source srcSet="https://images.unsplash.com/photo-1615634260167-c8cdede054de?fm=webp&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGVyZnVtZXN8ZW58MHx8MHx8fDA%3D" type="image/webp" />
@@ -109,7 +104,7 @@ const HomePage = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="outline"
-                className="px-10 py-4 font-semibold text-lg shadow-xl transition-all duration-700 delay-300"
+                className="px-10 py-4 font-bold text-lg shadow-xl transition-all"
               >
                 Sígueme en Instagram
               </Button>

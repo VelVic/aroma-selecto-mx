@@ -1,6 +1,6 @@
 import { Decant, DecantVariant } from '../data/decants';
 import { Perfume } from '../data/perfumes';
-import { useCart } from '../context/useCart';
+import { useCart } from '../context/cartContext';
 import React, { memo } from 'react';
 import ProductImageCarousel from './ProductImageCarousel';
 
@@ -48,6 +48,8 @@ const DecantDetail: React.FC<DecantDetailProps> = ({ decant, perfume, selectedVa
   const { addToCart } = useCart();
   // Estado para favoritos y toast
   const [isFavorite, setIsFavorite] = React.useState(false);
+  const [showToast, setShowToast] = React.useState(false);
+  const [isAdding, setIsAdding] = React.useState(false); // ✅ NUEVO: Prevenir múltiples clicks
 
   // Cargar favoritos desde localStorage al montar
   React.useEffect(() => {
@@ -67,7 +69,7 @@ const DecantDetail: React.FC<DecantDetailProps> = ({ decant, perfume, selectedVa
     localStorage.setItem('favorites', JSON.stringify(updated));
     setIsFavorite(!isFavorite);
   };
-  const [showToast, setShowToast] = React.useState(false);
+
   const imagesArr = decant.images && decant.images.length > 0 ? decant.images : [decant.image];
 
   return (
@@ -125,9 +127,15 @@ const DecantDetail: React.FC<DecantDetailProps> = ({ decant, perfume, selectedVa
                 <Button
                   className="flex-1 px-6 py-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B]"
                   variant='primary'
+                  disabled={isAdding} // ✅ NUEVO: Deshabilitar mientras procesa
                   onClick={() => {
+                    if (isAdding) return; // ✅ NUEVO: Prevenir múltiples clicks
+                    
+                    setIsAdding(true); // ✅ NUEVO: Marcar como procesando
+                    
                     const variant = decant.variants[selectedVariant];
-                    console.log('CLICK Agregar al carrito', decant.id, decant.variants[selectedVariant].size);
+                    console.log('CLICK Agregar al carrito - UNA SOLA VEZ', decant.id, variant.size);
+                    
                     addToCart({
                       id: decant.id,
                       name: perfume ? perfume.name : 'Decant',
@@ -137,11 +145,15 @@ const DecantDetail: React.FC<DecantDetailProps> = ({ decant, perfume, selectedVa
                       price: variant.price,
                       stock: variant.stock,
                     });
+                    
                     setShowToast(true);
-                    setTimeout(() => setShowToast(false), 2000);
+                    setTimeout(() => {
+                      setShowToast(false);
+                      setIsAdding(false); // ✅ NUEVO: Rehabilitar después de 2s
+                    }, 2000);
                   }}
                 >
-                  Agregar al carrito
+                  {isAdding ? 'Agregando...' : 'Agregar al carrito'} {/* ✅ NUEVO: Feedback visual */}
                 </Button>
               ) : (
                 <Button

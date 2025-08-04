@@ -54,7 +54,7 @@ const CartDrawer: React.FC = () => {
                 <img src={item.image} alt={item.name} className="w-14 h-14 object-cover rounded border border-[#D4AF37] bg-white" />
                 <div className="flex-1">
                   <div className="font-semibold text-[#2C3E50]">{item.name}</div>
-                  <div className="text-xs text-gray-500">{item.brand} • {item.size}</div>
+                  <div className="text-xs text-gray-500">{item.brand} • {item.size}ml</div>
                   <div className="flex items-center gap-2 mt-1">
                     <button onClick={() => updateQuantity(item.id, item.size, item.quantity - 1)} className="px-2 py-0.5 rounded bg-[#F9F9F9] text-[#2C3E50] border border-gray-300 hover:bg-[#D4AF37] hover:text-[#2C3E50] transition-colors">-</button>
                     <span className="px-2 text-[#2C3E50]">{item.quantity}</span>
