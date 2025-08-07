@@ -283,10 +283,91 @@ const SetDetail: React.FC<SetDetailProps> = ({ setPromo }) => {
               {/* Acordeón de temporadas */}
               {setPromo.seasons && setPromo.seasons.length > 0 && (
                 <Accordion title="Temporadas">
-                  <div className="flex flex-wrap gap-2">
-                    {setPromo.seasons.map((season, i) => (
-                      <span key={season + i} className="px-2 py-1 rounded bg-[#D4AF37]/10 text-[#D4AF37] text-sm font-medium">{season}</span>
-                    ))}
+                  <div className="flex flex-wrap gap-3">
+                    {setPromo.seasons.map((season, i) => {
+                      // Función para obtener el estilo de cada temporada
+                      const getSeasonStyle = (seasonName: string) => {
+                        const lowerSeason = seasonName.toLowerCase();
+                        
+                        if (lowerSeason.includes('primavera') || lowerSeason.includes('spring')) {
+                          return {
+                            bg: 'bg-gradient-to-r from-green-100 to-emerald-100',
+                            text: 'text-green-700',
+                            border: 'border-green-200',
+                            shadow: 'shadow-green-200/50',
+                            emoji: '🌸',
+                            animation: 'animate-pulse'
+                          };
+                        }
+                        if (lowerSeason.includes('verano') || lowerSeason.includes('summer')) {
+                          return {
+                            bg: 'bg-gradient-to-r from-yellow-100 to-orange-100',
+                            text: 'text-orange-700',
+                            border: 'border-orange-200',
+                            shadow: 'shadow-orange-200/50',
+                            emoji: '☀️',
+                            animation: 'animate-bounce'
+                          };
+                        }
+                        if (lowerSeason.includes('otoño') || lowerSeason.includes('fall') || lowerSeason.includes('autumn')) {
+                          return {
+                            bg: 'bg-gradient-to-r from-amber-100 to-red-100',
+                            text: 'text-amber-700',
+                            border: 'border-amber-200',
+                            shadow: 'shadow-amber-200/50',
+                            emoji: '🍂',
+                            animation: 'animate-pulse'
+                          };
+                        }
+                        if (lowerSeason.includes('invierno') || lowerSeason.includes('winter')) {
+                          return {
+                            bg: 'bg-gradient-to-r from-blue-100 to-indigo-100',
+                            text: 'text-blue-700',
+                            border: 'border-blue-200',
+                            shadow: 'shadow-blue-200/50',
+                            emoji: '❄️',
+                            animation: 'animate-pulse'
+                          };
+                        }
+                        // Default para "todo el año" o temporadas no específicas
+                        return {
+                          bg: 'bg-gradient-to-r from-purple-100 to-pink-100',
+                          text: 'text-purple-700',
+                          border: 'border-purple-200',
+                          shadow: 'shadow-purple-200/50',
+                          emoji: '✨',
+                          animation: 'animate-ping'
+                        };
+                      };
+
+                      const style = getSeasonStyle(season);
+                      
+                      return (
+                        <div
+                          key={season + i}
+                          className={`
+                            relative px-3 py-2 rounded-full border-2 font-medium text-sm
+                            ${style.bg} ${style.text} ${style.border}
+                            shadow-lg ${style.shadow}
+                            hover:scale-105 transform transition-all duration-300
+                            cursor-default select-none
+                            group overflow-hidden
+                          `}
+                        >
+                          {/* Animación de fondo sutil */}
+                          <div className={`absolute inset-0 ${style.bg} opacity-30 ${style.animation}`}></div>
+                          
+                          {/* Contenido */}
+                          <div className="relative flex items-center gap-1.5">
+                            <span className="text-base">{style.emoji}</span>
+                            <span className="font-semibold">{season}</span>
+                          </div>
+                          
+                          {/* Efecto de brillo al hover */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </Accordion>
               )}

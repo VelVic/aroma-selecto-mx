@@ -25,96 +25,142 @@ export interface Perfume {
 
 export const perfumes: Perfume[] = [
   {
-    id: 'nautica_voyage',
-    name: 'Nautica Voyage EDT',
-    brand: 'Nautica',
-    tipo: 'perfume',
-    type: 'Eau de Toilette',
-    description: 'Nautica Voyage es la fragancia del hombre acenturero y libre. Su aroma fresco y limpio evoca la brisa marina y la energia del océano. Ideal para el dia a dia y para quienes buscan una fragancia ligera, versátil y con un toque de sofisticación informal. ¡Perfecta para cualquier momento!',
-    notesSalida: ['Manzana Verde', 'Notas verdes'],
-    notesCorazon: ['Loto', 'Mimosa', 'Acorde acuático'],
-    notesFondo: ['Almizcle', 'Cedro', 'Ámbar', 'Musgo de Roble'],
-    details: ['Eau de Toilette (EDT)'],
-    occasions: [
-      'Eventos: Actividades al aire libre, salidas casuales',
-      'Diario: Excelente para la oficina, escuela o uso cotidiano'
-    ],
-    seasons: ['Primavera', 'Verano'],
-    image: '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-2.webp',
-    images: [
-      '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp',
-      '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-2.webp'
-      // Agrega aquí más imágenes del frasco original si tienes
-    ],
-    category: 'hombre',
-    isAvailableToOrder: true,
-    sizes: [100, 200],
-    prices: [420, 880],
-    rating: 4.5,
-    activo: true,
-    isNew: true,
-    isSale: false,
-  },
+  "id": "nautica_voyage",
+  "name": "Nautica Voyage EDT",
+  "brand": "Nautica",
+  "tipo": "perfume",
+  "type": "Eau de Toilette",
+  "description": "Si te sientes libre, sin ataduras y siempre buscas el siguiente gran momento, este es tu aroma. Es como el aire fresco del mar un día perfecto, ese que te llena de energía y te dice que todo es posible. Nautica Voyage es la fragancia que te acompaña en tus nuevas aventuras, ya sea en la ciudad o escapando a la playa. Es ligera, fácil de llevar y siempre te hace sentir preparado para lo que venga. ¡Simplemente tú, sin filtros!",
+  "notesSalida": ["Manzana Verde", "Hojas verdes"],
+  "notesCorazon": ["Loto", "Mimosa", "Acorde acuático"],
+  "notesFondo": ["Almizcle", "Cedro", "Ámbar", "Musgo de Roble"],
+  "details": ["Eau de Toilette (EDT)"],
+  "occasions": [
+    "Eventos: Tus escapadas de fin de semana, el festival con amigos, esas tardes en el parque",
+    "Diario: Tu fragancia para ir a clases o simplemente para estar listo en tu día a día"
+  ],
+  "seasons": ["Primavera", "Verano"],
+  "image": "/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp",
+  "images": [
+    "/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp",
+    "/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-2.webp"
+  ],
+  "category": "hombre",
+  "isAvailableToOrder": true,
+  "sizes": [100, 200],
+  "prices": [440, 800],
+  "rating": 4.5,
+  "activo": true,
+  "isNew": true,
+  "isSale": false
+},
   {
-    id: 'dior_sauvage',
-    name: 'Dior Sauvage EDP',
-    brand: 'Dior',
-    tipo: 'perfume',
-    type: 'Eau de Parfum',
-    description: 'Dior Sauvage es un manifiesto de frescura radical y nobleza salvaje. Inspirada en los vastos paisajes bajo un cielo azul intenso, esta fragancia es para el hombre moderno, magnético y seguro de si mismo. Su composición poderosa y carismática deja una estela inolvidable y versátil para cualquier ocación. ¡Un clásico contemporáneo que nunca falla!',
-    notesSalida: ['Bergamota de Reggio', 'Pimienta de Sichuan'],
-    notesCorazon: ['Ambroxan'],
-    notesFondo: ['Acordes amaderados'],
-    details: ['Eau de Parfum (EDP)'],
-    occasions: [
-      'Eventos: Noches elegantes, cenas formales, eventos especiales',
-      'Diario: Muy versátil para el uso diario, universidad o salidas casuales'
-    ],
-    seasons: ['Primavera', 'Verano', 'Otoño', 'Invierno'],
-    image: '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-2.webp',
-    images: [
-      '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-1.webp',
-      '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-2.webp'
-      // Agrega aquí más imágenes del frasco original si tienes
-    ],
-    category: 'hombre',
-    isAvailableToOrder: true,
-    sizes: [100, 200],
-    prices: [3030, 4950],
-    rating: 5,
-    activo: true,
-    isNew: true,
-    isSale: false
-  },
-  {
-    id: 'ariana_grande_cloud',
-    name: 'Ariana Grande Cloud EDP',
-    brand: 'Ariana Grande',
-    tipo: 'perfume',
-    type: 'Eau de Parfum',
-    description: 'Cloud es una fragancia onírica y encantadora que te envuelve en una nube de dulzura y confort. Inspirada en la positividad y la alegría, su aroma cremoso y adictivo es perfecto para quienes buscan una estela moderna, juvenil y deliciosamente acogedora. ¡Una experiencia dulce y etérea!',
-    notesSalida: ['Lavanda', 'Pera', 'Bergamota'],
-    notesCorazon: ['Coco', 'Orquídea Vainilla', 'Praline'],
-    notesFondo: ['Almizcle', 'Notas amaderadas'],
-    details: ['Eau de Parfum (EDP)'],
-    occasions: [
-      'Eventos: Reuniones casuales, citas, salidas con amigos',
-      'Diario: Ideal para el uso diario o universidad si se aplica moderadamente'
-    ],
-    seasons: ['Otoño', 'Invierno','Primavera', 'Verano'],
-    image: '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-2.webp',
-    images: [
-      '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp',
-      '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-2.webp'
-      // Agrega aquí más imágenes del frasco original si tienes
-    ],
-    category: 'mujer',
-    isAvailableToOrder: true,
-    sizes: [100],
-    prices: [1500],
-    rating: 5,
-    activo: true,
-    isNew: true,
-    isSale: false
-  }
+  "id": "dior_sauvage",
+  "name": "Dior Sauvage EDP",
+  "brand": "Christian Dior",
+  "tipo": "perfume",
+  "type": "Eau de Parfum",
+  "description": "No es solo un aroma, es una declaración. Sauvage EDP es para el que sabe lo que quiere y no tiene miedo de mostrarlo. Es esa vibra de seguridad que se siente en cada paso, la que te hace destacar sin esfuerzo. Imagina la inmensidad del cielo abierto y la fuerza de la naturaleza: eso es lo que llevas puesto. Con su combinación intensa y poderosa, dejarás una marca inolvidable en cada lugar, en cada persona. Es el aroma de quien es líder de su propia vida.",
+  "notesSalida": ["Bergamota de Reggio", "Pimienta de Sichuan"],
+  "notesCorazon": ["Ambroxan"],
+  "notesFondo": ["Acordes amaderados"],
+  "details": ["Eau de Parfum (EDP)"],
+  "occasions": [
+    "Eventos: Esa cita que te importa, las fiestas, cualquier noche en la que quieras ser el centro de atención",
+    "Diario: Funciona para todo, desde una presentación importante hasta un café con tus amigos"
+  ],
+  "seasons": ["Primavera", "Verano", "Otoño", "Invierno"],
+  "image": "/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-1.webp",
+  "images": [
+    "/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-1.webp",
+    "/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-2.webp"
+  ],
+  "category": "hombre",
+  "isAvailableToOrder": true,
+  "sizes": [100, 200],
+  "prices": [3000, 4830],
+  "rating": 5,
+  "activo": true,
+  "isNew": true,
+  "isSale": false
+},
+{
+  "id": "ariana_grande_cloud",
+  "name": "Ariana G. Cloud EDP",
+  "brand": "Ariana Grande",
+  "tipo": "perfume",
+  "type": "Eau de Parfum",
+  "description": "Si pudieras envolverte en un abrazo, o sentirte en una nube de sueños, olería a esto. Cloud es esa sensación de felicidad pura y ligera, como si no hubiera nada malo en el mundo. Con sus notas dulces y reconfortantes, es el aroma de la positividad. Es perfecto para cuando quieres sentirte coqueta, segura y súper acogedora. Es tu dosis de dulzura para el día a día. ¿Lista para flotar?",
+  "notesSalida": ["Lavanda", "Pera", "Bergamota"],
+  "notesCorazon": ["Coco", "Orquídea de Vainilla", "Praliné"],
+  "notesFondo": ["Almizcle", "Maderas cremosas"],
+  "details": ["Eau de Parfum (EDP)"],
+  "occasions": [
+    "Eventos: Salidas con tu crush, una fiesta casual, o cuando solo quieres sentirte increíble",
+    "Diario: El mejor amigo para tus clases, ir de compras o relajarte con tus amigas"
+  ],
+  "seasons": ["Otoño", "Invierno", "Primavera", "Verano"],
+  "image": "/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp",
+  "images": [
+    "/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp",
+    "/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-2.webp"
+  ],
+  "category": "mujer",
+  "isAvailableToOrder": true,
+  "sizes": [100],
+  "prices": [1500],
+  "rating": 5,
+  "activo": true,
+  "isNew": true,
+  "isSale": false
+},
+{
+  "id": "billie_eilish_eilish",
+  "name": "Billie E. Eilish EDP",
+  "brand": "Billie Eilish",
+  "tipo": "perfume",
+  "type": "Eau de Parfum",
+  "description": "Este no es un perfume, es una experiencia. Eilish es el aroma de un recuerdo cálido, de un abrazo que te envuelve, de sentirte tú misma en tu forma más auténtica y sensual. Con sus notas dulces y poderosas, es como llevar una segunda piel que dice: soy única, soy compleja, soy inolvidable. Es la fragancia para cuando quieres conectar contigo misma, con tus sentimientos más profundos, y dejar una huella que nadie olvidará. Es un secreto que compartes con el mundo.",
+  "notesSalida": [
+    "Pétalos de azúcar",
+    "Bayas rojas",
+    "Mandarina"
+  ],
+  "notesCorazon": [
+    "Vainilla cremosa",
+    "Cacao",
+    "Especias",
+    "Rosa"
+  ],
+  "notesFondo": [
+    "Almizcle",
+    "Haba tonka",
+    "Maderas suaves",
+    "Ámbar"
+  ],
+  "details": [
+    "Eau de Parfum (EDP)"
+  ],
+  "occasions": [
+    "Eventos: Citas inolvidables, noches de fiesta, eventos especiales",
+    "Diario: Perfecto para las noches o esos días en los que necesitas un extra de confianza"
+  ],
+  "seasons": [
+    "Otoño",
+    "Invierno"
+  ],
+  "image": "/assets/images/fragancias/billie-eilish/billie-eilish-detail-1.webp",
+  "images": [
+    "/assets/images/fragancias/billie-eilish/billie-eilish-detail-1.webp",
+    "/assets/images/fragancias/billie-eilish/billie-eilish-detail-2.webp"
+  ],
+  "category": "mujer",
+  "isAvailableToOrder": true,
+  "sizes": [100],
+  "prices": [1250],
+  "rating": 5,
+  "activo": true,
+  "isNew": true,
+  "isSale": false
+}
 ];

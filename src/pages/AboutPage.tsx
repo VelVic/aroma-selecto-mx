@@ -16,23 +16,20 @@ const AboutPage = () => {
   return (
     <div className="bg-[#F9F9F9] pt-16">
       {/* Hero Section */}
-      <section className="relative bg-[#2C3E50] text-white py-20">
-        <div className="absolute inset-0 overflow-hidden">
-          <img 
-            src="https://granaroma.co/wp-content/uploads/2024/03/decants-gran-aroma-perfumes-de-nicho-768x360-1.jpg" 
-            alt="Perfumes collection" 
-            className="w-full h-full object-cover opacity-30" 
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#2C3E50]/80 to-[#2C3E50]/60"></div>
+      <section className="relative bg-gradient-to-br from-[#2C3E50] via-[#34495e] to-[#2C3E50] text-white py-20 overflow-hidden">
+        {/* Fondo con pattern SVG */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23D4AF37' fill-opacity='0.3'%3E%3Cpath d='m20 20 20-20v20z'/%3E%3C/g%3E%3C/svg%3E")`
+          }}></div>
         </div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-logo font-bold mb-6">
-            Mi <span className="text-[#D4AF37]">Historia</span>
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-6xl font-logo font-bold mb-6 bg-gradient-to-r from-white via-[#D4AF37] to-white bg-clip-text text-transparent">
+            ¡Esta es <span className="text-[#D4AF37]">nuestra</span> historia!
           </h1>
-          <p className="text-xl text-[#BDC3C7] max-w-3xl mx-auto">
-            Descubre la pasión detrás de Aroma Selecto, donde cada fragancia cuenta una historia única 
-            y cada decant es una puerta de entrada al mundo de los perfumes premium.
+          <p className="text-lg md:text-xl text-[#BDC3C7] max-w-3xl mx-auto mb-8 leading-relaxed">
+            Detrás de cada decant, hay un fanático de los perfumes. Esto no es solo una tienda, es el lugar donde nace tu próxima obsesión.
           </p>
         </div>
       </section>
@@ -43,31 +40,31 @@ const AboutPage = () => {
         className={`py-16 bg-white transition-all duration-700 ${historiaAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <SectionTitle>¿Cómo nació Aroma Selecto?</SectionTitle>
+              <SectionTitle>¿Cómo empezó esta aventura?</SectionTitle>
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 <p>
-                  Aroma Selecto nació de mi pasión por el fascinante mundo de las fragancias. Como universitario, descubrí el deseo de acercar perfumes de alta gama a más personas y decidí crear una alternativa accesible: ofrecer decants (fraccionamientos de perfumes originales) que permiten probar los aromas antes de invertir en una botella completa.
+                  Como tú, también soy estudiante y me di cuenta de lo complicado que es probar perfumes top o virales sin gastar una fortuna. No quería elegir a ciegas, y seguro tú tampoco. Así que pensé: ¿por qué no hacer las fragancias más geniales accesibles para todos?
                 </p>
                 <p>
-                  Así, surgió este proyecto con un propósito claro: <strong className="text-[#D4AF37]">acercar el lujo de los perfumes a todos</strong>.
+                  Y así, de esa idea, nació Aroma Selecto MX. Un proyecto hecho para gente que ama los aromas tanto como yo, con la meta de que todos podamos <strong className="text-[#D4AF37]">tener el lujo de los perfumes en nuestras manos, sin romper el cochinito</strong>.
                 </p>
               </div>
             </div>
             <div className="relative flex justify-center lg:justify-end">
-                <div className="relative w-80 h-64">
+              <div className="relative w-80 h-64">
                 <img 
-                    src="https://m.media-amazon.com/images/I/71E0Bx8CgyL._UF894,1000_QL80_.jpg" 
-                    alt="Nuestra pasión por las fragancias" 
-                    className="w-full h-full object-cover rounded-lg shadow-xl"
+                  src="https://m.media-amazon.com/images/I/71E0Bx8CgyL._UF894,1000_QL80_.jpg" 
+                  alt="Nuestra pasión por las fragancias" 
+                  className="w-full h-full object-cover rounded-lg shadow-xl"
                 />
                 <div className="absolute -bottom-4 -right-4 bg-[#D4AF37] p-3 rounded-lg shadow-lg">
-                    <SparklesIcon className="h-6 w-6 text-white" />
+                  <SparklesIcon className="h-6 w-6 text-white" />
                 </div>
-                </div>
+              </div>
             </div>
-            </div>
+          </div>
         </div>
       </section>
 
@@ -88,7 +85,7 @@ const AboutPage = () => {
                 </h2>
               </div>
               <p className="text-gray-600 leading-relaxed">
-                Mi misión es brindarte la oportunidad de descubrir y disfrutar perfumes originales en presentaciones accesibles, siempre con productos de calidad y un servicio que transmite confianza y cercanía.
+                Mi meta es que descubras y te enamores de perfumes originales en formatos perfectos para ti. Todo con productos de calidad y un servicio súper honesto que te haga sentir en confianza, como si estuvieras hablando con un amigo.
               </p>
             </div>
             <div className="section-card p-8 rounded-lg shadow-sm">
@@ -101,7 +98,7 @@ const AboutPage = () => {
                 </h2>
               </div>
               <p className="text-gray-600 leading-relaxed">
-                Mi visión es convertir Aroma Selecto en un referente del mundo de los decants en México, promoviendo una cultura olfativa más informada, cercana y auténtica.
+                Sueño con que Aroma Selecto MX sea el lugar donde todos los jóvenes de México se inicien en el mundo de los perfumes. Quiero que esta comunidad sepa más, se atreva a probar y encuentre su aroma más auténtico.
               </p>
             </div>
           </div>
@@ -129,27 +126,33 @@ const AboutPage = () => {
         ref={equipoAnim.ref}
         className={`py-16 bg-white transition-all duration-700 ${equipoAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+        <div className="text-center mb-12">
             <SectionTitle>Sobre mí</SectionTitle>
-              <div className="max-w-4xl mx-auto">
-                <p className="text-gray-600 leading-relaxed text-lg">
-                  Aroma Selecto es un proyecto personal creado por un apasionado de la perfumería, con el objetivo de acercar fragancias originales y especiales a más personas sin comprometer el bolsillo.
-                </p>
-                <p className="text-gray-600 leading-relaxed text-lg mt-4">
-                  Trabajo cada día para ofrecer <strong className="text-[#D4AF37]">soluciones prácticas, elegantes y seguras</strong> a quienes aman las fragancias, cuidando cada detalle para que tu experiencia sea única.
-                </p>
-              </div>
-          </div>
-          <div className="flex justify-center">
-            <div className="bg-gradient-to-r from-[#D4AF37]/10 to-[#B8860B]/10 p-8 rounded-lg border border-[#D4AF37]/20">
-              <UsersIcon className="h-16 w-16 text-[#D4AF37] mx-auto mb-4" />
-              <p className="text-center text-gray-600 font-medium">
-                Detrás de Aroma Selecto estoy yo, apasionado y comprometido con la excelencia en cada detalle
+            <div className="max-w-4xl mx-auto">
+              <p className="text-gray-600 leading-relaxed text-lg">
+                Hola, soy el rostro detrás de <strong className="text-[#D4AF37]">Aroma Selecto MX</strong>. Soy un apasionado por los aromas que decidió emprender para que tú, y otras personas como yo, pudieran encontrar fragancias increíbles sin sacrificar la cartera.
+              </p>
+              <p className="text-gray-600 leading-relaxed text-lg mt-4">
+                Cada decant que envío es una promesa de calidad y cuidado. Desde la selección del perfume hasta el último detalle del empaque, todo está pensado para que tu experiencia sea tan única como el aroma que elijas.
               </p>
             </div>
           </div>
-        </div>
+          
+          {/* ✅ NUEVO ESTILO COMO LAS CARDS DE MISIÓN/VISIÓN */}
+          <div className="flex justify-center">
+            <div className="section-card p-8 rounded-lg shadow-sm max-w-lg mx-auto">
+              <div className="flex justify-center mb-6">
+                <img 
+                  src="/assets/images/avatars/ProfileMe.webp" 
+                  alt="Fundador de Aroma Selecto MX" 
+                  className="h-40 w-40 rounded-full object-cover border-4 border-[#D4AF37] shadow-lg"
+                />
+              </div>
+              <p className="text-gray-600 leading-relaxed text-center">
+                Detrás de Aroma Selecto MX estoy yo, apasionado y comprometido con la excelencia en cada detalle. Mi misión es que cada cliente encuentre su fragancia perfecta.
+              </p>
+            </div>
+          </div>
       </section>
 
       {/* Valores Section */}
@@ -272,9 +275,9 @@ const AboutPage = () => {
         className={`py-16 bg-[#F9F9F9] border-t border-[#D4AF37] border-opacity-30 transition-all duration-700 ${ctaAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <SectionTitle>¿Listo para encontrar tu fragancia ideal?</SectionTitle>
+          <SectionTitle>¿Listo para encontrar tu próximo aroma?</SectionTitle>
           <p className="text-xl text-[#2C3E50] mb-4">
-            ¡Déjame ayudarte a descubrir el aroma que marcará tu historia! Si tienes dudas, buscas una recomendación personalizada o simplemente quieres platicar de perfumes, estoy para ti.
+            No estás solo en este viaje olfativo. Si necesitas ayuda para elegir, tienes dudas o solo quieres platicar de perfumes, estoy aquí para ti. ¡Escríbeme!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
@@ -283,7 +286,7 @@ const AboutPage = () => {
               variant="primary"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              Ver catálogo de productos
+              Explora mi colección
             </Button>
             <Button
               as="a"
@@ -293,17 +296,17 @@ const AboutPage = () => {
               variant="outline"
               className="hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white border-2 border-[#C13584] transition-colors"
             >
-              Escríbeme en Instagram
+              Sígueme en Instagram
             </Button>
             <Button
               as="a"
-              href="https://wa.me/527208784641?text=¡Hola! Vengo de la sección 'Acerca de mi' de Aroma Selecto MX, ¿Podrías ayudarme?"
+              href="https://wa.me/527208784641?text=¡Hola! Vengo de la sección 'Acerca de mi' de Aroma Selecto MX MX, ¿Podrías ayudarme?"
               target="_blank"
               rel="noopener noreferrer"
               variant="outline"
-              className="hover:bg-gradient-to-r hover:from-[#25D366] hover:to-[#128C7E] hover:text-white border-2 border-[#25D366] transition-colors"
+              className="hover:bg-gradient-to-r hover:from-green-500 hover:to-blue-500 hover:text-white border-2 border-[#C13584] transition-colors"
             >
-              Escríbeme por WhatsApp
+              ¡Hablemos por WhatsApp!
             </Button>
           </div>
         </div>

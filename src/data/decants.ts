@@ -29,13 +29,13 @@ export const decants: Decant[] = [
     images: [
       '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp',
       '/assets/images/fragancias/decants-all-sizes.webp',
-      '/assets/images/fragancias/nautica-voyage/nautica-voyage-decants-group.webp'
+      '/assets/images/fragancias/decants-group.webp'
     ],
     isNew: true,
     variants: [
-      { size: 3, price: 40, stock: 0 },
-      { size: 5, price: 50, stock: 5 },
-      { size: 10, price: 90, stock: 5 }
+      { size: 3, price: 40, stock: 10 },
+      { size: 5, price: 50, stock: 6 },
+      { size: 10, price: 90, stock: 6 }
     ]
   },
   {
@@ -46,15 +46,14 @@ export const decants: Decant[] = [
     images: [
       '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp',
       '/assets/images/fragancias/decants-all-sizes.webp',
-      '/assets/images/fragancias/ariana-grande-cloud/ariana-cloud-decants-group.webp'
-    ],
-    isSale: true,
+      '/assets/images/fragancias/decants-group.webp'],
+    isNew: true,
     salePercent: 20,
     salePrice: 40,
     variants: [
-      { size: 3, price: 90, stock: 0 },
-      { size: 5, price: 130, stock: 5 },
-      { size: 10, price: 250, stock: 5 }
+      { size: 3, price: 90, stock: 10 },
+      { size: 5, price: 130, stock: 6 },
+      { size: 10, price: 250, stock: 6 }
     ]
   },
   {
@@ -65,14 +64,29 @@ export const decants: Decant[] = [
     images: [
       '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-1.webp',
       '/assets/images/fragancias/decants-all-sizes.webp',
-      '/assets/images/fragancias/dior-sauvage/dior-sauvage-decants-group.webp'
-    ],
-    isComingSoon: true,
+      '/assets/images/fragancias/decants-group.webp'],
+    isNew: true,
     variants: [
-      { size: 3, price: 130, stock: 0 },
-      { size: 5, price: 210, stock: 0 },
-      { size: 10, price: 400, stock: 0 }
+      { size: 3, price: 130, stock: 10 },
+      { size: 5, price: 200, stock: 6 },
+      { size: 10, price: 380, stock: 6 }
     ]
   },
+  {
+    id: 'decant_billie_eilish_eilish',
+    perfumeId: 'billie_eilish_eilish',
+    tipo: 'decant',
+    image: '/assets/images/fragancias/billie-eilish/billie-eilish-decants-group.webp',
+    images: [
+      '/assets/images/fragancias/billie-eilish/billie-eilish-detail-1.webp',
+      '/assets/images/fragancias/decants-all-sizes.webp',
+      '/assets/images/fragancias/decants-group.webp'],
+    isNew: true,
+    variants: [
+      { size: 3, price: 80, stock: 10 },
+      { size: 5, price: 110, stock: 6 },
+      { size: 10, price: 210, stock: 6 }
+    ]
+  }
   // ...otros decants...
 ];

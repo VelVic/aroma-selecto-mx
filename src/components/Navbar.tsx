@@ -1,37 +1,38 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBagIcon, UserIcon, MenuIcon, XIcon } from 'lucide-react';
-import { useCart } from '../context/cartContext'; // ← IMPORTAR CONTEXT
+import { useCart } from '../context/cartContext';
 import Button from './Button';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const { getCartCount } = useCart(); // ← USAR CONTEXT
+  const { getCartCount } = useCart();
 
-  const cartCount = getCartCount(); // ← CONTADOR DINÁMICO
+  const cartCount = getCartCount();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Control del scroll para mostrar/ocultar navbar
+  // ✅ CONTROL MEJORADO DEL SCROLL - Solo aparece cerca del top
   useEffect(() => {
     const controlNavbar = () => {
       const currentScrollY = window.scrollY;
       
       // Solo ejecutar si hay cambio significativo en el scroll
-      if (Math.abs(currentScrollY - lastScrollY) < 10) {
+      if (Math.abs(currentScrollY - lastScrollY) < 15) {
         return;
       }
 
-      if (currentScrollY > lastScrollY && currentScrollY > 150) {
-        // Scrolling hacia abajo y ya pasó 150px - ocultar navbar
-        setIsVisible(false);
-      } else {
-        // Scrolling hacia arriba o en la parte superior - mostrar navbar
+      // ✅ NUEVA LÓGICA: Solo visible en los primeros 300px de la página
+      if (currentScrollY <= 300) {
+        // Cerca del top - navbar visible
         setIsVisible(true);
+      } else {
+        // Más abajo de 300px - navbar oculto (forzar uso del botón "ir arriba")
+        setIsVisible(false);
       }
 
       setLastScrollY(currentScrollY);
@@ -59,12 +60,12 @@ const Navbar = () => {
   }, [lastScrollY]);
 
   return (
-<header 
-  className={`navbar fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out
-    bg-white/70 backdrop-blur-lg border-b border-[#D4AF37]/10 shadow-md
-    ${isVisible ? 'translate-y-0' : '-translate-y-full'}
-  `}
->
+    <header 
+      className={`navbar fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out
+        bg-white/80 backdrop-blur-lg border-b border-[#D4AF37]/10 shadow-lg
+        ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
+      `}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -94,7 +95,7 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation - NEGRO SÓLIDO */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
             <Link 
               to="/" 
@@ -111,10 +112,10 @@ const Navbar = () => {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
             <Link 
-              to="/sobre-mi" 
+              to="/informacion-fragancias" 
               className="text-gray-900 hover:text-[#D4AF37] font-medium transition-all duration-300 relative group"
             >
-              Sobre Mí
+              Aprender
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
             <Link 
@@ -126,7 +127,7 @@ const Navbar = () => {
             </Link>
           </nav>
 
-          {/* Desktop Actions - CONTADOR DINÁMICO */}
+          {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <Link 
               to="/carrito" 
@@ -153,7 +154,7 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile actions (carrito) + menu button */}
+          {/* Mobile actions + menu button */}
           <div className="md:hidden flex items-center space-x-2">
             <Link 
               to="/carrito"
@@ -170,21 +171,21 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
-              <button
-                onClick={toggleMenu}
-                className="p-2 text-gray-900 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-lg transition-all duration-300"
-              >
-                {isMenuOpen ? (
-                  <XIcon className="h-6 w-6" />
-                ) : (
-                  <MenuIcon className="h-6 w-6" />
-                )}
-              </button>
-            </div>
+            <button
+              onClick={toggleMenu}
+              className="p-2 text-gray-900 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-lg transition-all duration-300"
+            >
+              {isMenuOpen ? (
+                <XIcon className="h-6 w-6" />
+              ) : (
+                <MenuIcon className="h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile menu - CON GRADIENTE SUTIL */}
+      {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-gradient-to-b from-white via-white to-[#F9F9F9] border-t border-[#D4AF37]/20 shadow-lg backdrop-blur-sm">
           <div className="px-4 py-6 space-y-4">
@@ -217,7 +218,7 @@ const Navbar = () => {
               Contacto
             </Link>
             
-            {/* Mobile Actions - TAMBIÉN CON CONTADOR */}
+            {/* Mobile Actions */}
             <div className="flex space-x-3 pt-4 border-t border-[#D4AF37]/20">
               <Button
                 to="/iniciar-sesion"

@@ -16,33 +16,13 @@ const PerfumeDetail: React.FC<PerfumeDetailProps> = ({ perfume, selectedVariant,
   // Estado para favoritos y toast
   const [isFavorite, setIsFavorite] = React.useState(false);
   const [showToast, setShowToast] = React.useState(false);
-  const [quantity, setQuantity] = React.useState(1); // ✅ NUEVO: Estado para cantidad
-  const [isAdding, setIsAdding] = React.useState(false); // ✅ NUEVO: Prevenir múltiples clicks
+  const [isAdding, setIsAdding] = React.useState(false); // ✅ Mantener solo este estado
 
   // Cargar favoritos desde localStorage al montar
   React.useEffect(() => {
     const favs = JSON.parse(localStorage.getItem('favorites') || '[]');
     setIsFavorite(favs.includes(perfume.id));
   }, [perfume.id]);
-
-  // ✅ NUEVO: Resetear cantidad cuando cambie la variante
-  React.useEffect(() => {
-    setQuantity(1);
-  }, [selectedVariant]);
-
-  // ✅ NUEVO: Funciones para manejar cantidad
-  const incrementQuantity = () => {
-    // Los perfumes normalmente tienen stock limitado, asumimos máximo 10
-    if (quantity < 10) {
-      setQuantity(prev => prev + 1);
-    }
-  };
-
-  const decrementQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(prev => prev - 1);
-    }
-  };
 
   // Función para alternar favorito y persistir
   const handleFavorite = () => {
@@ -98,88 +78,36 @@ const PerfumeDetail: React.FC<PerfumeDetailProps> = ({ perfume, selectedVariant,
               </div>
             )}
 
-            {/* ✅ NUEVO: Selector de cantidad (solo si hay stock) */}
-            {perfume.prices && perfume.prices[selectedVariant] > 0 && (
-              <div className="mt-6">
-                <h3 className="text-base font-medium text-gray-900 mb-3">Cantidad</h3>
-                <div className="flex items-center justify-center gap-4">
-                  <button
-                    onClick={decrementQuantity}
-                    disabled={quantity <= 1}
-                    className="w-10 h-10 rounded-lg border-2 border-[#D4AF37] text-[#D4AF37] font-bold hover:bg-[#D4AF37] hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-[#D4AF37]"
-                    aria-label="Decrementar cantidad"
-                  >
-                    -
-                  </button>
-                  
-                  <div className="flex flex-col items-center">
-                    <span className="text-xl font-bold text-gray-900 min-w-[3rem] text-center">
-                      {quantity}
-                    </span>
-                    <span className="text-xs text-gray-500">
-                      Disponible
-                    </span>
-                  </div>
-                  
-                  <button
-                    onClick={incrementQuantity}
-                    disabled={quantity >= 10}
-                    className="w-10 h-10 rounded-lg border-2 border-[#D4AF37] text-[#D4AF37] font-bold hover:bg-[#D4AF37] hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-[#D4AF37]"
-                    aria-label="Incrementar cantidad"
-                  >
-                    +
-                  </button>
-                </div>
-                
-                {/* Total (solo si quantity > 1) */}
-                {quantity > 1 && (
-                  <div className="mt-4 p-3 bg-[#F9F9F9] rounded-lg border">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-700">Total ({quantity} unidades):</span>
-                      <span className="font-bold text-xl text-[#D4AF37]">
-                        ${((perfume.prices[selectedVariant] || 0) * quantity).toFixed(2)} MXN
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
             <div className="flex flex-col sm:flex-row gap-3 mt-8">
               {perfume.prices && perfume.prices[selectedVariant] > 0 ? (
                 <Button
                   className="flex-1 px-6 py-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#B8860B]"
                   variant='primary'
-                  disabled={isAdding} // ✅ NUEVO: Deshabilitar mientras procesa
+                  disabled={isAdding}
                   onClick={() => {
-                    if (isAdding) return; // ✅ NUEVO: Prevenir múltiples clicks
+                    if (isAdding) return;
                     
-                    setIsAdding(true); // ✅ NUEVO: Marcar como procesando
+                    setIsAdding(true);
                     
-                    console.log('CLICK Agregar al carrito - UNA SOLA VEZ', perfume.id);
-                    
-                    // ✅ MODIFICADO: Agregar múltiples unidades
-                    for (let i = 0; i < quantity; i++) {
-                      addToCart({
-                        id: perfume.id,
-                        name: perfume.name,
-                        brand: perfume.brand,
-                        image: perfume.image,
-                        size: perfume.sizes && perfume.sizes[selectedVariant] !== undefined ? perfume.sizes[selectedVariant] : 0,
-                        price: perfume.prices && perfume.prices[selectedVariant] !== undefined ? perfume.prices[selectedVariant] : 0,
-                        stock: 1,
-                      });
-                    }
+                    // ✅ SIMPLIFICADO: Solo agregar una unidad como las otras vistas
+                    addToCart({
+                      id: perfume.id,
+                      name: perfume.name,
+                      brand: perfume.brand,
+                      image: perfume.image,
+                      size: perfume.sizes && perfume.sizes[selectedVariant] !== undefined ? perfume.sizes[selectedVariant] : 0,
+                      price: perfume.prices && perfume.prices[selectedVariant] !== undefined ? perfume.prices[selectedVariant] : 0,
+                      stock: 1,
+                    });
                     
                     setShowToast(true);
                     setTimeout(() => {
                       setShowToast(false);
-                      setIsAdding(false); // ✅ NUEVO: Rehabilitar después de 2s
-                      setQuantity(1); // ✅ Resetear cantidad después de agregar
+                      setIsAdding(false);
                     }, 2000);
                   }}
                 >
-                  {isAdding ? 'Agregando...' : `Agregar ${quantity > 1 ? `${quantity} unidades` : ''} al carrito`} {/* ✅ NUEVO: Feedback visual */}
+                  {isAdding ? 'Agregando...' : 'Agregar al carrito'}
                 </Button>
               ) : (
                 <Button
@@ -201,13 +129,13 @@ const PerfumeDetail: React.FC<PerfumeDetailProps> = ({ perfume, selectedVariant,
                 {isFavorite ? 'Favorito' : 'Favoritos'}
               </Button>
             </div>
-            {/* ✅ MODIFICADO: Toast mejorado */}
+            {/* ✅ SIMPLIFICADO: Toast sin cantidad */}
             {showToast && (
               <div className="fixed top-6 left-1/2 transform -translate-x-1/2 bg-[#2C3E50] text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2 animate-fade-in">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.35 2.7a1 1 0 00.9 1.3h12.2a1 1 0 00.9-1.3L17 13M7 13V6h10v7" />
                 </svg>
-                <span>{quantity > 1 ? `${quantity} productos añadidos` : 'Producto añadido'} al carrito</span>
+                <span>Producto añadido al carrito</span>
               </div>
             )}
             {/* ACORDEONES UNIFICADOS */}

@@ -210,11 +210,51 @@ const ProductsPage = () => {
         {/* Contenido principal */}
         <main className="flex-1">
           {/* Título y subtítulo */}
+          {/* ✅ Título y subtítulo CON DROPDOWN EN DESKTOP */}
           <div className="mb-8 w-full">
-            <div className="bg-white rounded-lg shadow px-6 py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <h1 className="text-3xl font-bold text-[#2C3E50] mb-2">Catálogo de productos</h1>
-                <p className="text-gray-600">Catálogo completo de productos</p>
+            <div className="bg-white rounded-lg shadow px-6 py-6">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                {/* Texto del título */}
+                <div className="flex-1">
+                  <h1 className="text-3xl font-bold text-[#2C3E50] mb-2">Tu universo de fragancias</h1>
+                  <p className="text-gray-600">Encuentra el aroma que te define o la vibra que buscas hoy.</p>
+                </div>
+                
+                {/* ✅ DROPDOWN SOLO EN DESKTOP - AL LADO DEL TÍTULO */}
+                <div className="hidden lg:block">
+                  <div className="relative">
+                    <button
+                      onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
+                      className="flex items-center gap-2 px-4 py-2.5 bg-[#F9F9F9] border border-gray-200 rounded-lg text-[#2C3E50] font-medium hover:bg-gray-50 transition-colors min-w-[200px]"
+                    >
+                      <span className="text-sm text-gray-500">Ordenar por:</span>
+                      <span className="font-semibold">{selectedBadgeLabel}</span>
+                      <ChevronDownIcon className={`w-4 h-4 ml-auto transition-transform ${sortDropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    
+                    {/* Dropdown menu */}
+                    {sortDropdownOpen && (
+                      <div className="absolute top-full right-0 mt-1 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                        {badgeOptions.map(option => (
+                          <button
+                            key={option.value}
+                            onClick={() => {
+                              setSelectedBadge(option.value);
+                              setSortDropdownOpen(false);
+                            }}
+                            className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors ${
+                              selectedBadge === option.value 
+                                ? 'bg-[#D4AF37]/10 text-[#D4AF37] font-semibold' 
+                                : 'text-[#2C3E50]'
+                            }`}
+                          >
+                            {option.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -245,7 +285,7 @@ const ProductsPage = () => {
 
                 <button
                   onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
-                  className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-300 rounded-lg text-[#2C3E50] font-medium hover:bg-gray-50 transition-colors"
+                  className="lg:hidden w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-300 rounded-lg text-[#2C3E50] font-medium hover:bg-gray-50 transition-colors"
                 >
                   <span className="truncate">{selectedBadgeLabel}</span>
                   <ChevronDownIcon className={`w-5 h-5 transition-transform ${sortDropdownOpen ? 'rotate-180' : ''}`} />
@@ -253,7 +293,7 @@ const ProductsPage = () => {
                 
                 {/* ✅ DROPDOWN MENU */}
                 {sortDropdownOpen && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+                  <div className="lg:hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
                     {badgeOptions.map(option => (
                       <button
                         key={option.value}

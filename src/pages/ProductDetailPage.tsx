@@ -54,10 +54,7 @@ const ProductDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto py-8 px-4">
-      <button className="mb-4 text-[#D4AF37] hover:underline" onClick={() => navigate(-1)}>
-        ← Volver
-      </button>
+    <div className="w-full bg-[#F9F9F9] mt-10">
       {perfume && (
         <PerfumeDetail
           perfume={perfume}
