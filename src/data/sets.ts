@@ -41,98 +41,98 @@ export interface SetPromo {
 
 export const sets: SetPromo[] = [
   {
-    id: 'set_frescos_inicial_2',
-    name: 'Descubrimiento Frescos',
+    id: 'frescura_versatilidad',
+    name: 'Frescura y Versatilidad',
     tipo: 'set',
-    description: 'Un set perfecto para iniciar tu viaje olfativo con aromas limpios. Incluye: Decant Nautica Voyage, Decant Ariana Grande Cloud.',
+    description: 'Tu dúo dinámico para el día a día. Combina el frescor limpio y acuático de Nautica Voyage, perfecto para las mañanas de clases o el gym, con la sofisticación intensa de Dior Sauvage, ideal para una cita o una salida nocturna. El set que te cubre 24/7.',
     items: [
       { type: 'decant', decantId: 'decant_nautica_voyage' },
-      { type: 'decant', decantId: 'decant_ariana_grande_cloud' }
+      { type: 'decant', decantId: 'decant_dior_sauvage' }
     ],
     variants: [
-      { size: 3, price: 90, stock: 0 },
-      { size: 5, price: 150, stock: 2 },
-      { size: 10, price: 270, stock: 1 }
+      { size: 3, price: 150, stock: 3 },
+      { size: 5, price: 220, stock: 3 },
+      { size: 10, price: 420, stock: 3 }
     ],
     salePrice: 150,
     salePercent: 17,
     isAvailableToOrder: true,
     image: '/assets/images/fragancias/decants-all-sizes.webp',
     images: [
-      '/assets/images/sets/set_frescos_portada.webp', 
-      '/assets/images/sets/set_frescos_detalle1.webp', 
-      '/assets/images/sets/set_frescos_detalle2.webp'
+      '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp', 
+      '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-1.webp', 
+      '/assets/images/fragancias/decants-all-sizes.webp'
     ],
     activo: true,
     isNew: true,
     isSale: false,
     rating: 4.7,
-    seasons: ['Primavera', 'Verano'],
+    seasons: ['Primavera', 'Verano', 'Otoño', 'Invierno'],
     setType: 'decants',
-    category: 'mixto', // Este set incluye decants de hombre y mujer
+    category: 'hombre', // Este set incluye decants de hombre
   },
   {
-    id: 'set_frescos_inicial',
-    name: 'Perfumes Frescos',
+    id: 'dulce_acogedor',
+    name: 'Dulce y Acogedor',
     tipo: 'set',
-    description: 'Un set perfecto para iniciar tu viaje olfativo con aromas limpios. Incluye: Perfume Nautica Voyage, Perfume Ariana Grande Cloud y Dior Sauvage.',
+    description: 'El abrazo que puedes llevar puesto. ¿Eres fan de los aromas dulces que te hacen sentir cómodo y con un aura irresistible? Este set une el icónico y dulce aroma de malvavisco de Ariana Grande Cloud con la calidez adictiva y misteriosa de Billie Eilish Eilish. Juntos, crean un halo acogedor que atrae todas las miradas.',
     items: [
-      { type: 'perfume', decantId: 'nautica_voyage' },
-      { type: 'perfume', decantId: 'dior_sauvage' },
+      { type: 'perfume', decantId: 'ariana_grande_cloud' },
+      { type: 'perfume', decantId: 'billie_eilish_eilish' },
     ],
     variants: [
-      { size: 3, price: 90, stock: 0 },
-      { size: 5, price: 150, stock: 2 },
-      { size: 10, price: 270, stock: 1 }
+      { size: 3, price: 150, stock: 3 },
+      { size: 5, price: 220, stock: 3 },
+      { size: 10, price: 430, stock: 3 }
     ],
     salePrice: 150,
     salePercent: 17,
     isAvailableToOrder: true,
     image: '/assets/images/fragancias/decants-all-sizes.webp',
     images: [
-      '/assets/images/sets/set_frescos_portada.webp', 
-      '/assets/images/sets/set_frescos_detalle1.webp', 
-      '/assets/images/sets/set_frescos_detalle2.webp'
+      '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp', 
+      '/assets/images/fragancias/billie-eilish/billie-eilish-detail-1.webp', 
+      '/assets/images/fragancias/decants-all-sizes.webp'
     ],
     activo: true,
-    isNew: false,
-    isSale: true,
+    isNew: true,
+    isSale: false,
     rating: 4,
-    seasons: ['Primavera', 'Verano'],
-    setType: 'perfumes',
-    category: 'hombre', // Este set incluye perfumes de hombre y mujer
+    seasons: ['Primavera', 'Verano', 'Otoño', 'Invierno'],
+    setType: 'decants',
+    category: 'mujer', // Este set incluye decants de mujer
   },
   {
-    id: 'set_florales',
-    name: 'Perfumes Florales',
+    id: 'de_dia_a_noche',
+    name: 'De Día a Noche',
     tipo: 'set',
-    description: 'Un set ideal para quienes aman las fragancias florales. Incluye: Perfume Marc Jacobs Daisy, Perfume Chloe Eau de Parfum.',
+    description: 'La fórmula secreta para cada momento. Con Nautica Voyage obtienes esa frescura vibrante para el día, y con Ariana Grande Cloud, un dulce y distintivo aroma para la noche. La forma más inteligente de tener un perfume para cada ocasión sin gastar de más.',
     items: [
-      { type: 'perfume', decantId: 'ariana_grande_cloud' },
+      { type: 'perfume', decantId: 'nautica_voyage' },
       { type: 'perfume', decantId: 'ariana_grande_cloud' }
     ],
     variants: [
-      { size: 3, price: 120, stock: 5 },
-      { size: 5, price: 200, stock: 3 },
-      { size: 10, price: 350, stock: 2 }
+      { size: 3, price: 115, stock: 3 },
+      { size: 5, price: 160, stock: 3 },
+      { size: 10, price: 300, stock: 3 }
     ],
     salePrice: 200,
     salePercent: 20,
     isAvailableToOrder: true,
     image: '/assets/images/fragancias/decants-all-sizes.webp',
     images: [
-      '/assets/images/sets/set_florales_portada.webp', 
-      '/assets/images/sets/set_florales_detalle1.webp', 
-      '/assets/images/sets/set_florales_detalle2.webp'
+      '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp', 
+      '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp', 
+      '/assets/images/fragancias/decants-all-sizes.webp'
     ],
     activo: true,
-    isNew: false,
+    isNew: true,
     isSale: false,
-    isComingSoon: true,
+    isComingSoon: false,
     rating: 4.5,
     seasons: ['Primavera', 'Verano'],
-    setType: 'perfumes',
-    category: 'mujer',
+    setType: 'decants',
+    category: 'mixto', // Este set incluye decants de hombre y mujer
   },
   // ...otros sets...
 ];

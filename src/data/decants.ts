@@ -25,7 +25,8 @@ export const decants: Decant[] = [
     id: 'decant_nautica_voyage',
     perfumeId: 'nautica_voyage',
     tipo: 'decant',
-    image: '/assets/images/fragancias/nautica-voyage/nautica-voyage-decants-group.webp',
+    image:'/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp' 
+    /* '/assets/images/fragancias/nautica-voyage/nautica-voyage-decants-group.webp' */,
     images: [
       '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp',
       '/assets/images/fragancias/decants-all-sizes.webp',
@@ -42,7 +43,8 @@ export const decants: Decant[] = [
     id: 'decant_ariana_grande_cloud',
     perfumeId: 'ariana_grande_cloud',
     tipo: 'decant',
-    image: '/assets/images/fragancias/ariana-grande-cloud/ariana-cloud-decants-group.webp',
+    image: '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp'
+    /* '/assets/images/fragancias/ariana-grande-cloud/ariana-cloud-decants-group.webp' */,
     images: [
       '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp',
       '/assets/images/fragancias/decants-all-sizes.webp',
@@ -60,7 +62,8 @@ export const decants: Decant[] = [
     id: 'decant_dior_sauvage',
     perfumeId: 'dior_sauvage',
     tipo: 'decant',
-    image: '/assets/images/fragancias/dior-sauvage/dior-sauvage-decants-group.webp',
+    image: '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-1.webp'
+    /* '/assets/images/fragancias/dior-sauvage/dior-sauvage-decants-group.webp' */,
     images: [
       '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-1.webp',
       '/assets/images/fragancias/decants-all-sizes.webp',
@@ -76,7 +79,8 @@ export const decants: Decant[] = [
     id: 'decant_billie_eilish_eilish',
     perfumeId: 'billie_eilish_eilish',
     tipo: 'decant',
-    image: '/assets/images/fragancias/billie-eilish/billie-eilish-decants-group.webp',
+    image: '/assets/images/fragancias/billie-eilish/billie-eilish-detail-1.webp'
+    /* '/assets/images/fragancias/billie-eilish/billie-eilish-decants-group.webp' */,
     images: [
       '/assets/images/fragancias/billie-eilish/billie-eilish-detail-1.webp',
       '/assets/images/fragancias/decants-all-sizes.webp',
@@ -84,8 +88,8 @@ export const decants: Decant[] = [
     isNew: true,
     variants: [
       { size: 3, price: 80, stock: 10 },
-      { size: 5, price: 110, stock: 6 },
-      { size: 10, price: 210, stock: 6 }
+      { size: 5, price: 120, stock: 6 },
+      { size: 10, price: 230, stock: 6 }
     ]
   }
   // ...otros decants...
