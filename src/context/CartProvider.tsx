@@ -1,5 +1,7 @@
-import React, { useState, ReactNode, useCallback } from 'react';
+import { useState, useEffect, useCallback, ReactNode } from 'react';
 import { CartContext } from './cartContext';
+
+const CART_KEY = 'aroma_cart';
 
 export interface CartItem {
   id: string;
@@ -12,14 +14,20 @@ export interface CartItem {
   stock: number;
 }
 
-// useCart ahora se importa desde cartContext.ts
-
 interface CartProviderProps {
   children: ReactNode;
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>(() => {
+    const saved = localStorage.getItem(CART_KEY);
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem(CART_KEY, JSON.stringify(items));
+  }, [items]);
+
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
 
   const openCartDrawer = useCallback(() => setCartDrawerOpen(true), []);
@@ -40,11 +48,11 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         return [...currentItems, { ...product, quantity: 1 }];
       }
     });
-    openCartDrawer(); // Abrir drawer al agregar
+    openCartDrawer();
   };
 
   const removeFromCart = (id: string, size: number) => {
-    setItems(currentItems => 
+    setItems(currentItems =>
       currentItems.filter(item => !(item.id === id && item.size === size))
     );
   };
@@ -82,22 +90,20 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     return deliveryType === 'express' ? 189 : 149;
   };
 
-  const value = {
-    items,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    clearCart,
-    getCartCount,
-    getCartSubtotal,
-    getShippingCost,
-    cartDrawerOpen,
-    openCartDrawer,
-    closeCartDrawer
-  };
-
   return (
-    <CartContext.Provider value={value}>
+    <CartContext.Provider value={{
+      items,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      getCartCount,
+      getCartSubtotal,
+      getShippingCost,
+      cartDrawerOpen,
+      openCartDrawer,
+      closeCartDrawer
+    }}>
       {children}
     </CartContext.Provider>
   );
