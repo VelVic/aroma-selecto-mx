@@ -1,79 +1,19 @@
 import { useEffect, useState } from 'react';
-// Componente hijo para animar cada producto del carrito
-const ProductCartItem = ({ item, onUpdateQuantity, onRemoveItem }: {
-  item: {
-    id: string;
-    name: string;
-    brand: string;
-    size: number;
-    price: number;
-    quantity: number;
-    stock: number;
-    image: string;
-  };
-  onUpdateQuantity: (id: string, size: number, newQuantity: number) => void;
-  onRemoveItem: (id: string, size: number) => void;
-}) => {
-  const anim = useScrollFadeIn();
-  return (
-    <div
-      ref={anim.ref}
-      className={`flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-4 bg-[#FAFAFA] rounded-lg hover:shadow-md border border-transparent hover:border-[#D4AF37]/30 relative transition-all duration-700 ${anim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-    >
-      <img
-        src={item.image}
-        alt={item.name}
-        className="w-20 h-20 object-cover rounded-lg bg-[#F9F9F9] mx-auto sm:mx-0"
-      />
-      <div className="flex-1 min-w-0">
-        <h3
-          className="font-medium text-gray-900 whitespace-normal break-words text-center sm:text-left sm:truncate sm:max-w-none"
-        >
-          {item.name}
-        </h3>
-        <p
-          className="text-[#BDC3C7] text-sm whitespace-normal break-words text-center sm:text-left sm:truncate sm:max-w-none"
-        >
-          {item.brand} • {item.size} ml
-        </p>
-        <p className="text-[#D4AF37] font-semibold text-center sm:text-left">$ {item.price} MXN</p>
-      </div>
-      <div className="flex items-center space-x-3 mt-2 sm:mt-0">
-        <button
-          aria-label="Disminuir cantidad"
-          onClick={() => onUpdateQuantity(item.id, item.size, item.quantity - 1)}
-          className="p-1 rounded-full bg-gray-100 hover:bg-[#D4AF37] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
-          disabled={item.quantity <= 1}
-        >
-          <MinusIcon className="h-4 w-4" />
-        </button>
-        <span className="w-8 text-center font-medium">{item.quantity}</span>
-        <button
-          aria-label="Aumentar cantidad"
-          onClick={() => onUpdateQuantity(item.id, item.size, item.quantity + 1)}
-          disabled={item.quantity >= item.stock}
-          className="p-1 rounded-full bg-gray-100 hover:bg-[#D4AF37] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4AF37] disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <PlusIcon className="h-4 w-4" />
-        </button>
-      </div>
-      <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-end mt-2 sm:mt-0 min-w-[80px]">
-        <p className="font-semibold text-gray-900 text-right whitespace-nowrap">$ {(item.price * item.quantity).toFixed(0)} MXN</p>
-        <button
-          aria-label="Eliminar producto"
-          onClick={() => onRemoveItem(item.id, item.size)}
-          className="text-red-500 hover:text-white hover:bg-red-500 transition-colors mt-1 ml-2 sm:ml-0 rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-red-400"
-        >
-          <TrashIcon className="h-4 w-4" />
-        </button>
-      </div>
-    </div>
-  );
-};
 import useScrollFadeIn from '../hooks/useScrollFadeIn';
-import { ShoppingBagIcon, TrashIcon, PlusIcon, MinusIcon, MapPinIcon, GiftIcon, TicketIcon, InstagramIcon, MessageCircleIcon, TruckIcon, CreditCardIcon, BuildingIcon, HandIcon, CheckCircleIcon } from 'lucide-react';
+import { ShoppingBagIcon, 
+  MapPinIcon, 
+  GiftIcon, 
+  TicketIcon, 
+  InstagramIcon, 
+  MessageCircleIcon, 
+  TruckIcon, 
+  CreditCardIcon, 
+  BuildingIcon, 
+  HandIcon, 
+  CheckCircleIcon } from 'lucide-react';
 import { useCart } from '../context/cartContext';
 import Button from '../components/Button';
+import ProductCartItem from '../components/ProductCartItem';
 
 const CartPage = () => {
   // Animaciones para secciones principales
@@ -105,17 +45,51 @@ const CartPage = () => {
   const [showTicket, setShowTicket] = useState(false);
   // ...
 
-  // ← CONFIGURACIÓN ACTUALIZADA
-  const FREE_SHIPPING_MINIMUM = 899; // $899 MXN para envío gratis
-  const FREE_DECANT_MINIMUM = 600; // $600 MXN para decant gratis
+  // Configuración actualizada
+const STANDARD_SHIPPING_BASE = 150;
+const STANDARD_SHIPPING_DISCOUNTED = 75;
+const EXPRESS_SHIPPING_BASE = 200;
+const EXPRESS_SHIPPING_DISCOUNTED = 100;
+const FREE_SHIPPING_MINIMUM = 1300;
+const STANDARD_SHIPPING_DISCOUNT_MIN = 500;
+const FREE_DECANT_MINIMUM = 400;
 
+// Mensajes dinámicos para el carrito
+const getPromoMessage = () => {
+  if (subtotal < FREE_DECANT_MINIMUM) {
+    return (
+      <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 text-sm font-medium mb-4 text-center">
+        ¡Agrega ${FREE_DECANT_MINIMUM - subtotal} MXN más y recibe un decant de 3ml GRATIS!
+      </div>
+    );
+  }
+  if (subtotal < STANDARD_SHIPPING_DISCOUNT_MIN) {
+    return (
+      <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg p-3 text-sm font-medium mb-4 text-center">
+        ¡Decant gratis desbloqueado! Suma ${STANDARD_SHIPPING_DISCOUNT_MIN - subtotal} MXN más y tu envío estándar baja a solo $75 MXN.
+      </div>
+    );
+  }
+  if (subtotal < FREE_SHIPPING_MINIMUM) {
+    return (
+      <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg p-3 text-sm font-medium mb-4 text-center">
+        ¡Envío estándar a solo $75 MXN y decant gratis desbloqueados! Suma ${FREE_SHIPPING_MINIMUM - subtotal} MXN más y tu envío será GRATIS o express al 50%.
+      </div>
+    );
+  }
+  return (
+    <div className="bg-green-50 border border-green-200 text-green-800 rounded-lg p-3 text-sm font-semibold mb-4 text-center">
+      ¡Envío estándar GRATIS o express al 50% y decant de 3ml de regalo incluidos en tu pedido!
+    </div>
+  );
+};
 
   // Cálculos dinámicos mejorados
   const subtotal = getCartSubtotal();
   // Precios fijos
-  const STANDARD_SHIPPING = 149;
-  const EXPRESS_SHIPPING = 189;
-  const EXPRESS_DISCOUNTED = 95;
+  const STANDARD_SHIPPING = 150;
+  const EXPRESS_SHIPPING = 200;
+  const EXPRESS_DISCOUNTED = 100;
 
   // Lógica de costo base según opción
   const getBaseShippingCost = (type: string) => {
@@ -204,7 +178,7 @@ const CartPage = () => {
       {
         value: 'personal',
         label: 'Personal',
-        desc: 'Gutiérrez Zamora o zonas cercanas',
+        desc: '1 día hábil',
         price: 0,
         icon: <BuildingIcon className="h-5 w-5 mr-2 text-blue-600" />, // Casa/local
       },
@@ -218,7 +192,7 @@ const CartPage = () => {
       {
         value: 'express',
         label: 'Express',
-        desc: '1-2 días hábiles',
+        desc: '1-3 días hábiles',
         price: subtotal >= FREE_SHIPPING_MINIMUM ? EXPRESS_DISCOUNTED : EXPRESS_SHIPPING,
         icon: <TruckIcon className="h-5 w-5 mr-2 text-[#D4AF37]" />, // Carrito dorado
       },
@@ -249,69 +223,49 @@ const CartPage = () => {
                 {opt.icon}
                 <span>{opt.label}</span>
               </span>
+              {/* Aquí puedes mostrar el desc */}
+              <span className="text-xs text-gray-400">{opt.desc}</span>
             </button>
           ))}
         </div>
 
         {/* Info de la opción seleccionada */}
         {selected && (
-          <div className="mb-4 flex flex-col items-center justify-center text-center">
-            <span className="text-base font-semibold text-gray-900 flex items-center gap-2">
-              {selected.icon}
-              {selected.label}
-            </span>
-            <span className="text-xs text-gray-500 mt-1">{selected.desc}</span>
-            <span className="text-xs font-bold mt-1 text-[#D4AF37]">
-              {selected.price === 0 ? 'GRATIS' : `$${selected.price} MXN`}
-            </span>
-            {/* Mensajes de progreso y beneficios combinados */}
-            {/* Ambos beneficios desbloqueados: contenedor amarillo combinado */}
-            {faltaDecant === 0 && faltaEnvioGratis === 0 && (
-              <div className="mt-2 px-3 py-2 rounded bg-yellow-50 border border-yellow-200 text-[#D4AF37] text-sm font-semibold flex flex-col items-center gap-1 min-w-[270px] max-w-full">
-                <span>¡Decant gratis desbloqueado!</span>
-                <span>
-                  {selected.value === 'standard'
-                    ? '¡Envío estándar gratis desbloqueado!'
-                    : selected.value === 'express'
-                      ? '¡Envío express al 50% desbloqueado!'
-                      : ''}
-                </span>
-              </div>
-            )}
-            {/* Solo decant gratis desbloqueado */}
-            {faltaDecant === 0 && faltaEnvioGratis > 0 && (
-              <div className="mt-2 px-3 py-2 rounded bg-yellow-50 border border-yellow-200 text-[#D4AF37] text-sm font-semibold min-w-[270px] max-w-full">
-                ¡Decant gratis desbloqueado!
-              </div>
-            )}
-            {/* Solo envío gratis/express descuento desbloqueado */}
-            {faltaEnvioGratis === 0 && faltaDecant > 0 && (
-              <div className="mt-2 px-3 py-2 rounded bg-yellow-50 border border-yellow-200 text-[#D4AF37] text-sm font-semibold min-w-[270px] max-w-full">
+        <>
+          {faltaDecant === 0 && faltaEnvioGratis === 0 && (
+            <div className="mt-2 px-3 py-2 rounded bg-green-50 border border-green-200 text-green-800 text-sm font-semibold flex flex-col items-center gap-1 min-w-[270px] max-w-full">
+              <span>¡Decant gratis desbloqueado!</span>
+              <span>
                 {selected.value === 'standard'
-                  ? '¡Envío estándar gratis desbloqueado!'
+                  ? '¡Envío gratis desbloqueado!'
                   : selected.value === 'express'
-                    ? '¡Envío express al 50% desbloqueado!'
+                    ? '¡Envío al 50% desbloqueado!'
                     : ''}
-              </div>
-            )}
-            {/* Faltan beneficios: contenedores rojos */}
-            {faltaDecant > 0 && (
-              <div className="mt-2 px-3 py-2 rounded bg-red-50 border border-red-200 text-red-700 text-sm font-medium min-w-[270px] max-w-full">
-                Te faltan <b>${faltaDecant}</b> MXN para decant gratis.
-              </div>
-            )}
-            {faltaEnvioGratis > 0 && selected.value === 'standard' && (
-              <div className="mt-2 px-3 py-2 rounded bg-red-50 border border-red-200 text-red-700 text-sm font-medium min-w-[270px] max-w-full">
-                Te faltan <b>${faltaEnvioGratis}</b> MXN para envío gratis.
-              </div>
-            )}
-            {faltaEnvioGratis > 0 && selected.value === 'express' && (
-              <div className="mt-2 px-3 py-2 rounded bg-red-50 border border-red-200 text-red-700 text-sm font-medium min-w-[270px] max-w-full">
-                Te faltan <b>${faltaEnvioGratis}</b> MXN para envío al 50%.
-              </div>
-            )}
-          </div>
-        )}
+              </span>
+            </div>
+          )}
+          {faltaDecant === 0 && faltaEnvioGratis > 0 && (
+            <div className="mt-2 px-3 py-2 rounded bg-green-50 border border-green-200 text-green-800 items-center text-sm font-semibold max-w-full">
+              ¡Decant gratis desbloqueado!
+            </div>
+          )}
+          {faltaDecant > 0 && (
+            <div className="mt-2 px-3 py-2 rounded bg-red-50 border border-red-200 text-red-700 items-center text-sm font-medium min-w-[270px] max-w-full">
+              Te faltan <b>${faltaDecant}</b> MXN para decant gratis.
+            </div>
+          )}
+          {faltaEnvioGratis > 0 && selected.value === 'standard' && (
+            <div className="mt-2 px-3 py-2 rounded bg-red-50 border border-red-200 text-red-700 items-center text-sm font-medium min-w-[270px] max-w-full">
+              Te faltan <b>${faltaEnvioGratis}</b> MXN para envío gratis.
+            </div>
+          )}
+          {faltaEnvioGratis > 0 && selected.value === 'express' && (
+            <div className="mt-2 px-3 py-2 rounded bg-red-50 border border-red-200 text-red-700 items-center text-sm font-medium min-w-[270px] max-w-full">
+              Te faltan <b>${faltaEnvioGratis}</b> MXN para envío al 50%.
+            </div>
+          )}
+        </>
+      )}
 
         {/* Mensajes de decant gratis y envío gratis/express descuento eliminados porque ya se muestran en los nuevos contenedores de beneficios */}
 
@@ -477,22 +431,23 @@ const CartPage = () => {
 
       {/* Grid principal */}
       <section
-        ref={gridAnim.ref}
-        className={`transition-all duration-700 ${gridAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Columna 1: Lista de productos */}
-            <div className="lg:col-span-2 flex flex-col gap-6">
-              {cartItems.map((item) => (
-                <ProductCartItem
-                  key={`${item.id}-${item.size}`}
-                  item={item}
-                  onUpdateQuantity={handleUpdateQuantity}
-                  onRemoveItem={handleRemoveItem}
-                />
-              ))}
-            </div>
+  ref={gridAnim.ref}
+  className={`transition-all duration-700 ${gridAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      {/* Columna 1: Lista de productos */}
+      <div className="lg:col-span-2 flex flex-col gap-6">
+        {getPromoMessage()}
+        {cartItems.map((item) => (
+          <ProductCartItem
+            key={`${item.id}-${item.size}`}
+            item={item}
+            onUpdateQuantity={handleUpdateQuantity}
+            onRemoveItem={handleRemoveItem}
+          />
+        ))}
+      </div>
             {/* Columna 2: Envío y Pago */}
             <div className="flex flex-col gap-8">
               {/* Sección de Envío animada */}
@@ -571,20 +526,20 @@ const CartPage = () => {
                 </div>
                 <div className="flex justify-between mb-1">
                   <span>Envío:</span>
-                  <span>{finalShippingCost === 0 ? 'GRATIS' : `$${finalShippingCost} MXN`}</span>
+                  <span>
+                    {shippingInfo.deliveryType === 'standard'
+                      ? subtotal >= FREE_SHIPPING_MINIMUM
+                        ? 'GRATIS'
+                        : subtotal >= STANDARD_SHIPPING_DISCOUNT_MIN
+                          ? `$${STANDARD_SHIPPING_DISCOUNTED} MXN`
+                          : `$${STANDARD_SHIPPING_BASE} MXN`
+                      : shippingInfo.deliveryType === 'express'
+                        ? subtotal >= FREE_SHIPPING_MINIMUM
+                          ? `$${EXPRESS_SHIPPING_DISCOUNTED} MXN`
+                          : `$${EXPRESS_SHIPPING_BASE} MXN`
+                        : 'GRATIS'}
+                  </span>
                 </div>
-                {hasShippingDiscount && shippingInfo.deliveryType === 'express' && (
-                  <div className="flex justify-between mb-1 text-orange-600">
-                    <span>Desc. envío (50%):</span>
-                    <span>- $ {EXPRESS_SHIPPING - EXPRESS_DISCOUNTED} MXN</span>
-                  </div>
-                )}
-                {hasShippingDiscount && shippingInfo.deliveryType === 'standard' && (
-                  <div className="flex justify-between mb-1 text-green-600">
-                    <span>Envío gratis:</span>
-                    <span>- $ {STANDARD_SHIPPING} MXN</span>
-                  </div>
-                )}
                 {freeDecant && (
                   <div className="flex justify-between mb-1 text-green-600">
                     <span>Decant gratis:</span>
@@ -658,8 +613,8 @@ const CartPage = () => {
                       <h4 className="font-medium text-gray-900 mb-1 text-sm">Entrega:</h4>
                       <p className="text-xs text-[#BDC3C7]">
                         {shippingInfo.deliveryType === 'personal' ? 'Personal (GZ)' :
-                         shippingInfo.deliveryType === 'standard' ? 'Estándar (3-5d)' :
-                         'Express (1-2d)'}
+                         shippingInfo.deliveryType === 'standard' ? 'Estándar (3-5 días)' :
+                         'Express (1-3 días)'}
                       </p>
                     </div>
                     <div>
@@ -689,45 +644,45 @@ const CartPage = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
                           <GiftIcon className="h-3 w-3 text-green-600 mr-1" />
-                          <span className="text-green-800 text-xs font-medium">Decant gratis (5ml)</span>
+                          <span className="text-green-800 text-xs font-medium">Decant gratis (3ml)</span>
                         </div>
                         <span className="text-green-600 text-xs">$0</span>
                       </div>
                       <p className="text-green-700 text-xs mt-1 ml-4">
-                        *Fragancia seleccionada por nosotros
+                        *Fragancia seleccionada al azar entre las disponibles
                       </p>
                     </div>
                   )}
                   {/* ← TOTALES MÁS COMPACTOS */}
                   <div className="border-t pt-3">
+                    {/* En el ticket modal */}
                     <div className="space-y-1">
                       <div className="flex justify-between text-xs">
                         <span>Subtotal:</span>
                         <span>${subtotal.toFixed(0)} MXN</span>
                       </div>
-                      <div className="flex justify-between text-xs">
-                        <span>Envío:</span>
-                        <span>{finalShippingCost === 0 ? 'GRATIS' : `$${finalShippingCost} MXN`}</span>
+                      <div className="flex justify-between mb-1">
+                      <span>Envío:</span>
+                      <span>
+                        {shippingInfo.deliveryType === 'standard'
+                          ? subtotal >= FREE_SHIPPING_MINIMUM
+                            ? 'GRATIS'
+                            : subtotal >= STANDARD_SHIPPING_DISCOUNT_MIN
+                              ? `$${STANDARD_SHIPPING_DISCOUNTED} MXN`
+                              : `$${STANDARD_SHIPPING_BASE} MXN`
+                          : shippingInfo.deliveryType === 'express'
+                            ? subtotal >= FREE_SHIPPING_MINIMUM
+                              ? `$${EXPRESS_SHIPPING_DISCOUNTED} MXN`
+                              : `$${EXPRESS_SHIPPING_BASE} MXN`
+                            : 'GRATIS'}
+                      </span>
+                    </div>
+                    {freeDecant && (
+                      <div className="flex justify-between mb-1 text-green-600">
+                        <span>Decant gratis:</span>
+                        <span>$0 MXN</span>
                       </div>
-                      {/* ← DESCUENTOS MÁS COMPACTOS */}
-                      {hasShippingDiscount && shippingInfo.deliveryType === 'express' && (
-                        <div className="flex justify-between text-xs text-orange-600">
-                          <span>Desc. envío (50%):</span>
-                          <span>- $ {EXPRESS_SHIPPING - EXPRESS_DISCOUNTED} MXN</span>
-                        </div>
-                      )}
-                      {hasShippingDiscount && shippingInfo.deliveryType === 'standard' && (
-                        <div className="flex justify-between text-xs text-green-600">
-                          <span>Envío gratis:</span>
-                          <span>- $ {STANDARD_SHIPPING} MXN</span>
-                        </div>
-                      )}
-                      {freeDecant && (
-                        <div className="flex justify-between text-xs text-green-600">
-                          <span>Decant gratis:</span>
-                          <span>$0 MXN</span>
-                        </div>
-                      )}
+                    )}
                     </div>
                     <div className="flex justify-between font-bold text-sm border-t pt-2 mt-2">
                       <span>Total:</span>

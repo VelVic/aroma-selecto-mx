@@ -57,8 +57,7 @@ const HomePage = () => {
 
   return (
     <div className="w-full bg-[#F9F9F9] mt-16">
-      {/* Hero Section - COLORES ACTUALIZADOS */}
-      {/* Animación de aparición para el Hero */}
+      
       <section className="relative bg-[#2C3E50] text-white min-h-[calc(100vh-4rem)] flex items-center mt-10">
         <div className="absolute inset-0 overflow-hidden">
           <picture>
@@ -88,7 +87,8 @@ const HomePage = () => {
                 ¡SORTEO ESPECIAL ACTIVO!
               </p>
               <p className="text-white text-base">
-                Participa y gana <strong> decants gratis</strong> de nuestros bestsellers valorados en más de $350 MXN
+                Participa y gana <strong> decants gratis</strong> de nuestros bestsellers valorados en más de $350 MXN.
+                Link en el pie de página para más detalles.
               </p>
             </div>
 
@@ -127,6 +127,81 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Categories Section - COLORES ACTUALIZADOS */}
+      <section
+        ref={categoriesAnim.ref}
+        className={`py-16 bg-[#F9F9F9] transition-all duration-700 ${categoriesAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionTitle>Encuentra tu fragancia perfecta</SectionTitle>
+          {/* Categories Section - LINKS CON SCROLL AUTOMÁTICO */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="relative rounded-lg overflow-hidden group h-80">
+              <img 
+                src="https://www.sephora.com.mx/on/demandware.static/-/Sites-masterCatalog_Sephora/es_MX/dwff1e1788/images/hi-res/boletos/Karla%20Nieto/CAROLINA%20HERRERA/8411061055199_5.jpg" 
+                alt="Perfumes para mujer Aroma Selecto MX" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#2C3E50]/90 to-transparent flex flex-col justify-end p-6">
+                <h3 className="text-white text-xl font-logo font-medium mb-2">
+                  Para Ella
+                </h3>
+                <p className="text-[#BDC3C7] text-sm mb-3">Fragancias femeninas dulces y elegantes</p>
+                <Link 
+                  to="/productos?gender=Mujer" 
+                  className="text-[#D4AF37] text-sm flex items-center hover:text-white transition-colors"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  Ver colección <ArrowRightIcon className="ml-2 h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+            
+            <div className="relative rounded-lg overflow-hidden group h-80">
+              <img 
+                src="https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                alt="Perfumes para hombre Aroma Selecto MX" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#2C3E50]/90 to-transparent flex flex-col justify-end p-6">
+                <h3 className="text-white text-xl font-logo font-medium mb-2">
+                  Para Él
+                </h3>
+                <p className="text-[#BDC3C7] text-sm mb-3">Fragancias masculinas frescas y potentes</p>
+                <Link 
+                  to="/productos?gender=Hombre" 
+                  className="text-[#D4AF37] text-sm flex items-center hover:text-white transition-colors"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  Ver colección <ArrowRightIcon className="ml-2 h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+            
+            <div className="relative rounded-lg overflow-hidden group h-80">
+              <img 
+                src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                alt="Decants especiales Aroma Selecto MX" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#2C3E50]/90 to-transparent flex flex-col justify-end p-6">
+                <h3 className="text-white text-xl font-logo font-medium mb-2">
+                  Fragancias Mixtas
+                </h3>
+                <p className="text-[#BDC3C7] text-sm mb-3">Fragancias unisex para todos los gustos</p>
+                <Link 
+                  to="/productos?gender=Mixto" 
+                  className="text-[#D4AF37] text-sm flex items-center hover:text-white transition-colors"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  Ver colección <ArrowRightIcon className="ml-2 h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Decant Info Section - EDUCATIVA */}
       <section
         ref={infoFraganciasAnim.ref}
@@ -149,9 +224,6 @@ const HomePage = () => {
           </div>
 
           <div>
-            <h3 className="text-2xl font-logo font-bold text-[#2C3E50] text-center mb-8">
-              ¿Por qué necesitas un Decant?
-            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow duration-300 border-l-4 border-[#D4AF37]">
                 <div className="flex items-center mb-4">
@@ -198,12 +270,49 @@ const HomePage = () => {
             </div>
             <div className="mt-8 flex justify-center">
               <Link
-                to="/productos?type=decant"
+                to="/informacion-fragancias"
                 className="text-gray-900 hover:text-[#D4AF37] inline-flex items-center text-sm font-medium transition-colors"
               >
-                Ver todos <ArrowRightIcon className="ml-1 h-4 w-4" />
+                Aprender más <ArrowRightIcon className="ml-1 h-4 w-4" />
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Products Section - COLORES ACTUALIZADOS */}
+      <section
+        ref={decantsAnim.ref}
+        className={`py-16 bg-[#F9F9F9] transition-all duration-700 ${decantsAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+        >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 text-center">
+            <SectionTitle>Decants Bestseller</SectionTitle>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {/* Mostrar DecantCard para cada decant único (nuevo modelo) */}
+            {decants.map(decant => {
+              const perfume = perfumes.find(p => p.id === decant.perfumeId);
+              return (
+                <DecantCard
+                  key={decant.perfumeId}
+                  decant={decant}
+                  perfumeName={perfume?.name}
+                  perfumeBrand={perfume?.brand}
+                  image={perfume?.image}
+                  slug={decant.id}
+                  rating={perfume?.rating}
+                />
+              );
+            })}
+          </div>
+          <div className="mt-8 flex justify-center">
+            <Link
+              to="/productos?type=decant"
+              className="text-gray-900 hover:text-[#D4AF37] inline-flex items-center text-sm font-medium transition-colors"
+            >
+              Ver todos <ArrowRightIcon className="ml-1 h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>
@@ -379,43 +488,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Featured Products Section - COLORES ACTUALIZADOS */}
-      <section
-        ref={decantsAnim.ref}
-        className={`py-16 bg-[#F9F9F9] transition-all duration-700 ${decantsAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-        >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 text-center">
-            <SectionTitle>Decants Bestseller</SectionTitle>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {/* Mostrar DecantCard para cada decant único (nuevo modelo) */}
-            {decants.map(decant => {
-              const perfume = perfumes.find(p => p.id === decant.perfumeId);
-              return (
-                <DecantCard
-                  key={decant.perfumeId}
-                  decant={decant}
-                  perfumeName={perfume?.name}
-                  perfumeBrand={perfume?.brand}
-                  image={perfume?.image}
-                  slug={decant.id}
-                  rating={perfume?.rating}
-                />
-              );
-            })}
-          </div>
-          <div className="mt-8 flex justify-center">
-            <Link
-              to="/productos?type=decant"
-              className="text-gray-900 hover:text-[#D4AF37] inline-flex items-center text-sm font-medium transition-colors"
-            >
-              Ver todos <ArrowRightIcon className="ml-1 h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* Testimonials Section - CARRUSEL CON GRADIENTES */}
       <section
         ref={testimonialAnim.ref}
@@ -453,6 +525,7 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Sets Section - COLORES ACTUALIZADOS */}
       <section
         ref={setsAnim.ref}
         className={`py-16 bg-[#F9F9F9] transition-all duration-700 ${setsAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -477,80 +550,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Categories Section - COLORES ACTUALIZADOS */}
-      <section
-        ref={categoriesAnim.ref}
-        className={`py-16 bg-[#F9F9F9] transition-all duration-700 ${categoriesAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionTitle>Encuentra tu fragancia perfecta</SectionTitle>
-          {/* Categories Section - LINKS CON SCROLL AUTOMÁTICO */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="relative rounded-lg overflow-hidden group h-80">
-              <img 
-                src="https://www.sephora.com.mx/on/demandware.static/-/Sites-masterCatalog_Sephora/es_MX/dwff1e1788/images/hi-res/boletos/Karla%20Nieto/CAROLINA%20HERRERA/8411061055199_5.jpg" 
-                alt="Perfumes para mujer Aroma Selecto MX" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#2C3E50]/90 to-transparent flex flex-col justify-end p-6">
-                <h3 className="text-white text-xl font-logo font-medium mb-2">
-                  Para Ella
-                </h3>
-                <p className="text-[#BDC3C7] text-sm mb-3">Fragancias femeninas dulces y elegantes</p>
-                <Link 
-                  to="/productos?gender=Mujer" 
-                  className="text-[#D4AF37] text-sm flex items-center hover:text-white transition-colors"
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                >
-                  Ver colección <ArrowRightIcon className="ml-2 h-4 w-4" />
-                </Link>
-              </div>
-            </div>
-            
-            <div className="relative rounded-lg overflow-hidden group h-80">
-              <img 
-                src="https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
-                alt="Perfumes para hombre Aroma Selecto MX" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#2C3E50]/90 to-transparent flex flex-col justify-end p-6">
-                <h3 className="text-white text-xl font-logo font-medium mb-2">
-                  Para Él
-                </h3>
-                <p className="text-[#BDC3C7] text-sm mb-3">Fragancias masculinas frescas y potentes</p>
-                <Link 
-                  to="/productos?gender=Hombre" 
-                  className="text-[#D4AF37] text-sm flex items-center hover:text-white transition-colors"
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                >
-                  Ver colección <ArrowRightIcon className="ml-2 h-4 w-4" />
-                </Link>
-              </div>
-            </div>
-            
-            <div className="relative rounded-lg overflow-hidden group h-80">
-              <img 
-                src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
-                alt="Decants especiales Aroma Selecto MX" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#2C3E50]/90 to-transparent flex flex-col justify-end p-6">
-                <h3 className="text-white text-xl font-logo font-medium mb-2">
-                  Fragancias Mixtas
-                </h3>
-                <p className="text-[#BDC3C7] text-sm mb-3">Fragancias unisex para todos los gustos</p>
-                <Link 
-                  to="/productos?gender=Mixto" 
-                  className="text-[#D4AF37] text-sm flex items-center hover:text-white transition-colors"
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                >
-                  Ver colección <ArrowRightIcon className="ml-2 h-4 w-4" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };

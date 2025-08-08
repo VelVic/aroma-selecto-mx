@@ -1,4 +1,4 @@
-import { MapPinIcon, HeartIcon, StarIcon, ShieldCheckIcon, TruckIcon, SparklesIcon, UsersIcon, SearchIcon, TargetIcon } from 'lucide-react';
+import { MapPinIcon, HeartIcon, StarIcon, ShieldCheckIcon, TruckIcon, SparklesIcon, SearchIcon, TargetIcon } from 'lucide-react';
 import Button from '../components/Button';
 import SectionTitle from '../components/SectionTitle';
 import useScrollFadeIn from '../hooks/useScrollFadeIn';
@@ -26,7 +26,7 @@ const AboutPage = () => {
         
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-logo font-bold mb-6 bg-gradient-to-r from-white via-[#D4AF37] to-white bg-clip-text text-transparent">
-            ¡Esta es <span className="text-[#D4AF37]">nuestra</span> historia!
+            ¡Esta es <span className="text-[#D4AF37]">mi</span> historia!
           </h1>
           <p className="text-lg md:text-xl text-[#BDC3C7] max-w-3xl mx-auto mb-8 leading-relaxed">
             Detrás de cada decant, hay un fanático de los perfumes. Esto no es solo una tienda, es el lugar donde nace tu próxima obsesión.

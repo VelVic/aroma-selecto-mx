@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { perfumes } from '../data/perfumes';
 import { decants } from '../data/decants';
 import { sets } from '../data/sets';
@@ -12,7 +12,6 @@ import ProductRecommendations from '../components/ProductRecommendations';
 
 const ProductDetailPage: React.FC = () => {
   const { tipo, id } = useParams<{ tipo: string; id: string }>();
-  const navigate = useNavigate();
 
   // Busca el producto según el tipo
   const perfume = tipo === 'perfume' ? perfumes.find(p => p.id === id) : undefined;
@@ -54,7 +53,7 @@ const ProductDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full bg-[#F9F9F9] mt-10">
+    <div className="w-full bg-[#F9F9F9] mt-14">
       {perfume && (
         <PerfumeDetail
           perfume={perfume}
