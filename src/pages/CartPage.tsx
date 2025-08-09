@@ -101,15 +101,22 @@ const getPromoMessage = () => {
 
   // Lógica de descuentos
   const calculateFinalShippingCost = () => {
-    if (shippingInfo.deliveryType === 'personal') {
-      return 0;
-    }
-    if (subtotal >= FREE_SHIPPING_MINIMUM) {
-      if (shippingInfo.deliveryType === 'standard') return 0;
-      if (shippingInfo.deliveryType === 'express') return EXPRESS_DISCOUNTED;
-    }
-    return getBaseShippingCost(shippingInfo.deliveryType);
-  };
+  if (shippingInfo.deliveryType === 'personal') {
+    return 0;
+  }
+  if (subtotal >= FREE_SHIPPING_MINIMUM) {
+    if (shippingInfo.deliveryType === 'standard') return 0;
+    if (shippingInfo.deliveryType === 'express') return EXPRESS_DISCOUNTED;
+  }
+  // Aplica descuento si subtotal >= STANDARD_SHIPPING_DISCOUNT_MIN
+  if (
+    shippingInfo.deliveryType === 'standard' &&
+    subtotal >= STANDARD_SHIPPING_DISCOUNT_MIN
+  ) {
+    return STANDARD_SHIPPING_DISCOUNTED;
+  }
+  return getBaseShippingCost(shippingInfo.deliveryType);
+};
 
   const baseShippingCost = getBaseShippingCost(shippingInfo.deliveryType);
   const finalShippingCost = calculateFinalShippingCost();
@@ -525,21 +532,13 @@ const getPromoMessage = () => {
                   <span>${subtotal.toFixed(0)} MXN</span>
                 </div>
                 <div className="flex justify-between mb-1">
-                  <span>Envío:</span>
-                  <span>
-                    {shippingInfo.deliveryType === 'standard'
-                      ? subtotal >= FREE_SHIPPING_MINIMUM
-                        ? 'GRATIS'
-                        : subtotal >= STANDARD_SHIPPING_DISCOUNT_MIN
-                          ? `$${STANDARD_SHIPPING_DISCOUNTED} MXN`
-                          : `$${STANDARD_SHIPPING_BASE} MXN`
-                      : shippingInfo.deliveryType === 'express'
-                        ? subtotal >= FREE_SHIPPING_MINIMUM
-                          ? `$${EXPRESS_SHIPPING_DISCOUNTED} MXN`
-                          : `$${EXPRESS_SHIPPING_BASE} MXN`
-                        : 'GRATIS'}
-                  </span>
-                </div>
+  <span>Envío:</span>
+  <span>
+    {finalShippingCost === 0
+      ? 'GRATIS'
+      : `$${finalShippingCost} MXN`}
+  </span>
+</div>
                 {freeDecant && (
                   <div className="flex justify-between mb-1 text-green-600">
                     <span>Decant gratis:</span>
@@ -662,21 +661,13 @@ const getPromoMessage = () => {
                         <span>${subtotal.toFixed(0)} MXN</span>
                       </div>
                       <div className="flex justify-between mb-1">
-                      <span>Envío:</span>
-                      <span>
-                        {shippingInfo.deliveryType === 'standard'
-                          ? subtotal >= FREE_SHIPPING_MINIMUM
+                        <span>Envío:</span>
+                        <span>
+                          {finalShippingCost === 0
                             ? 'GRATIS'
-                            : subtotal >= STANDARD_SHIPPING_DISCOUNT_MIN
-                              ? `$${STANDARD_SHIPPING_DISCOUNTED} MXN`
-                              : `$${STANDARD_SHIPPING_BASE} MXN`
-                          : shippingInfo.deliveryType === 'express'
-                            ? subtotal >= FREE_SHIPPING_MINIMUM
-                              ? `$${EXPRESS_SHIPPING_DISCOUNTED} MXN`
-                              : `$${EXPRESS_SHIPPING_BASE} MXN`
-                            : 'GRATIS'}
-                      </span>
-                    </div>
+                            : `$${finalShippingCost} MXN`}
+                        </span>
+                      </div>
                     {freeDecant && (
                       <div className="flex justify-between mb-1 text-green-600">
                         <span>Decant gratis:</span>
