@@ -402,7 +402,7 @@ const ContactPage = () => {
               variant="primary"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              Ver mi catálogo
+              Explora mi colección
             </Button>
             <Button
               as="a"
