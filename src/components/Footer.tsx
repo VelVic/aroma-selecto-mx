@@ -281,11 +281,11 @@ const Footer = () => {
                   Sobre Mí
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/informacion-fragancias" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
                   Sobre Fragancias
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/envios-devoluciones" className="text-[#BDC3C7] hover:text-[#D4AF37] transition-colors hover:translate-x-1 transform duration-200 block">
                   Envíos y Devoluciones

@@ -71,24 +71,24 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center group transition-all duration-300 relative">
-              <div className="relative h-14 w-14 mr-3 flex-shrink-0">
-                {/* Logo por defecto */}
-                <img 
-                  src="/assets/images/logos/isologo_dark.png"
-                  alt="Aroma Selecto Logo"
-                  className="absolute inset-0 h-14 w-14 transition-all duration-500 ease-in-out
-                    opacity-100 group-hover:opacity-0
-                    rotate-0 group-hover:rotate-90"
-                />
-                {/* Logo en hover */}
-                <img 
-                  src="/assets/images/logos/isologo_light.png"
-                  alt="Aroma Selecto Logo Hover"
-                  className="absolute inset-0 h-14 w-14 transition-all duration-500 ease-in-out
-                    opacity-0 group-hover:opacity-100
-                    rotate-[-90deg] group-hover:rotate-0"
-                />
-              </div>
+              <div className="relative h-10 w-10 mr-3 flex-shrink-0">
+  {/* Logo por defecto */}
+  <img 
+    src="/assets/images/logos/isologo_dark.png"
+    alt="Aroma Selecto Logo"
+    className="absolute inset-0 h-10 w-10 transition-all duration-500 ease-in-out
+      opacity-100 group-hover:opacity-0
+      rotate-0 group-hover:rotate-90"
+  />
+  {/* Logo en hover */}
+  <img 
+    src="/assets/images/logos/isologo_light.png"
+    alt="Aroma Selecto Logo Hover"
+    className="absolute inset-0 h-10 w-10 transition-all duration-500 ease-in-out
+      opacity-0 group-hover:opacity-100
+      rotate-[-90deg] group-hover:rotate-0"
+  />
+</div>
               <span className="text-xl font-logo font-semibold text-[#2C3E50] group-hover:text-[#D4AF37] transition-colors tracking-widest">
                 Aroma Selecto MX
               </span>
@@ -204,11 +204,11 @@ const Navbar = () => {
               Productos
             </Link>
             <Link 
-              to="/sobre-mi" 
+              to="/informacion-fragancias" 
               className="block text-[#2C3E50] hover:text-[#D4AF37] font-medium py-2 px-3 rounded-lg hover:bg-[#D4AF37]/10 transition-all duration-300"
               onClick={() => setIsMenuOpen(false)}
             >
-              Sobre Mí
+              Aprender
             </Link>
             <Link 
               to="/contacto" 
