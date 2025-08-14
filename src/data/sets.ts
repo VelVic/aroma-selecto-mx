@@ -50,9 +50,9 @@ export const sets: SetPromo[] = [
       { type: 'decant', decantId: 'decant_dior_sauvage' }
     ],
     variants: [
-      { size: 3, price: 150, stock: 3 },
-      { size: 5, price: 220, stock: 3 },
-      { size: 10, price: 420, stock: 3 }
+      { size: 3, price: 165, stock: 3 },
+      { size: 5, price: 240, stock: 3 },
+      { size: 10, price: 440, stock: 3 }
     ],
     salePrice: 150,
     salePercent: 17,
@@ -81,9 +81,9 @@ export const sets: SetPromo[] = [
       { type: 'perfume', decantId: 'billie_eilish_eilish' },
     ],
     variants: [
-      { size: 3, price: 150, stock: 3 },
-      { size: 5, price: 220, stock: 3 },
-      { size: 10, price: 430, stock: 3 }
+      { size: 3, price: 155, stock: 3 },
+      { size: 5, price: 225, stock: 3 },
+      { size: 10, price: 420, stock: 3 }
     ],
     salePrice: 150,
     salePercent: 17,
@@ -102,7 +102,7 @@ export const sets: SetPromo[] = [
     setType: 'decants',
     category: 'mujer', // Este set incluye decants de mujer
   },
-  {
+  /* {
     id: 'de_dia_a_noche',
     name: 'De Día a Noche',
     tipo: 'set',
@@ -112,8 +112,8 @@ export const sets: SetPromo[] = [
       { type: 'perfume', decantId: 'ariana_grande_cloud' }
     ],
     variants: [
-      { size: 3, price: 115, stock: 3 },
-      { size: 5, price: 160, stock: 3 },
+      { size: 3, price: 125, stock: 3 },
+      { size: 5, price: 175, stock: 3 },
       { size: 10, price: 300, stock: 3 }
     ],
     salePrice: 200,
@@ -133,6 +133,6 @@ export const sets: SetPromo[] = [
     seasons: ['Primavera', 'Verano'],
     setType: 'decants',
     category: 'mixto', // Este set incluye decants de hombre y mujer
-  },
+  }, */
   // ...otros sets...
 ];
