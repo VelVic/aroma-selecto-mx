@@ -35,8 +35,8 @@ export const decants: Decant[] = [
     isNew: true,
     variants: [
       { size: 3, price: 40, stock: 10 },
-      { size: 5, price: 50, stock: 6 },
-      { size: 10, price: 90, stock: 6 }
+      { size: 5, price: 60, stock: 6 },
+      { size: 10, price: 100, stock: 6 }
     ]
   },
   {
@@ -53,9 +53,9 @@ export const decants: Decant[] = [
     salePercent: 20,
     salePrice: 40,
     variants: [
-      { size: 3, price: 90, stock: 10 },
-      { size: 5, price: 130, stock: 6 },
-      { size: 10, price: 250, stock: 6 }
+      { size: 3, price: 100, stock: 10 },
+      { size: 5, price: 150, stock: 6 },
+      { size: 10, price: 260, stock: 6 }
     ]
   },
   {
@@ -70,9 +70,9 @@ export const decants: Decant[] = [
       '/assets/images/fragancias/decants-group.webp'],
     isNew: true,
     variants: [
-      { size: 3, price: 130, stock: 10 },
-      { size: 5, price: 200, stock: 6 },
-      { size: 10, price: 380, stock: 6 }
+      { size: 3, price: 150, stock: 10 },
+      { size: 5, price: 220, stock: 6 },
+      { size: 10, price: 400, stock: 6 }
     ]
   },
   {
@@ -87,9 +87,9 @@ export const decants: Decant[] = [
       '/assets/images/fragancias/decants-group.webp'],
     isNew: true,
     variants: [
-      { size: 3, price: 80, stock: 10 },
-      { size: 5, price: 120, stock: 6 },
-      { size: 10, price: 230, stock: 6 }
+      { size: 3, price: 90, stock: 10 },
+      { size: 5, price: 140, stock: 6 },
+      { size: 10, price: 250, stock: 6 }
     ]
   }
   // ...otros decants...

@@ -401,10 +401,6 @@ const ProductsPage = () => {
           {/* Grid de productos filtrados */}
           <div className="w-full min-h-[400px] flex mb-16">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-              {/* Perfumes filtrados */}
-              {filteredPerfumes.map(perfume => (
-                <PerfumeCard key={perfume.id} perfume={perfume} />
-              ))}
               {/* Decants filtrados */}
               {filteredDecants.map(decant => {
                 const relatedPerfume = perfumes.find(p => p.id === decant.perfumeId);
@@ -423,6 +419,10 @@ const ProductsPage = () => {
               {/* Sets filtrados */}
               {filteredSets.map(set => (
                 <SetCard key={set.id} set={set} />
+              ))}
+              {/* Perfumes filtrados */}
+              {filteredPerfumes.map(perfume => (
+                <PerfumeCard key={perfume.id} perfume={perfume} />
               ))}
             </div>
           </div>
