@@ -50,9 +50,9 @@ export const sets: SetPromo[] = [
       { type: 'decant', decantId: 'decant_dior_sauvage' }
     ],
     variants: [
-      { size: 3, price: 165, stock: 3 },
+      { size: 3, price: 170, stock: 3 },
       { size: 5, price: 240, stock: 3 },
-      { size: 10, price: 440, stock: 3 }
+      { size: 10, price: 430, stock: 3 }
     ],
     salePrice: 150,
     salePercent: 17,
@@ -81,9 +81,9 @@ export const sets: SetPromo[] = [
       { type: 'perfume', decantId: 'billie_eilish_eilish' },
     ],
     variants: [
-      { size: 3, price: 155, stock: 3 },
-      { size: 5, price: 225, stock: 3 },
-      { size: 10, price: 420, stock: 3 }
+      { size: 3, price: 170, stock: 3 },
+      { size: 5, price: 250, stock: 3 },
+      { size: 10, price: 440, stock: 3 }
     ],
     salePrice: 150,
     salePercent: 17,
