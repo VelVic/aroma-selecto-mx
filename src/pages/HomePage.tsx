@@ -316,7 +316,8 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
+      
+      {/* Preguntas frecuentes */}
       <section
         ref={faqAnim.ref}
         className={`py-16 bg-[#F9F9F9] transition-all duration-700 ${faqAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -498,6 +499,31 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Sets Section - COLORES ACTUALIZADOS */}
+      <section
+        ref={setsAnim.ref}
+        className={`py-16 bg-[#F9F9F9] transition-all duration-700 ${setsAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
+        <div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+            <SectionTitle>Sets Especiales</SectionTitle>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto mt-6">
+                {sets.map(set => (
+                  <SetCard key={set.id} set={set} />
+                ))}
+              </div>
+          </div>
+          <div className="mt-8 flex justify-center">
+            <Link
+              to="/productos?type=set"
+              className="text-gray-900 hover:text-[#D4AF37] inline-flex items-center text-sm font-medium transition-colors"
+            >
+              Ver todos <ArrowRightIcon className="ml-1 h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Todas las fragancias - SECCIÓN NUEVA */}
       <section
         ref={perfumesAnim.ref}
@@ -517,31 +543,6 @@ const HomePage = () => {
         <div className="mt-8 flex justify-center">
             <Link
               to="/productos?type=perfume"
-              className="text-gray-900 hover:text-[#D4AF37] inline-flex items-center text-sm font-medium transition-colors"
-            >
-              Ver todos <ArrowRightIcon className="ml-1 h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Sets Section - COLORES ACTUALIZADOS */}
-      <section
-        ref={setsAnim.ref}
-        className={`py-16 bg-[#F9F9F9] transition-all duration-700 ${setsAnim.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-      >
-        <div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-            <SectionTitle>Sets Especiales</SectionTitle>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto mt-6">
-                {sets.map(set => (
-                  <SetCard key={set.id} set={set} />
-                ))}
-              </div>
-          </div>
-          <div className="mt-8 flex justify-center">
-            <Link
-              to="/productos?type=set"
               className="text-gray-900 hover:text-[#D4AF37] inline-flex items-center text-sm font-medium transition-colors"
             >
               Ver todos <ArrowRightIcon className="ml-1 h-4 w-4" />

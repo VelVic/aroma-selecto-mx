@@ -100,10 +100,10 @@ export const perfumes: Perfume[] = [
     "Diario: El mejor amigo para tus clases, ir de compras o relajarte con tus amigas"
   ],
   "seasons": ["Otoño", "Invierno", "Primavera", "Verano"],
-  "image": "/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp",
+  "image": "/assets/images/fragancias/ariana-cloud/ariana-cloud-detail-1.webp",
   "images": [
-    "/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp",
-    "/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-2.webp"
+    "/assets/images/fragancias/ariana-cloud/ariana-cloud-detail-1.webp",
+    "/assets/images/fragancias/ariana-cloud/ariana-cloud-detail-2.webp"
   ],
   "category": "mujer",
   "isAvailableToOrder": true,

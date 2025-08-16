@@ -30,7 +30,7 @@ export const decants: Decant[] = [
     images: [
       '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp',
       '/assets/images/fragancias/decants-all-sizes.webp',
-      '/assets/images/fragancias/decants-group.webp'
+      '/assets/images/fragancias/nautica-voyage/nautica-voyage-with-decants.webp'
     ],
     isNew: true,
     variants: [
@@ -43,12 +43,14 @@ export const decants: Decant[] = [
     id: 'decant_ariana_grande_cloud',
     perfumeId: 'ariana_grande_cloud',
     tipo: 'decant',
-    image: '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp'
+    image: '/assets/images/fragancias/ariana-cloud/ariana-cloud-detail-1.webp'
     /* '/assets/images/fragancias/ariana-grande-cloud/ariana-cloud-decants-group.webp' */,
     images: [
-      '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp',
+      '/assets/images/fragancias/ariana-cloud/ariana-cloud-detail-1.webp',
       '/assets/images/fragancias/decants-all-sizes.webp',
-      '/assets/images/fragancias/decants-group.webp'],
+      '/assets/images/fragancias/ariana-cloud/ariana-cloud-with-decants.webp',
+      '/assets/images/fragancias/ariana-cloud/ariana-cloud-detail-2.webp'
+    ],
     isNew: true,
     salePercent: 20,
     salePrice: 40,
@@ -67,7 +69,7 @@ export const decants: Decant[] = [
     images: [
       '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-1.webp',
       '/assets/images/fragancias/decants-all-sizes.webp',
-      '/assets/images/fragancias/decants-group.webp'],
+      '/assets/images/fragancias/dior-sauvage/dior-sauvage-with-decants.webp'],
     isNew: true,
     variants: [
       { size: 3, price: 150, stock: 10 },
@@ -84,7 +86,7 @@ export const decants: Decant[] = [
     images: [
       '/assets/images/fragancias/billie-eilish/billie-eilish-detail-1.webp',
       '/assets/images/fragancias/decants-all-sizes.webp',
-      '/assets/images/fragancias/decants-group.webp'],
+      '/assets/images/fragancias/billie-eilish/billie-eilish-with-decants.webp'],
     isNew: true,
     variants: [
       { size: 3, price: 90, stock: 10 },

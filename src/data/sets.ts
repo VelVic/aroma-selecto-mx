@@ -57,7 +57,7 @@ export const sets: SetPromo[] = [
     salePrice: 150,
     salePercent: 17,
     isAvailableToOrder: true,
-    image: '/assets/images/fragancias/decants-all-sizes.webp',
+    image: '/assets/images/sets/dior-nautica/set-dior-nautica.webp',
     images: [
       '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp', 
       '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-1.webp', 
@@ -88,7 +88,7 @@ export const sets: SetPromo[] = [
     salePrice: 150,
     salePercent: 17,
     isAvailableToOrder: true,
-    image: '/assets/images/fragancias/decants-all-sizes.webp',
+    image: '/assets/images/sets/ariana-billie/set-ariana-billie.webp',
     images: [
       '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp', 
       '/assets/images/fragancias/billie-eilish/billie-eilish-detail-1.webp', 
