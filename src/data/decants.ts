@@ -29,7 +29,7 @@ export const decants: Decant[] = [
     /* '/assets/images/fragancias/nautica-voyage/nautica-voyage-decants-group.webp' */,
     images: [
       '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp',
-      '/assets/images/fragancias/decants-all-sizes.webp',
+      '/assets/images/fragancias/decants-all-size.webp',
       '/assets/images/fragancias/nautica-voyage/nautica-voyage-with-decants.webp'
     ],
     isNew: true,
@@ -47,9 +47,8 @@ export const decants: Decant[] = [
     /* '/assets/images/fragancias/ariana-grande-cloud/ariana-cloud-decants-group.webp' */,
     images: [
       '/assets/images/fragancias/ariana-cloud/ariana-cloud-detail-1.webp',
-      '/assets/images/fragancias/decants-all-sizes.webp',
+      '/assets/images/fragancias/decants-all-size.webp',
       '/assets/images/fragancias/ariana-cloud/ariana-cloud-with-decants.webp',
-      '/assets/images/fragancias/ariana-cloud/ariana-cloud-detail-2.webp'
     ],
     isNew: true,
     salePercent: 20,
@@ -68,7 +67,7 @@ export const decants: Decant[] = [
     /* '/assets/images/fragancias/dior-sauvage/dior-sauvage-decants-group.webp' */,
     images: [
       '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-1.webp',
-      '/assets/images/fragancias/decants-all-sizes.webp',
+      '/assets/images/fragancias/decants-all-size.webp',
       '/assets/images/fragancias/dior-sauvage/dior-sauvage-with-decants.webp'],
     isNew: true,
     variants: [

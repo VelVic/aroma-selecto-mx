@@ -61,7 +61,7 @@ export const sets: SetPromo[] = [
     images: [
       '/assets/images/fragancias/nautica-voyage/nautica-voyage-detail-1.webp', 
       '/assets/images/fragancias/dior-sauvage/dior-sauvage-detail-1.webp', 
-      '/assets/images/fragancias/decants-all-sizes.webp'
+      '/assets/images/fragancias/decants-all-size.webp'
     ],
     activo: true,
     isNew: true,
@@ -90,9 +90,9 @@ export const sets: SetPromo[] = [
     isAvailableToOrder: true,
     image: '/assets/images/sets/ariana-billie/set-ariana-billie.webp',
     images: [
-      '/assets/images/fragancias/ariana-grande-cloud/ariana-grande-cloud-detail-1.webp', 
+      '/assets/images/fragancias/ariana-cloud/ariana-cloud-detail-1.webp', 
       '/assets/images/fragancias/billie-eilish/billie-eilish-detail-1.webp', 
-      '/assets/images/fragancias/decants-all-sizes.webp'
+      '/assets/images/fragancias/decants-all-size.webp'
     ],
     activo: true,
     isNew: true,
