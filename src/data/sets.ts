@@ -77,8 +77,8 @@ export const sets: SetPromo[] = [
     tipo: 'set',
     description: 'El abrazo que puedes llevar puesto. ¿Eres fan de los aromas dulces que te hacen sentir cómodo y con un aura irresistible? Este set une el icónico y dulce aroma de malvavisco de Ariana Grande Cloud con la calidez adictiva y misteriosa de Billie Eilish Eilish. Juntos, crean un halo acogedor que atrae todas las miradas.',
     items: [
-      { type: 'perfume', decantId: 'ariana_grande_cloud' },
-      { type: 'perfume', decantId: 'billie_eilish_eilish' },
+      { type: 'decant', decantId: 'decant_ariana_grande_cloud' },
+      { type: 'decant', decantId: 'decant_billie_eilish_eilish' },
     ],
     variants: [
       { size: 3, price: 170, stock: 3 },
