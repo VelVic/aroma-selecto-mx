@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { StarIcon, HeartIcon, ShoppingBagIcon, SparklesIcon, BellIcon, FlameIcon, CheckIcon } from 'lucide-react';
+import { StarIcon, HeartIcon, ShoppingBagIcon, SparklesIcon, BellIcon, FlameIcon, CheckIcon, DropletIcon } from 'lucide-react';
 import { useCart } from '../context/cartContext';
 
 import type { Decant } from '../data/decants';
@@ -88,6 +88,11 @@ const DecantCard: React.FC<DecantCardProps> = ({ decant, perfumeName, perfumeBra
               Próximamente
             </span>
           )}
+          {/* Etiqueta de tipo de producto */}
+          <span className="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg border border-blue-200 mt-1 inline-flex items-center">
+            <DropletIcon className="h-3 w-3 mr-1" />
+            Decant
+          </span>
         </div>
         {/* Heart icon */}
         <button 

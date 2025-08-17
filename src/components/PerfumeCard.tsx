@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/cartContext';
 import type { Perfume } from '../data/perfumes';
-import { SparklesIcon, FlameIcon, HeartIcon, StarIcon, ShoppingBagIcon } from 'lucide-react';
+import { SparklesIcon, FlameIcon, HeartIcon, StarIcon, ShoppingBagIcon, SprayCanIcon } from 'lucide-react';
 
 interface PerfumeCardProps {
   perfume: Perfume;
@@ -82,6 +82,10 @@ const handleAddToCart = () => {
               Oferta
             </span>
           )}
+          <span className="bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg border border-purple-200 mt-1 inline-flex items-center">
+    <SprayCanIcon className="h-3 w-3 mr-1" />
+    Perfume
+  </span>
         </div>
         {/* Heart icon */}
         <button 
