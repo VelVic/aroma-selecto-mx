@@ -81,9 +81,9 @@ const ProductDetailPage: React.FC = () => {
         <TestimonialCarousel testimonials={filteredReviews} />
       </div>
 
-      <div>
-        <ProductRecommendations productType={tipo as 'perfume' | 'decant' | 'set'} productId={id ?? ''} />
-      </div>
+        <div>
+          <ProductRecommendations productType={tipo as 'perfume' | 'decant' | 'set'} productId={id ?? ''} />
+        </div>
     </div>
   );
 };
