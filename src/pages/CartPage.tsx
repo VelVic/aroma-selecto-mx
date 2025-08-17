@@ -357,15 +357,48 @@ const getPromoMessage = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Estado *</label>
-                <input
-                  type="text"
-                  value={shippingInfo.state}
-                  onChange={(e) => setShippingInfo(prev => ({...prev, state: e.target.value}))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
-                  placeholder="Tu estado"
-                />
-              </div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">Estado *</label>
+  <select
+    value={shippingInfo.state}
+    onChange={(e) => setShippingInfo(prev => ({ ...prev, state: e.target.value }))}
+    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#D4AF37] focus:border-[#D4AF37]"
+    required
+  >
+    <option value="">Seleccionar</option>
+    <option value="Aguascalientes">Aguascalientes</option>
+    <option value="Baja California">Baja California</option>
+    <option value="Baja California Sur">Baja California Sur</option>
+    <option value="Campeche">Campeche</option>
+    <option value="Chiapas">Chiapas</option>
+    <option value="Chihuahua">Chihuahua</option>
+    <option value="Ciudad de México">Ciudad de México</option>
+    <option value="Coahuila">Coahuila</option>
+    <option value="Colima">Colima</option>
+    <option value="Durango">Durango</option>
+    <option value="Estado de México">Estado de México</option>
+    <option value="Guanajuato">Guanajuato</option>
+    <option value="Guerrero">Guerrero</option>
+    <option value="Hidalgo">Hidalgo</option>
+    <option value="Jalisco">Jalisco</option>
+    <option value="Michoacán">Michoacán</option>
+    <option value="Morelos">Morelos</option>
+    <option value="Nayarit">Nayarit</option>
+    <option value="Nuevo León">Nuevo León</option>
+    <option value="Oaxaca">Oaxaca</option>
+    <option value="Puebla">Puebla</option>
+    <option value="Querétaro">Querétaro</option>
+    <option value="Quintana Roo">Quintana Roo</option>
+    <option value="San Luis Potosí">San Luis Potosí</option>
+    <option value="Sinaloa">Sinaloa</option>
+    <option value="Sonora">Sonora</option>
+    <option value="Tabasco">Tabasco</option>
+    <option value="Tamaulipas">Tamaulipas</option>
+    <option value="Tlaxcala">Tlaxcala</option>
+    <option value="Veracruz">Veracruz</option>
+    <option value="Yucatán">Yucatán</option>
+    <option value="Zacatecas">Zacatecas</option>
+  </select>
+</div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Ciudad *</label>
                 <input
@@ -551,14 +584,16 @@ const getPromoMessage = () => {
                 </div>
               </div>
               <Button
-                variant="primary"
-                className="w-full mt-4 flex items-center justify-center gap-2"
-                onClick={generateTicket}
-                disabled={!isFormValid()}
-              >
-                <TicketIcon className="h-5 w-5" />
-                Generar Ticket
-              </Button>
+  variant="primary"
+  className={`w-full mt-4 flex items-center justify-center gap-2 ${
+    !isFormValid() ? 'opacity-50 cursor-not-allowed' : ''
+  }`}
+  onClick={generateTicket}
+  disabled={!isFormValid()}
+>
+  <TicketIcon className="h-5 w-5" />
+  Generar Ticket
+</Button>
               </div>
             </div>
           </div>
