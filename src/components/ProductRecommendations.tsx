@@ -1,7 +1,7 @@
 import React from 'react';
-import { perfumes } from '../data/perfumes';
-import { decants } from '../data/decants';
-import { sets } from '../data/sets';
+import { Perfume, perfumes } from '../data/perfumes';
+import { Decant, decants } from '../data/decants';
+import { SetPromo, sets } from '../data/sets';
 import PerfumeCard from './PerfumeCard';
 import DecantCard from './DecantCard';
 import SetCard from './SetCard';
@@ -13,8 +13,7 @@ interface ProductRecommendationsProps {
 }
 
 const ProductRecommendations: React.FC<ProductRecommendationsProps> = ({ productType, productId }) => {
-  let recommended: any[] = [];
-
+  let recommended: Perfume[] | Decant[] | SetPromo[] = [];
   if (productType === 'perfume') {
     recommended = perfumes.filter(p => p.id !== productId).slice(0, 4);
   } else if (productType === 'decant') {
@@ -29,11 +28,11 @@ const ProductRecommendations: React.FC<ProductRecommendationsProps> = ({ product
     <div className="mt-10">
       <div className="bg-white rounded-xl shadow-md border border-[#D4AF37]/30 p-6">
         <SectionTitle>También te podría gustar</SectionTitle>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center">
           {productType === 'perfume' &&
-            recommended.map(p => <PerfumeCard key={p.id} perfume={p} />)}
+            (recommended as Perfume[]).map(p => <PerfumeCard key={p.id} perfume={p} />)}
           {productType === 'decant' &&
-            recommended.map(d => {
+            (recommended as Decant[]).map(d => {
               const perfume = perfumes.find(p => p.id === d.perfumeId);
               return (
                 <DecantCard
@@ -48,7 +47,7 @@ const ProductRecommendations: React.FC<ProductRecommendationsProps> = ({ product
               );
             })}
           {productType === 'set' &&
-            recommended.map(s => <SetCard key={s.id} set={s} />)}
+            (recommended as SetPromo[]).map(s => <SetCard key={s.id} set={s} />)}
         </div>
       </div>
     </div>

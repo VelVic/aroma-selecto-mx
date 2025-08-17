@@ -4,7 +4,7 @@ import { decants } from '../data/decants';
 import type { Perfume } from '../data/perfumes';
 import type { Decant } from '../data/decants';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingBagIcon, CheckIcon, BellIcon, StarIcon, HeartIcon, SparklesIcon, FlameIcon } from 'lucide-react';
+import { ShoppingBagIcon, CheckIcon, BellIcon, StarIcon, HeartIcon, SparklesIcon, FlameIcon, PackageIcon } from 'lucide-react';
 import { useCart } from '../context/cartContext'; // ✅ CORREGIDO: Import correcto
 import type { SetPromo } from '../data/sets';
 
@@ -85,6 +85,10 @@ const SetCard: React.FC<SetCardProps> = ({ set, image, slug = '', rating }) => {
               Próximamente
             </span>
           )}
+          <span className="bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg border border-green-200 mt-1 inline-flex items-center">
+            <PackageIcon className="h-3 w-3 mr-1" />
+            Set
+          </span>
         </div>
         {/* Heart icon */}
         <button 
@@ -172,6 +176,30 @@ const SetCard: React.FC<SetCardProps> = ({ set, image, slug = '', rating }) => {
             </div>
           )}
         </div>
+{/* Tamaños disponibles */}
+{/* {variants.length > 0 && (
+  <div className="mt-2.5 sm:mt-3">
+    <div className="flex items-center justify-between mb-1 sm:mb-2">
+      <span className="text-base sm:text-xs text-gray-500 font-medium">Tamaños:</span>
+    </div>
+    <div className="flex space-x-2 sm:space-x-2">
+      {variants.map((variant) => (
+        <span 
+          key={`size-${variant.size}`}
+          className={`inline-flex items-center px-3 py-1 sm:px-2 sm:py-1 rounded text-sm sm:text-xs font-medium border ${
+            isComingSoon
+              ? 'bg-red-50 border-red-200 text-red-400 line-through opacity-60'
+              : variant.stock > 0
+                ? 'bg-gray-50 border-gray-200 text-gray-600'
+                : 'bg-red-50 border-red-200 text-red-400 line-through opacity-60'
+          }`}
+        >
+          {variant.size}ml
+        </span>
+      ))}
+    </div>
+  </div>
+)} */}
         {/* ...se eliminó la sección de tamaños, solo se muestran en el detalle... */}
         {/* Precio y botón */}
         <div className="mt-4 sm:mt-4 flex justify-between items-center">
@@ -241,19 +269,22 @@ const SetCard: React.FC<SetCardProps> = ({ set, image, slug = '', rating }) => {
               if (isAdding || availableVariants.length === 0) return;
               
               setIsAdding(true);
-              console.log('CLICK Agregar al carrito - UNA SOLA VEZ', set.id);
-              
-              const firstAvailable = availableVariants[0];
-              
-              addToCart({
-                id: set.id,
-                name,
-                brand,
-                image: image || set.image || '',
-                size: firstAvailable.size,
-                price: firstAvailable.price,
-                stock: firstAvailable.stock,
-              });
+
+    const firstAvailable = availableVariants[0];
+    const priceToAdd =
+      firstAvailable.salePrice && firstAvailable.salePrice < firstAvailable.price
+        ? firstAvailable.salePrice
+        : firstAvailable.price;
+
+    addToCart({
+      id: set.id,
+      name,
+      brand,
+      image: image || set.image || '',
+      size: firstAvailable.size,
+      price: priceToAdd, // ← Ahora sí agrega el precio correcto
+      stock: firstAvailable.stock,
+    });
               setTimeout(() => {
                 setIsAdding(false);
                 setJustAdded(true);

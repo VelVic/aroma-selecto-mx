@@ -124,9 +124,23 @@ const SetDetail: React.FC<SetDetailProps> = ({ setPromo }) => {
                   </div>
                   {/* Precio único y banner debajo de los botones */}
                   <div className="mt-6 flex flex-col items-center w-full">
-                    <span className="font-bold italic text-2xl text-gray-900">
-                      $ {getCurrentPrice() !== undefined ? Number(getCurrentPrice()).toFixed(2) : '--'} MXN
-                    </span>
+                    <div className="mt-6 flex flex-col items-center w-full">
+  {setPromo.variants[selectedVariant]?.salePrice && setPromo.variants[selectedVariant]?.salePrice < setPromo.variants[selectedVariant]?.price ? (
+    <div className="flex items-baseline gap-2">
+      <span className="text-xl text-gray-400 line-through font-medium">
+        ${setPromo.variants[selectedVariant].price.toFixed(2)}
+      </span>
+      <span className="font-bold italic text-2xl text-black">
+        ${setPromo.variants[selectedVariant].salePrice.toFixed(2)}
+      </span>
+      <span className="text-base font-medium text-[#BDC3C7]">MXN</span>
+    </div>
+  ) : (
+    <span className="font-bold italic text-2xl text-gray-900">
+      ${setPromo.variants[selectedVariant].price.toFixed(2)} <span className="text-base font-medium text-[#BDC3C7]">MXN</span>
+    </span>
+  )}
+</div>
                     {/* Banner informativo para 10ml */}
                     {setPromo.variants[selectedVariant]?.size === 10 && (
                       <div className="mt-4 p-2 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border border-blue-200 w-full flex items-center justify-center">
@@ -169,17 +183,20 @@ const SetDetail: React.FC<SetDetailProps> = ({ setPromo }) => {
                       setIsAdding(true); // ✅ NUEVO: Marcar como procesando
                       
                       const variant = setPromo.variants[selectedVariant];
-                      console.log('CLICK Agregar al carrito - UNA SOLA VEZ', setPromo.id, variant.size);
-                      
-                      addToCart({
-                        id: setPromo.id,
-                        name: setPromo.name,
-                        brand: 'Set',
-                        image: setPromo.image,
-                        size: variant.size,
-                        price: variant.price,
-                        stock: variant.stock,
-                      });
+  const priceToAdd =
+    variant.salePrice && variant.salePrice < variant.price
+      ? variant.salePrice
+      : variant.price;
+
+  addToCart({
+    id: setPromo.id,
+    name: setPromo.name,
+    brand: 'Set',
+    image: setPromo.image,
+    size: variant.size,
+    price: priceToAdd, // ← Ahora sí agrega el precio correcto
+    stock: variant.stock,
+  });
                       
                       setShowToast(true);
                       setTimeout(() => {
@@ -209,19 +226,22 @@ const SetDetail: React.FC<SetDetailProps> = ({ setPromo }) => {
                     onClick={() => {
                       if (isAdding) return; // ✅ NUEVO: Prevenir múltiples clicks
                       
-                      setIsAdding(true); // ✅ NUEVO: Marcar como procesando
-                      
-                      console.log('CLICK Agregar al carrito - UNA SOLA VEZ', setPromo.id);
-                      
-                      addToCart({
-                        id: setPromo.id,
-                        name: setPromo.name,
-                        brand: 'Set',
-                        image: setPromo.image,
-                        size: 0,
-                        price: setPromo.salePrice ?? setPromo.variants?.[0]?.price ?? 0,
-                        stock: 99,
-                      });
+                      setIsAdding(true); // ✅ NUEVO: Marcar como procesando                      
+                      const variant = setPromo.variants[selectedVariant];
+  const priceToAdd =
+    variant.salePrice && variant.salePrice < variant.price
+      ? variant.salePrice
+      : variant.price;
+
+  addToCart({
+    id: setPromo.id,
+    name: setPromo.name,
+    brand: 'Set',
+    image: setPromo.image,
+    size: variant.size,
+    price: priceToAdd, // ← Ahora sí agrega el precio correcto
+    stock: variant.stock,
+  });
                       
                       setShowToast(true);
                       setTimeout(() => {
