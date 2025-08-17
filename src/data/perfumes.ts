@@ -48,7 +48,7 @@ export const perfumes: Perfume[] = [
   "category": "hombre",
   "isAvailableToOrder": true,
   "sizes": [100, 200],
-  "prices": [450, 780],
+  "prices": [410, 780],
   "rating": 4.5,
   "activo": true,
   "isNew": true,
@@ -78,7 +78,7 @@ export const perfumes: Perfume[] = [
   "category": "hombre",
   "isAvailableToOrder": true,
   "sizes": [100, 200],
-  "prices": [2800, 4700],
+  "prices": [3000, 4700],
   "rating": 5,
   "activo": true,
   "isNew": true,
@@ -121,34 +121,15 @@ export const perfumes: Perfume[] = [
   "tipo": "perfume",
   "type": "Eau de Parfum",
   "description": "Este no es un perfume, es una experiencia. Eilish es el aroma de un recuerdo cálido, de un abrazo que te envuelve, de sentirte tú misma en tu forma más auténtica y sensual. Con sus notas dulces y poderosas, es como llevar una segunda piel que dice: soy única, soy compleja, soy inolvidable. Es la fragancia para cuando quieres conectar contigo misma, con tus sentimientos más profundos, y dejar una huella que nadie olvidará. Es un secreto que compartes con el mundo.",
-  "notesSalida": [
-    "Pétalos de azúcar",
-    "Bayas rojas",
-    "Mandarina"
-  ],
-  "notesCorazon": [
-    "Vainilla cremosa",
-    "Cacao",
-    "Especias",
-    "Rosa"
-  ],
-  "notesFondo": [
-    "Almizcle",
-    "Haba tonka",
-    "Maderas suaves",
-    "Ámbar"
-  ],
-  "details": [
-    "Eau de Parfum (EDP)"
-  ],
+  "notesSalida": ["Pétalos de azúcar", "Bayas rojas", "Mandarina"],
+  "notesCorazon": ["Vainilla cremosa", "Cacao", "Especias", "Rosa"],
+  "notesFondo": ["Almizcle", "Haba tonka", "Maderas suaves", "Ámbar"],
+  "details": ["Eau de Parfum (EDP)"],
   "occasions": [
     "Eventos: Citas inolvidables, noches de fiesta, eventos especiales",
     "Diario: Perfecto para las noches o esos días en los que necesitas un extra de confianza"
   ],
-  "seasons": [
-    "Otoño",
-    "Invierno"
-  ],
+  "seasons": ["Otoño", "Invierno"],
   "image": "/assets/images/fragancias/billie-eilish/billie-eilish-detail-1.webp",
   "images": [
     "/assets/images/fragancias/billie-eilish/billie-eilish-detail-1.webp",
@@ -157,10 +138,40 @@ export const perfumes: Perfume[] = [
   "category": "mujer",
   "isAvailableToOrder": true,
   "sizes": [100],
-  "prices": [1250],
+  "prices": [1200],
   "rating": 5,
   "activo": true,
   "isNew": true,
   "isSale": false
-}
+},
+/* {
+  "id": "jpg_le_male_elixir",
+  "name": "Jean Paul Gaultier Le Male Elixir",
+  "brand": "Jean Paul Gaultier",
+  "tipo": "perfume",
+  "type": "Parfum",
+  "description": "Le Male Elixir es la versión más intensa y seductora de la icónica línea Le Male. Un aroma cálido, adictivo y envolvente que combina la frescura de la lavanda con una base dulce y resinosa. Perfecto para quienes buscan destacar y dejar una huella inolvidable, ideal para noches especiales o cuando quieres sentirte irresistible.",
+  "notesSalida": ["Lavanda", "Menta", "Bergamota"],
+  "notesCorazon": ["Vainilla", "Benjuí", "Miel"],
+  "notesFondo": ["Tabaco", "Sándalo", "Tonka Bean"],
+  "details": ["Parfum (Elixir)"],
+  "occasions": [
+    "Eventos: Citas nocturnas, fiestas elegantes, ocasiones especiales",
+    "Diario: Para cuando quieres sentirte seguro y destacar"
+  ],
+  "seasons": ["Otoño", "Invierno"],
+  "image": "/assets/images/fragancias/jpg-le-male-elixir/jpg-le-male-elixir-detail-1.webp",
+  "images": [
+    "/assets/images/fragancias/jpg-le-male-elixir/jpg-le-male-elixir-detail-1.webp",
+    "/assets/images/fragancias/jpg-le-male-elixir/jpg-le-male-elixir-detail-2.webp"
+  ],
+  "category": "hombre",
+  "isAvailableToOrder": true,
+  "sizes": [75, 125],
+  "prices": [2450, 3350],
+  "rating": 4.9,
+  "activo": true,
+  "isNew": true,
+  "isSale": false
+} */
 ];

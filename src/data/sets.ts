@@ -11,6 +11,7 @@ export interface SetPromoVariant {
   size: number; // ml
   price: number;
   stock: number;
+  salePrice: number;
 }
 
 export interface SetPromo {
@@ -46,16 +47,16 @@ export const sets: SetPromo[] = [
     tipo: 'set',
     description: 'Tu dúo dinámico para el día a día. Combina el frescor limpio y acuático de Nautica Voyage, perfecto para las mañanas de clases o el gym, con la sofisticación intensa de Dior Sauvage, ideal para una cita o una salida nocturna. El set que te cubre 24/7.',
     items: [
-      { type: 'decant', decantId: 'decant_nautica_voyage' },
-      { type: 'decant', decantId: 'decant_dior_sauvage' }
+      { type: 'decant', decantId: 'nautica_voyage' },
+      { type: 'decant', decantId: 'dior_sauvage' }
     ],
     variants: [
-      { size: 3, price: 170, stock: 3 },
-      { size: 5, price: 240, stock: 3 },
-      { size: 10, price: 430, stock: 3 }
+      { size: 3, price: 200, salePrice: 170, stock: 3 },
+      { size: 5, price: 290, salePrice: 250, stock: 3 },
+      { size: 10, price: 540, salePrice: 460, stock: 3 }
     ],
-    salePrice: 150,
-    salePercent: 17,
+    salePrice: 170,
+    salePercent: 15,
     isAvailableToOrder: true,
     image: '/assets/images/sets/dior-nautica/set-dior-nautica.webp',
     images: [
@@ -64,9 +65,9 @@ export const sets: SetPromo[] = [
       '/assets/images/fragancias/decants-all-size.webp'
     ],
     activo: true,
-    isNew: true,
-    isSale: false,
-    rating: 4.7,
+    isNew: false,
+    isSale: true,
+    rating: 5,
     seasons: ['Primavera', 'Verano', 'Otoño', 'Invierno'],
     setType: 'decants',
     category: 'hombre', // Este set incluye decants de hombre
@@ -77,15 +78,15 @@ export const sets: SetPromo[] = [
     tipo: 'set',
     description: 'El abrazo que puedes llevar puesto. ¿Eres fan de los aromas dulces que te hacen sentir cómodo y con un aura irresistible? Este set une el icónico y dulce aroma de malvavisco de Ariana Grande Cloud con la calidez adictiva y misteriosa de Billie Eilish Eilish. Juntos, crean un halo acogedor que atrae todas las miradas.',
     items: [
-      { type: 'decant', decantId: 'decant_ariana_grande_cloud' },
-      { type: 'decant', decantId: 'decant_billie_eilish_eilish' },
+      { type: 'decant', decantId: 'ariana_grande_cloud' },
+      { type: 'decant', decantId: 'billie_eilish_eilish' },
     ],
     variants: [
-      { size: 3, price: 170, stock: 3 },
-      { size: 5, price: 250, stock: 3 },
-      { size: 10, price: 440, stock: 3 }
+      { size: 3, price: 190, salePrice:170, stock: 3 },
+      { size: 5, price: 290, salePrice:250, stock: 3 },
+      { size: 10, price: 530, salePrice:460, stock: 3 }
     ],
-    salePrice: 150,
+    salePrice: 170,
     salePercent: 17,
     isAvailableToOrder: true,
     image: '/assets/images/sets/ariana-billie/set-ariana-billie.webp',
@@ -95,12 +96,12 @@ export const sets: SetPromo[] = [
       '/assets/images/fragancias/decants-all-size.webp'
     ],
     activo: true,
-    isNew: true,
-    isSale: false,
-    rating: 4,
+    isNew: false,
+    isSale: true,
+    rating: 5,
     seasons: ['Primavera', 'Verano', 'Otoño', 'Invierno'],
     setType: 'decants',
-    category: 'mujer', // Este set incluye decants de mujer
+    category: 'mixto', // Este set incluye decants de mujer
   },
   /* {
     id: 'de_dia_a_noche',
@@ -108,13 +109,13 @@ export const sets: SetPromo[] = [
     tipo: 'set',
     description: 'La fórmula secreta para cada momento. Con Nautica Voyage obtienes esa frescura vibrante para el día, y con Ariana Grande Cloud, un dulce y distintivo aroma para la noche. La forma más inteligente de tener un perfume para cada ocasión sin gastar de más.',
     items: [
-      { type: 'perfume', decantId: 'nautica_voyage' },
-      { type: 'perfume', decantId: 'ariana_grande_cloud' }
+      { type: 'decant', decantId: 'nautica_voyage' },
+      { type: 'decant', decantId: 'ariana_grande_cloud' }
     ],
     variants: [
-      { size: 3, price: 125, stock: 3 },
-      { size: 5, price: 175, stock: 3 },
-      { size: 10, price: 300, stock: 3 }
+      { size: 3, price: 140, salePrice: 120, stock: 3 },
+      { size: 5, price: 220, salePrice: 190, stock: 3 },
+      { size: 10, price: 380, salePrice: 330, stock: 3 }
     ],
     salePrice: 200,
     salePercent: 20,
@@ -126,8 +127,8 @@ export const sets: SetPromo[] = [
       '/assets/images/fragancias/decants-all-sizes.webp'
     ],
     activo: true,
-    isNew: true,
-    isSale: false,
+    isNew: false,
+    isSale: true,
     isComingSoon: false,
     rating: 4.5,
     seasons: ['Primavera', 'Verano'],
